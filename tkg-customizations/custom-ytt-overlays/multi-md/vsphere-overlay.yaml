@@ -66,19 +66,19 @@ spec:
   template:
     spec:
       cloneMode: #@ data.values.VSPHERE_CLONE_MODE
-      datacenter: #@ data.values.VSPHERE_DATACENTER
-      datastore: #@ data.values.VSPHERE_DATASTORE
+      datacenter: #@ "{}".format(data.values["VSPHERE_DATACENTER_{}".format(i)] or data.values.VSPHERE_DATACENTER)
+      datastore: #@ "{}".format(data.values["VSPHERE_DATASTORE_{}".format(i)] or data.values.VSPHERE_DATASTORE)
       diskGiB: #@ "{}".format(data.values["VSPHERE_WORKER_DISK_GIB_{}".format(i)] or data.values.VSPHERE_WORKER_DISK_GIB)
       folder: #@ data.values.VSPHERE_FOLDER
       memoryMiB: #@ "{}".format(data.values["VSPHERE_WORKER_MEM_MIB_{}".format(i)] or data.values.VSPHERE_WORKER_MEM_MIB)
       network:
         devices:
         - dhcp4: true
-          networkName: #@ data.values.VSPHERE_NETWORK
+          networkName: #@ "{}".format(data.values["VSPHERE_NETWORK_{}".format(i)] or data.values.VSPHERE_NETWORK)
       numCPUs: #@ "{}".format(data.values["VSPHERE_WORKER_NUM_CPUS_{}".format(i)] or data.values.VSPHERE_WORKER_NUM_CPUS)
-      resourcePool: #@ data.values.VSPHERE_RESOURCE_POOL
+      resourcePool: #@ "{}".format(data.values["VSPHERE_RESOURCE_POOL_{}".format(i)] or data.values.VSPHERE_RESOURCE_POOL)
       server: #@ data.values.VSPHERE_SERVER
-      template: #@ data.values.VSPHERE_TEMPLATE
+      template: #@ "{}".format(data.values["VSPHERE_TEMPLATE_{}".format(i)] or data.values.VSPHERE_TEMPLATE)
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
 kind: KubeadmConfigTemplate
