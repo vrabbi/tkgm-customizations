@@ -1,0 +1,151 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+#@ def vrops_cadvisor():
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: cadvisor
+  namespace: kube-system 
+  labels:
+    app: cadvisor
+  annotations:
+      seccomp.security.alpha.kubernetes.io/pod: 'docker/default'
+spec:
+  selector:
+    matchLabels:
+      app: cadvisor
+  template:
+    metadata:
+      labels:
+        app: cadvisor
+        version: v0.31.0
+    spec:
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        effect: NoSchedule
+      containers:
+      - name: cadvisor
+        image: google/cadvisor:v0.31.0
+        resources:
+          requests:
+            memory: 250Mi
+            cpu: 250m
+          limits:
+            cpu: 400m
+        volumeMounts:
+        - name: rootfs
+          mountPath: /rootfs
+          readOnly: true
+        - name: var-run
+          mountPath: /var/run
+          readOnly: true
+        - name: sys
+          mountPath: /sys
+          readOnly: true
+        - name: docker
+          mountPath: /var/lib/docker 
+          readOnly: true
+        - name: disk
+          mountPath: /dev/disk
+          readOnly: true
+        ports:
+          - name: http
+            containerPort: 8080 
+            hostPort : 31194
+            protocol: TCP
+      automountServiceAccountToken: false
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: rootfs
+        hostPath:
+          path: /
+      - name: var-run
+        hostPath:
+          path: /var/run
+      - name: sys
+        hostPath:
+          path: /sys
+      - name: docker
+        hostPath:
+          path: /var/lib/docker 
+      - name: disk
+        hostPath:
+          path: /dev/disk
+#@ end
+
+#@ def vrops_attacher():
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: vrops-attacher
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: vrops-attacher
+subjects:
+- kind: ServiceAccount
+  name: vrops-attacher
+  namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: vrops-attacher
+  namespace: kube-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: attacher
+        image: harbor.terasky.demo/tkg-crs/tkg-131-helper:v0.1.0
+        command: ["/bin/sh"]
+        args:
+          - -c
+          - #@ "/attach-to-vrops.sh {} {} {} {} {}".format( data.values.CLUSTER_NAME, data.values.VSPHERE_CONTROL_PLANE_ENDPOINT, data.values.VROPS_FQDN, data.values.VROPS_USER, data.values.VROPS_PASSWORD)
+      restartPolicy: Never
+      serviceAccountName: vrops-attacher
+  backoffLimit: 4
+#@ end
+#@ if data.values.ATTACH_TO_VROPS and data.values.TKG_CLUSTER_ROLE == "workload":
+---
+apiVersion: addons.cluster.x-k8s.io/v1alpha3
+kind: ClusterResourceSet
+metadata:
+  name: #@ "{}-vrops-cadvisor".format(data.values.CLUSTER_NAME)
+  labels:
+    cluster.x-k8s.io/cluster-name: #@ data.values.CLUSTER_NAME
+spec:
+  strategy: "ApplyOnce"
+  clusterSelector:
+    matchLabels:
+      tkg.tanzu.vmware.com/cluster-name: #@ data.values.CLUSTER_NAME
+  resources:
+  - name: #@ "{}-vrops-cadvisor".format(data.values.CLUSTER_NAME)
+    kind: ConfigMap
+  - name: #@ "{}-vrops-attacher".format(data.values.CLUSTER_NAME)
+    kind: ConfigMap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: #@ "{}-vrops-cadvisor".format(data.values.CLUSTER_NAME)
+data:
+  data: #@ yaml.encode(vrops_cadvisor())
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: #@ "{}-vrops-attacher".format(data.values.CLUSTER_NAME)
+data:
+  data: #@ yaml.encode(vrops_attacher())
+#@ end

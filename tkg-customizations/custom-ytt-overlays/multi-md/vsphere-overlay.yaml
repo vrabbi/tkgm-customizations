@@ -1,0 +1,113 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ load("lib/helpers.star", "get_bom_data_for_tkr_name", "get_default_tkg_bom_data", "kubeadm_image_repo", "tkg_image_repo", "get_vsphere_thumbprint")
+#@ load("lib/validate.star", "validate_configuration")
+#@ load("@ytt:yaml", "yaml")
+
+#@ bomDataForK8sVersion = get_bom_data_for_tkr_name()
+#@ bomData = get_default_tkg_bom_data()
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate", "metadata":{"name": data.values.CLUSTER_NAME + "-md-0"}})
+---
+spec:
+  template:
+    spec:
+      joinConfiguration:
+        nodeRegistration:
+          kubeletExtraArgs:
+            #@overlay/match missing_ok=True
+            node-labels: #@ "cluster-api/machine-deployment={}-md-0".format(data.values.CLUSTER_NAME)
+#@ if data.values.CLUSTER_PLAN == "multimd":
+#@ for i in range(1, data.values.ADDITIONAL_MD_COUNT + 1):
+---
+apiVersion: cluster.x-k8s.io/v1alpha3
+kind: MachineDeployment
+metadata:
+  labels:
+    cluster.x-k8s.io/cluster-name: #@ data.values.CLUSTER_NAME
+  #@ if data.values.TKG_CLUSTER_ROLE == "workload" and data.values.ENABLE_AUTOSCALER and data.values.PROVIDER_TYPE != "tkg-service-vsphere":
+  #@overlay/match missing_ok=True
+  annotations:
+    cluster.k8s.io/cluster-api-autoscaler-node-group-min-size: #@ "{}".format(data.values["AUTOSCALER_MIN_SIZE_{}".format(i)] or data.values["WORKER_MACHINE_COUNT_{}".format(i)] or data.values.WORKER_MACHINE_COUNT)
+    cluster.k8s.io/cluster-api-autoscaler-node-group-max-size: #@ "{}".format(data.values["AUTOSCALER_MAX_SIZE_{}".format(i)] or data.values["WORKER_MACHINE_COUNT_{}".format(i)] or data.values.WORKER_MACHINE_COUNT)
+  #@ end
+  name: #@ "{}-md-{}".format(data.values.CLUSTER_NAME, i)
+  namespace: #@ data.values.NAMESPACE
+spec:
+  clusterName: #@ data.values.CLUSTER_NAME
+  replicas: #@ "{}".format(data.values["WORKER_MACHINE_COUNT_{}".format(i)] or data.values.WORKER_MACHINE_COUNT)
+  selector:
+    matchLabels:
+      cluster.x-k8s.io/cluster-name: #@ data.values.CLUSTER_NAME
+  template:
+    metadata:
+      labels:
+        cluster.x-k8s.io/cluster-name: #@ data.values.CLUSTER_NAME
+        node-pool: #@ "{}-worker-pool".format(data.values.CLUSTER_NAME)
+    spec:
+      bootstrap:
+        configRef:
+          apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+          kind: KubeadmConfigTemplate
+          name: #@ "{}-md-{}".format(data.values.CLUSTER_NAME, i)
+      clusterName: #@ data.values.CLUSTER_NAME
+      infrastructureRef:
+        apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+        kind: VSphereMachineTemplate
+        name: #@ "{}-md-{}".format(data.values.CLUSTER_NAME, i)
+      version: #@ data.values.KUBERNETES_VERSION
+---
+apiVersion: infrastructure.cluster.x-k8s.io/v1alpha3
+kind: VSphereMachineTemplate
+metadata:
+  name: #@ "{}-md-{}".format(data.values.CLUSTER_NAME, i)
+  namespace: #@ data.values.NAMESPACE
+spec:
+  template:
+    spec:
+      cloneMode: #@ data.values.VSPHERE_CLONE_MODE
+      datacenter: #@ data.values.VSPHERE_DATACENTER
+      datastore: #@ data.values.VSPHERE_DATASTORE
+      diskGiB: #@ "{}".format(data.values["VSPHERE_WORKER_DISK_GIB_{}".format(i)] or data.values.VSPHERE_WORKER_DISK_GIB)
+      folder: #@ data.values.VSPHERE_FOLDER
+      memoryMiB: #@ "{}".format(data.values["VSPHERE_WORKER_MEM_MIB_{}".format(i)] or data.values.VSPHERE_WORKER_MEM_MIB)
+      network:
+        devices:
+        - dhcp4: true
+          networkName: #@ data.values.VSPHERE_NETWORK
+      numCPUs: #@ "{}".format(data.values["VSPHERE_WORKER_NUM_CPUS_{}".format(i)] or data.values.VSPHERE_WORKER_NUM_CPUS)
+      resourcePool: #@ data.values.VSPHERE_RESOURCE_POOL
+      server: #@ data.values.VSPHERE_SERVER
+      template: #@ data.values.VSPHERE_TEMPLATE
+---
+apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
+kind: KubeadmConfigTemplate
+metadata:
+  name:  #@ "{}-md-{}".format(data.values.CLUSTER_NAME, i)
+  namespace: #@ data.values.NAMESPACE
+spec:
+  template:
+    spec:
+      useExperimentalRetryJoin: true
+      joinConfiguration:
+        nodeRegistration:
+          criSocket: /var/run/containerd/containerd.sock
+          kubeletExtraArgs:
+            cloud-provider: external
+            tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
+            node-labels: #@ "cluster-api/machine-deployment={}-md-1".format(data.values.CLUSTER_NAME)
+          name: '{{ ds.meta_data.hostname }}'
+      preKubeadmCommands:
+      - hostname "{{ ds.meta_data.hostname }}"
+      - echo "::1         ipv6-localhost ipv6-loopback" >/etc/hosts
+      - echo "127.0.0.1   localhost" >>/etc/hosts
+      - echo "127.0.0.1   {{ ds.meta_data.hostname }}" >>/etc/hosts
+      - echo "{{ ds.meta_data.hostname }}" >/etc/hostname
+      files: []
+      users:
+      - name: capv
+        sshAuthorizedKeys:
+        - #@ data.values.VSPHERE_SSH_AUTHORIZED_KEY
+        sudo: ALL=(ALL) NOPASSWD:ALL
+#@ end
+#@ end

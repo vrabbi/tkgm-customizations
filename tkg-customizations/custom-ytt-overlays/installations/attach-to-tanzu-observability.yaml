@@ -1,0 +1,75 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+#@ def tanzu_observability_deployment():
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: tanzu-observability
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tanzu-observability-attacher
+  namespace: tanzu-observability
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tanzu-observability-attacher
+subjects:
+- kind: ServiceAccount
+  name: tanzu-observability-attacher
+  namespace: tanzu-observability
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tanzu-observability-attacher
+  namespace: tanzu-observability
+spec:
+  template:
+    spec:
+      containers:
+      - name: tanzu-observability
+        image: alpine/helm
+        command: ["/bin/sh"]
+        args:
+          - -c
+          - #@ "helm repo add wavefront https://wavefronthq.github.io/helm/ && helm install wavefront wavefront/wavefront -n tanzu-observability --set wavefront.url={},wavefront.token={},clusterName={}".format(data.values.TANZU_OBSERVABILITY_URL, data.values.TANZU_OBSERVABILITY_API_TOKEN, data.values.CLUSTER_NAME)
+      restartPolicy: Never
+      serviceAccountName: tanzu-observability-attacher
+  backoffLimit: 4
+#@ end
+
+
+#@ if data.values.ATTACH_TO_TANZU_OBSERVABILITY and data.values.TKG_CLUSTER_ROLE == "workload":
+---
+apiVersion: addons.cluster.x-k8s.io/v1alpha3
+kind: ClusterResourceSet
+metadata:
+  name: #@ "{}-tanzu-observability-deployment".format(data.values.CLUSTER_NAME)
+  labels:
+    cluster.x-k8s.io/cluster-name: #@ data.values.CLUSTER_NAME
+spec:
+  strategy: "ApplyOnce"
+  clusterSelector:
+    matchLabels:
+      tkg.tanzu.vmware.com/cluster-name: #@ data.values.CLUSTER_NAME
+  resources:
+  - name: #@ "{}-tanzu-observability-deployment".format(data.values.CLUSTER_NAME)
+    kind: ConfigMap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: #@ "{}-tanzu-observability-deployment".format(data.values.CLUSTER_NAME)
+data:
+  data: #@ yaml.encode(tanzu_observability_deployment())
+#@ end
