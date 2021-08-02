@@ -1,4 +1,5 @@
 #@data/values
+#@overlay/match-child-defaults missing_ok=True
 ---
 ADDITIONAL_MD_COUNT:
 VSPHERE_WORKER_NUM_CPUS_1:
