@@ -66,19 +66,19 @@ spec:
   template:
     spec:
       cloneMode: #@ data.values.VSPHERE_CLONE_MODE
-      datacenter: #@ "{}".format(data.values["VSPHERE_DATACENTER_{}".format(i)] or data.values.VSPHERE_DATACENTER)
-      datastore: #@ "{}".format(data.values["VSPHERE_DATASTORE_{}".format(i)] or data.values.VSPHERE_DATASTORE)
+      datacenter: #@ data.values.VSPHERE_DATACENTER
+      datastore: #@ data.values.VSPHERE_DATASTORE
       diskGiB: #@ "{}".format(data.values["VSPHERE_WORKER_DISK_GIB_{}".format(i)] or data.values.VSPHERE_WORKER_DISK_GIB)
       folder: #@ data.values.VSPHERE_FOLDER
       memoryMiB: #@ "{}".format(data.values["VSPHERE_WORKER_MEM_MIB_{}".format(i)] or data.values.VSPHERE_WORKER_MEM_MIB)
       network:
         devices:
         - dhcp4: true
-          networkName: #@ "{}".format(data.values["VSPHERE_NETWORK_{}".format(i)] or data.values.VSPHERE_NETWORK)
+          networkName: #@ data.values.VSPHERE_NETWORK
       numCPUs: #@ "{}".format(data.values["VSPHERE_WORKER_NUM_CPUS_{}".format(i)] or data.values.VSPHERE_WORKER_NUM_CPUS)
-      resourcePool: #@ "{}".format(data.values["VSPHERE_RESOURCE_POOL_{}".format(i)] or data.values.VSPHERE_RESOURCE_POOL)
+      resourcePool: #@ data.values.VSPHERE_RESOURCE_POOL
       server: #@ data.values.VSPHERE_SERVER
-      template: #@ "{}".format(data.values["VSPHERE_TEMPLATE_{}".format(i)] or data.values.VSPHERE_TEMPLATE)
+      template: #@ data.values.VSPHERE_TEMPLATE
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
 kind: KubeadmConfigTemplate
@@ -95,7 +95,7 @@ spec:
           kubeletExtraArgs:
             cloud-provider: external
             tls-cipher-suites: TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,TLS_ECDHE_ECDSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305,TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384
-            node-labels: #@ "cluster-api/machine-deployment={}-md-1".format(data.values.CLUSTER_NAME)
+            node-labels: #@ "cluster-api/machine-deployment={}-md-{}".format(data.values.CLUSTER_NAME, i)
           name: '{{ ds.meta_data.hostname }}'
       preKubeadmCommands:
       - hostname "{{ ds.meta_data.hostname }}"
