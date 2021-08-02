@@ -1,9 +1,4 @@
-This folder contains 3 sub folders and a file:
-
-## custom_variables.yaml
-This file contains the additional custom variables we introduce throughout this repo.
-You must add the content of this file (or a subset of them depending on your needs) to the bottom of the file on your machine with tanzu cli:
-~/.tanzu/tkg/providers/config_default.yaml
+This folder contains 3 sub folders
 
 ## cluster-plans
 currently one additional plan has been created named multimd.
