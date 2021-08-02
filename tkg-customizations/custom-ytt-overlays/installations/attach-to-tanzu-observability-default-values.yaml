@@ -1,0 +1,6 @@
+#@data/values
+#@overlay/match-child-defaults missing_ok=True
+---
+ATTACH_TO_TANZU_OBSERVABILITY: false
+TANZU_OBSERVABILITY_URL:
+TANZU_OBSERVABILITY_API_TOKEN:

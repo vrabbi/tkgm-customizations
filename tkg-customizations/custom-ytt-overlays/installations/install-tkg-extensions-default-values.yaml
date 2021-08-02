@@ -1,0 +1,14 @@
+#@data/values
+#@overlay/match-child-defaults missing_ok=True
+---
+TKG_HELPER_IMAGE_REF: #! the image url to pull your docker container built based on this repo
+MGMT_CLUSTER_NAME: "demo-tkg-mgmt-cls" #! Used for FluentBit Instance Name
+VRLI_FQDN: "" #! Can actually be any Syslog Server
+VRLI_PORT: 514 #! Syslog Port
+VRLI_PROTOCOL: tcp #! Syslog can be tcp or udp
+VRLI_FORMAT: rfc5424 #! this is the supported format for VRLI Syslog consumption
+ENABLE_TKG_EXTENSIONS: false #! set to true to install Cert-Manager, Contour, External-DNS, Prometheus, Grafana and FluentBit
+GRAFANA_PASSWORD: #! set if installing TKG Extensions
+GRAFANA_FQDN: #! will be configured using external DNS automagically
+DNS_SERVER: #! IP or FQDN of a Microsoft DNS Server
+DNS_ZONE: #! Microsoft DNS Forward Zone Name

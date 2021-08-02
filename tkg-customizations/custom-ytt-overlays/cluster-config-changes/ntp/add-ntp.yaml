@@ -1,0 +1,25 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+
+#@ if data.values.NTP_SERVERS:
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+spec:
+  #@overlay/match-child-defaults missing_ok=True
+  kubeadmConfigSpec:
+    ntp:
+      enabled: true
+      servers: #@ data.values.NTP_SERVERS.split(",")
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"}),expects="1+"
+---
+spec:
+  template:
+    #@overlay/match-child-defaults missing_ok=True
+    spec:
+      ntp:
+        enabled: true
+        servers: #@ data.values.NTP_SERVERS.split(",")
+
+#@ end

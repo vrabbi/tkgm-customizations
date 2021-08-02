@@ -1,0 +1,7 @@
+#@data/values
+#@overlay/match-child-defaults missing_ok=True
+---
+ATTACH_TO_VROPS: false
+VROPS_FQDN:
+VROPS_USER:
+VROPS_PASSWORD:

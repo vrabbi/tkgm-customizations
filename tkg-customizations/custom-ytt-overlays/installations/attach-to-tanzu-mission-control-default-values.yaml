@@ -1,0 +1,6 @@
+#@data/values
+#@overlay/match-child-defaults missing_ok=True
+---
+ATTACH_TO_TANZU_MISSION_CONTROL: false
+TANZU_MISSION_CONTROL_API_TOKEN:
+TANZU_MISSION_CONTROL_CLUSTER_GROUP:

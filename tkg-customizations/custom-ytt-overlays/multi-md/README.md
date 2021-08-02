@@ -8,11 +8,10 @@ This is being worked on but should be noted as a current limitation of the TMC -
 
 ## Pre Reqs
 1. You must add the cluster plane "multimd" as per this repos instructions in the cluster-plan folder
-2. you must add the variable for multi MD support from the custom_variables.yaml file into your config_default.yaml file as per the instructions for that file in this repo
 
 ## Installation
-1. Copy the vsphere-overlay.yaml file from this folder to the following path
-~/.tanzu/tkg/providers/infrastructure-vsphere/ytt/vsphere-overlay.yaml
+1. Copy the vsphere-overlay.yaml and vsphere-overlay-default-values.yaml files from this folder to the following path
+~/.tanzu/tkg/providers/infrastructure-vsphere/ytt/
 
 ## Important node on usage
 Variables that are customizable per MD currently are:
