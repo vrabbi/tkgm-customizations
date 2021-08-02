@@ -33,7 +33,7 @@ spec:
     spec:
       containers:
       - name: installer
-        image: harbor.terasky.demo/tkg-crs/tkg-131-helper:v0.1.0
+        image: #@ data.values.TKG_HELPER_IMAGE_REF
         command: ["/bin/sh"]
         args:
           - -c

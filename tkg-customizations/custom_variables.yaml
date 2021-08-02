@@ -102,6 +102,7 @@ AUTOSCALER_MIN_SIZE_15:
 AUTOSCALER_MAX_SIZE_15:
 
 #! TKG Extension installer variables
+TKG_HELPER_IMAGE_REF: #! the image url to pull your docker container built based on this repo
 MGMT_CLUSTER_NAME: "demo-tkg-mgmt-cls" #! Used for FluentBit Instance Name
 VRLI_FQDN: "" #! Can actually be any Syslog Server
 VRLI_PORT: 514 #! Syslog Port
