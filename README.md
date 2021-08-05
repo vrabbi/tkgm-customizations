@@ -33,6 +33,7 @@ Examples:
 1. Auto install the Tanzu RabbitMQ Operators
 2. Auto install the Tanzu MySQL Operator
 3. Auto install the Tanzu Postgres Operator
+4. Auto install Tanzu Build Service
 
 ### 4. Attach clusters to external systems
 Kubernetes clusters many times need to be attached to external systems. these could be Tanzu SaaS offerings or different solutions.
