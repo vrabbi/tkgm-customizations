@@ -16,13 +16,13 @@ kubectl apply -f habor-app.yaml
 ``` 
 
 option 2 - Update the official manifest: 
-a. after line 25 add the following stanza:
+* after line 25 add the following stanza:
 ```bash
 - secretRef:                         
     name: harbor-chartmuseum-addition
 ```
-b. make sure the stanza is inline with the original secretRef for the harbor-data-values but is bellow it.
-c. deploy the app
+* make sure the stanza is inline with the original secretRef for the harbor-data-values but is bellow it.
+* deploy the app
 ```bash
 kubectl apply -f registry/harbor/harbor-extension.yaml
 ```
