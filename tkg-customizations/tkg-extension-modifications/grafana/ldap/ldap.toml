@@ -1,0 +1,16 @@
+[[servers]]
+host = "dc01.example.com"
+port = 636
+use_ssl = true
+start_tls = false
+ssl_skip_verify = true
+bind_dn = "CN=grafana_ldap,OU=ServiceAccount,DC=example,DC=com"
+bind_password = 'MySuperSecretPassword'
+search_filter = "(|(sAMAccountName=%s)(userPrincipalName=%s)(mail=%s))"
+search_base_dns = ["dc=example,dc=com"]
+group_search_filter = "(&(objectClass=group)(memberUid=%s))"
+group_search_filter_user_attribute = "DN"
+group_search_base_dns = ["dc=example,dc=com"]
+[servers.attributes]
+member_of = "memberOf"
+email =  "mail"

@@ -1,0 +1,23 @@
+#@ load("@ytt:overlay", "overlay")
+#@overlay/match by=overlay.subset({"kind": "Deployment", "metadata":{"name":"grafana"}}),expects=1
+---
+spec:
+  template:
+    spec:
+      containers:
+      #@overlay/match by="name"
+      - name: grafana
+        volumeMounts:
+        #@overlay/append
+        - mountPath: /etc/grafana/ldap.toml
+          name: ldap-toml
+          subPath: ldap.toml
+      volumes:
+      #@overlay/append
+      - name: ldap-toml
+        secret:
+          defaultMode: 420
+          items:
+          - key: ldap-toml
+            path: ldap.toml
+          secretName: grafana

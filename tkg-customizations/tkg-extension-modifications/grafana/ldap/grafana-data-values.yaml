@@ -1,0 +1,36 @@
+#@data/values
+#@overlay/match-child-defaults missing_ok=True
+---
+monitoring:
+  grafana:
+    config:
+      grafana_ini: |
+        [auth.ldap]
+        enabled = true
+        config_file = /etc/grafana/ldap.toml
+        allow_sign_up = true
+        [analytics]
+        check_for_updates = false
+        [grafana_net]
+        url = https://grafana.com
+        [log]
+        mode = console
+        [paths]
+        data = /var/lib/grafana/data
+        logs = /var/log/grafana
+        plugins = /var/lib/grafana/plugins
+        provisioning = /etc/grafana/provisioning
+    image:
+      repository: "projects.registry.vmware.com/tkg/grafana"
+    secret:
+      admin_password: ""
+      ldap_toml: ""
+    ingress:
+      enabled: true
+      virtual_host_fqdn: 
+  grafana_init_container:
+    image:
+      repository: "projects.registry.vmware.com/tkg/grafana"
+  grafana_sc_dashboard:
+    image:
+      repository: "projects.registry.vmware.com/tkg/grafana"
