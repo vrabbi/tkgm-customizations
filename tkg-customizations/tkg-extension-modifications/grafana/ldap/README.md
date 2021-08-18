@@ -23,15 +23,15 @@ cat ldap.toml | base64 -w 0
 3. Edit the grafana-data-values.yaml file from this repo and add your base64 encoded content of ldap.toml in the relvant field (monitoring.grafana.secret.ldap_toml)
 4. If you want to change anything in the grafana.ini file you can make the changes to the grafana_ini fields value i have added in the grafana-data-values.yaml file
 5. Make any additional changes to the data values file as you usually would (ingress fqdn, PV size, Storage class etc.)
-5. create a secret with our overlay file (grafana-ldap-overlay.yaml):
+6. create a secret with our overlay file (grafana-ldap-overlay.yaml):
 ```bash
-kubectl create secret generic grafana-ldap-overlay -n tanzu-system-monitoring --from-file=ldap-overlay.yaml=grafana-overlay.yaml
+kubectl create secret generic grafana-ldap-overlay -n tanzu-system-monitoring --from-file=ldap-overlay.yaml=grafana-ldap-overlay.yaml
 ``` 
-6. Create a secret for the data values file content:
+7. Create a secret for the data values file content:
 ```bash
 kubectl -n tanzu-system-monitoring create secret generic grafana-data-values --from-file=values.yaml=grafana-data-values.yaml
 ``` 
-7. Deploy the Grafana Extension:
+8. Deploy the Grafana Extension with the grafana-extensions.yaml file from this repo:
 ```bash
 kubectl apply -f grafana-extension.yaml 
 ```

@@ -1,0 +1,19 @@
+#@data/values
+#@overlay/match-child-defaults missing_ok=True
+---
+monitoring:
+  grafana:
+    service:
+      type: LoadBalancer
+    image:
+      repository: "projects.registry.vmware.com/tkg/grafana"
+    secret:
+      admin_password: Vk13YXJlMSE=
+    ingress:
+      enabled: false
+  grafana_init_container:
+    image:
+      repository: "projects.registry.vmware.com/tkg/grafana"
+  grafana_sc_dashboard:
+    image:
+      repository: "projects.registry.vmware.com/tkg/grafana"
