@@ -8,6 +8,8 @@ helm repo add jetstack https://charts.jetstack.io
 helm repo update
 helm upgrade --install cert-manager jetstack/cert-manager --namespace cert-manager  --version v1.0.2 --set installCRDs=true --wait --timeout=10m0s
 cd ./postgres-for-kubernetes-v*
+kubectl create namespace postgres-system
 kubectl create secret docker-registry regsecret --docker-server=$1 --docker-username=$2 --docker-password=$3 --namespace default
-helm upgrade --install postgres-operator operator/ --set operatorImageRepository=$4 --set postgresImageRepository=$5 --namespace default
-kubectl wait --for=condition=Available deployment/postgres-operator --timeout=10m0s --namespace default
+kubectl create secret docker-registry regsecret --docker-server=$1 --docker-username=$2 --docker-password=$3 --namespace postgres-system
+helm upgrade --install postgres-operator operator/ --set operatorImageRepository=$4 --set postgresImageRepository=$5 --namespace postgres-system
+kubectl wait --for=condition=Available deployment/postgres-operator --timeout=10m0s --namespace postgres-system
