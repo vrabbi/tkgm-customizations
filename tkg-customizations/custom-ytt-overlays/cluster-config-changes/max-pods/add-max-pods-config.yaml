@@ -1,0 +1,60 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+
+#@ if data.values.CONTROL_PLANE_MAX_PODS_PER_CORE and data.values.TKG_CLUSTER_ROLE == "workload":
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+spec:
+  kubeadmConfigSpec:
+    #@overlay/match missing_ok=True
+    joinConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          #@overlay/match missing_ok=True
+          maxPods: #@ data.values.CONTROL_PLANE_MAX_PODS_PER_CORE * data.values.VSPHERE_CONTROL_PLANE_NUM_CPUS
+          #@overlay/match missing_ok=True
+          podsPerCore: #@ data.values.CONTROL_PLANE_MAX_PODS_PER_CORE
+    initConfiguration:
+      nodeRegistration:
+        kubeletExtraArgs:
+          #@overlay/match missing_ok=True
+          maxPods: #@ data.values.CONTROL_PLANE_MAX_PODS_PER_CORE * data.values.VSPHERE_CONTROL_PLANE_NUM_CPUS
+          #@overlay/match missing_ok=True
+          podsPerCore: #@ data.values.CONTROL_PLANE_MAX_PODS_PER_CORE
+#@ end
+#@ if data.values.WORKER_MAX_PODS_PER_CORE and data.values.TKG_CLUSTER_ROLE == "workload" and data.values.CLUSTER_PLAN == "multimd":
+#@ for i in range(0, data.values.ADDITIONAL_MD_COUNT + 1):
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate", "metadata":{"name": data.values.CLUSTER_NAME + "-md-{}".format(i)}})
+---
+spec:
+  template:
+    spec:
+      #@overlay/match missing_ok=True
+      joinConfiguration:
+        nodeRegistration:
+          kubeletExtraArgs:
+            #@ if/end i > 0:
+            #@overlay/match missing_ok=True
+            maxPods: #@ data.values.WORKER_MAX_PODS_PER_CORE * (data.values["VSPHERE_WORKER_NUM_CPUS_{}".format(i)] or data.values.VSPHERE_WORKER_NUM_CPUS)
+            #@ if/end i == 0:
+            #@overlay/match missing_ok=True
+            maxPods: #@ data.values.WORKER_MAX_PODS_PER_CORE * data.values.VSPHERE_WORKER_NUM_CPUS
+            #@overlay/match missing_ok=True
+            podsPerCore: #@ data.values.WORKER_MAX_PODS_PER_CORE
+#@ end
+#@ end
+#@ if data.values.WORKER_MAX_PODS_PER_CORE and data.values.TKG_CLUSTER_ROLE == "workload" and data.values.CLUSTER_PLAN != "multimd":
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"}),expects="1+"
+---
+spec:
+  template:
+    spec:
+      #@overlay/match missing_ok=True
+      joinConfiguration:
+        nodeRegistration:
+          kubeletExtraArgs:
+            #@overlay/match missing_ok=True
+            maxPods: #@ data.values.WORKER_MAX_PODS_PER_CORE * data.values.VSPHERE_WORKER_NUM_CPUS
+            #@overlay/match missing_ok=True
+            podsPerCore: #@ data.values.WORKER_MAX_PODS_PER_CORE
+#@ end
