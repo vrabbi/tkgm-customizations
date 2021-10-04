@@ -1,0 +1,18 @@
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+images:
+- annotations:
+    kbld.carvel.dev/id: aleveille/octant-dashboard:v0.24.0
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: v0.24.0
+          url: aleveille/octant-dashboard:v0.24.0
+  image: index.docker.io/aleveille/octant-dashboard@sha256:21fe2073a107cffb0f132358cc8958dd4992875af836c1826703519f1bb96ba0
+- annotations:
+    kbld.carvel.dev/id: alpine:latest
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: latest
+          url: alpine:latest
+  image: index.docker.io/library/alpine@sha256:e1c082e3d3c45cccac829840a25941e679c25d438cc8412c2fa221cf1a824e6a
+kind: ImagesLock

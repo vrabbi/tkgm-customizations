@@ -1,0 +1,11 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ if data.values.contour_ingress:
+#@overlay/match by=overlay.subset({"kind": "Ingress", "metadata":{"name":"octant"}})
+---
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    projectcontour.io/websocket-routes: /
+#@ end

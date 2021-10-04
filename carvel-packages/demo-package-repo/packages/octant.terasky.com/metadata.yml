@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: octant.terasky.com
+spec:
+  displayName: "Octant Turnkey"
+  longDescription: "Octant Turnkey Deployment in Read Only on Kubernetes"
+  shortDescription: "Deploy Octant in Read Only on K8s"
+  categories:
+  - dashboard
+  - tools

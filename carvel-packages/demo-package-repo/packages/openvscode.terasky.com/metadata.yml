@@ -1,0 +1,13 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  # This will be the name of our package
+  name: opernvscode.terasky.com
+spec:
+  displayName: "Open VSCode"
+  longDescription: "Open VSCode Deployment for Kubernetes"
+  shortDescription: "Deploy Open VSCode on K8s"
+  categories:
+  - code
+  - ide
+  - tools

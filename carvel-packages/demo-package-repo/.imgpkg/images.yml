@@ -1,0 +1,18 @@
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+images:
+- annotations:
+    kbld.carvel.dev/id: vrabbi/octant-turnkey:0.24.0
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.24.0
+          url: vrabbi/octant-turnkey:0.24.0
+  image: index.docker.io/vrabbi/octant-turnkey@sha256:42f10a03983440b27ab1377d47a4a45f6a93cb8684666b031f19abf6eba7b5fa
+- annotations:
+    kbld.carvel.dev/id: vrabbi/openvscode:0.0.1
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.0.1
+          url: vrabbi/openvscode:0.0.1
+  image: index.docker.io/vrabbi/openvscode@sha256:2c54985de1d5c04e49ba1a1fef552d3e1c8d2e3c485d16eeafb6403f5c8e5caf
+kind: ImagesLock

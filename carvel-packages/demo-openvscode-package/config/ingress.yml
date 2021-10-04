@@ -1,0 +1,21 @@
+#@ load("@ytt:data", "data")
+#@ if data.values.enable_ingress:
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: server
+  namespace: #@ data.values.namespace
+spec:
+  rules:
+  - host: #@ data.values.domain
+    http:
+      paths:
+      - pathType: ImplementationSpecific
+        path: /
+        backend:
+          service:
+            name: server
+            port:
+              number: 3000
+#@ end

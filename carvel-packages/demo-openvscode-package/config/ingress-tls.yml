@@ -1,0 +1,21 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ if data.values.ingress_tls:
+#@overlay/match by=overlay.subset({"kind": "Ingress", "metadata":{"name":"server"}})
+---
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    kubernetes.io/tls-acme: "true"
+    #@overlay/match missing_ok=True
+    ingress.kubernetes.io/force-ssl-redirect: "true"
+    #@overlay/match missing_ok=True
+    cert-manager.io/cluster-issuer: #@ data.values.cert_manager_cluster_issuer
+spec:
+  #@overlay/match missing_ok=True
+  tls:
+  - hosts:
+    - #@ data.values.domain
+    secretName: #@ "{}-tls".format(data.values.domain)
+#@ end
