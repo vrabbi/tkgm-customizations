@@ -1,4 +1,8 @@
 # Examples for building custom Carvel Packages and adding them to a package repo
+## The URLs these packages and repo are published at are:
+1. vrabbi/octant-turnkey:0.24.0
+2. vrabbi/openvscode:0.0.1
+3. vrabbi/k8s-tools-repo:0.1.0
 
 ## Packages
 In this repo we have 2 examples of packages: 
