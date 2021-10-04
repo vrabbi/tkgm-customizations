@@ -1,0 +1,9 @@
+#@data/values
+---
+domain:
+cluster_name:
+mgmt_cluster_name:
+dns_server:
+syslog_server:
+grafana_admin_password:
+grafana_fqdn:

@@ -1,0 +1,19 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+#@ load("@ytt:base64", "base64")
+
+#@ def config():
+namespace: tanzu-system-dashboards
+grafana:
+  secret:
+    admin_user: YWRtaW4K
+    admin_password: #@ base64.encode(data.values.grafana_admin_password)
+ingress:
+  virtual_host_fqdn: #@ data.values.grafana_fqdn
+#@ end
+
+#@overlay/match by=overlay.subset({"metadata":{"name": "grafana-values"}})
+---
+stringData:
+  values.yml: #@ yaml.encode(config())

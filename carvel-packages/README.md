@@ -1,9 +1,10 @@
 # Examples for building custom Carvel Packages and adding them to a package repo
 
 ## Packages
-In this repo we have 2 examples of packages: 
+In this repo we have 3 examples of packages: 
 1. octant - (based on the octant-turnkey github repo which provides a helm chart to deploy octant)
 2. open VS Code - (A Web base VS Code editor which can be run on K8s)
+3. TKG Extensions package - view the readme in the relevant folder for more information on this  
 
 These packages are just examples of what you can do. 
 
