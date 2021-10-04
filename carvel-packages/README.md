@@ -1,4 +1,4 @@
-# Examples for building custom Carvel Packages and adding them to a package repo
+# Examples for building custom Carvel Packages and installing them on TKG 1.4
 ## The URLs these packages and repo are published at are:
 1. vrabbi/octant-turnkey:0.24.0
 2. vrabbi/openvscode:0.0.1
