@@ -3,6 +3,7 @@
 1. vrabbi/octant-turnkey:0.24.0
 2. vrabbi/openvscode:0.0.1
 3. vrabbi/k8s-tools-repo:0.1.0
+4. vrabbi/tkg-extensions-package:1.4.0
 
 ## Packages
 In this repo we have 3 examples of packages: 
