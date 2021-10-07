@@ -1,0 +1,15 @@
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: external-dns
+spec:
+  packageRef:
+    refName: external-dns.tanzu.vmware.com
+    versionSelection:
+      constraints: 0.8.0+vmware.1-tkg.1
+      prereleases: {}
+  serviceAccountName: tkg-packages-sa
+  values:
+  - secretRef:
+      name: external-dns-values

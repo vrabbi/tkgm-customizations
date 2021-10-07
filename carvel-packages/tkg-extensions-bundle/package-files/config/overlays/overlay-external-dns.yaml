@@ -1,0 +1,32 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+#@ def config():
+namespace: tanzu-system-service-discovery
+deployment:
+ args:
+   - --source=service
+   - --source=ingress
+   - --source=contour-httpproxy
+   - #@ "--domain-filter={}".format(data.values.domain)
+   - --policy=upsert-only
+   - --registry=txt
+   - #@ "--txt-owner-id={}".format(data.values.cluster_name)
+   - --txt-prefix=external-dns-
+   - --provider=rfc2136
+   - #@ "--rfc2136-host={}".format(data.values.dns_server)
+   - --rfc2136-port=53
+   - #@ "--rfc2136-zone={}".format(data.values.domain)
+   - --rfc2136-tsig-axfr
+   - --rfc2136-insecure
+ env: []
+ securityContext: {}
+ volumeMounts: []
+ volumes: []
+#@ end
+
+#@overlay/match by=overlay.subset({"metadata":{"name": "external-dns-values"}})
+---
+stringData:
+  values.yml: #@ yaml.encode(config())

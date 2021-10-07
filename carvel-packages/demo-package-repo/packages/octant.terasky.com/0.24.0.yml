@@ -1,0 +1,87 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: octant.terasky.com.0.24.0
+spec:
+  refName: octant.terasky.com
+  version: 0.24.0
+  releaseNotes: |
+        Initial release of the octant package for octant version 0.24
+  valuesSchema:
+    openAPIv3:
+      title: octant.terasky.com values schema
+      examples:
+      - install_plugins: true
+        plugin_list: "https://github.com/aquasecurity/starboard-octant-plugin/releases/download/v0.12.0/starboard-octant-plugin_linux_x86_64.tar.gz https://github.com/bloodorangeio/octant-helm/releases/download/v0.2.0/octant-helm_0.2.0_linux_amd64.tar.gz"
+        octant_image: "aleveille/octant-dashboard:v0.24.0"
+        init_container_image: "alpine:latest"
+        enable_ingress: true
+        contour_ingress: true
+        cert_manager_cluster_issuer: "selfsigned"
+      properties:
+        install_plugins:
+          type: boolean
+          default: false
+          description: download a tgz octant plugin from the given urls and install then in the system
+          examples:
+          - true
+          - false
+        plugin_list:
+          type: string
+          default: "https://github.com/aquasecurity/starboard-octant-plugin/releases/download/v0.12.0/starboard-octant-plugin_linux_x86_64.tar.gz https://github.com/bloodorangeio/octant-helm/releases/download/v0.2.0/octant-helm_0.2.0_linux_amd64.tar.gz"
+          description: space seperated list of URLs for octant plugins to download
+          examples:
+          - "https://github.com/aquasecurity/starboard-octant-plugin/releases/download/v0.12.0/starboard-octant-plugin_linux_x86_64.tar.gz"
+          - "https://github.com/bloodorangeio/octant-helm/releases/download/v0.2.0/octant-helm_0.2.0_linux_amd64.tar.gz"
+        octant_image:
+          type: string
+          default: "aleveille/octant-dashboard:v0.24.0"
+          description: container image with octant
+          examples:
+          - "aleveille/octant-dashboard:v0.24.0"
+        init_container_image:
+          type: string
+          default: "alpine:latest"
+          description: Image used for the init container to download and prepare the plugins for octant
+          examples:
+          - "alpine:latest"
+        cert_manager_cluster_issuer:
+          type: string
+          description: Cluster Issuer used to sign the Certificate for the Octant ingress.
+          default: selfsigned
+          examples:
+          - selfsigned
+        enable_ingress:
+          type: boolean
+          description: Create an Ingress for the Octant Deployment.
+          default: false
+          examples:
+          - false
+        ingress_tls:
+          type: boolean
+          description: Enable TLS for the Ingress using Cert Manager.
+          default: false
+          examples:
+          - false
+        contour_ingress:
+          type: boolean
+          description: Contour Ingress Requires specific care.
+          default: false
+          examples:
+          - false
+  template:
+    spec:
+      fetch:
+        - imgpkgBundle:
+            image: vrabbi/octant-turnkey:0.24.0
+      template:
+        - ytt:
+            paths:
+            - "config/"
+        - kbld:
+            paths:
+            - "-"
+            - ".imgpkg/images.yml"
+      deploy:
+        - kapp: {}

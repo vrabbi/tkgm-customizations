@@ -1,0 +1,107 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: openvscode.terasky.com.0.0.1
+spec:
+  refName: openvscode.terasky.com
+  version: 0.0.1
+  releaseNotes: |
+        Initial release of the Open VS Code package
+  valuesSchema:
+    openAPIv3:
+      title: openvscode.terasky.com values schema
+      examples:
+      - app: openvscode-server
+        namespace: openvscode
+        domain: openvscode.terasky.demo
+        storage_class: default
+        storage_size: 2Gi
+        storage_access_mode: readwriteonce
+        cert_manager_cluster_issuer: selfsigned
+        service_type_lb: false
+        enable_ingress: false
+        contour_ingress: false
+        ingress_tls: false
+      properties:
+        app:
+          type: string
+          description: App name for the Open VS Code Deployment.
+          default: openvscode-server
+          examples:
+          - openvscode-server
+        namespace:
+          type: string
+          description: Namespace to create and use for the Open VS Code Deployment.
+          default: openvscode
+          examples:
+          - openvscode
+        domain:
+          type: string
+          description: FQDN for the Open VS Code Deployment ingress.
+          default: openvscode.example.com
+          examples:
+          - openvscode.example.com
+        storage_class:
+          type: string
+          description: Storage Class to use for the Open VS Code Deployments PV.
+          default: default
+          examples:
+          - default
+        storage_size:
+          type: string
+          description: Size of the Open VS Code Deployment Persistent Volume.
+          default: 2Gi
+          examples:
+          - 2Gi
+        storage_access_mode:
+          type: string
+          description: PV Access Mode for the Open VS Code Deployments PV.
+          default: ReadWriteOnce
+          examples:
+          - ReadWriteOnce
+        cert_manager_cluster_issuer:
+          type: string
+          description: Cluster Issuer used to sign the Certificate for the Open VS Code Deployment ingress.
+          default: selfsigned
+          examples:
+          - selfsigned
+        service_type_lb:
+          type: boolean
+          description: Create an LB Service for the Open VS Code Deployment.
+          default: false
+          examples:
+          - false
+        enable_ingress:
+          type: boolean
+          description: Create an Ingress for the Open VS Code Deployment.
+          default: false
+          examples:
+          - false
+        ingress_tls:
+          type: boolean
+          description: Enable TLS for the Open VS Code Deployment Ingress.
+          default: false
+          examples:
+          - false
+        contour_ingress:
+          type: boolean
+          description: Enable Contour Ingress for the Open VS Code Deployment.
+          default: false
+          examples:
+          - false
+  template:
+    spec:
+      fetch:
+      - imgpkgBundle:
+          image: vrabbi/openvscode:0.0.1
+      template:
+      - ytt:
+          paths:
+          - "config/"
+      - kbld:
+          paths:
+          - "-"
+          - ".imgpkg/images.yml"
+      deploy:
+      - kapp: {}

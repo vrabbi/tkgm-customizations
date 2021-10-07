@@ -1,0 +1,18 @@
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+images:
+- annotations:
+    kbld.carvel.dev/id: busybox:1.34.0
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 1.34.0
+          url: busybox:1.34.0
+  image: index.docker.io/library/busybox@sha256:e8e5cca392e3cf056fcdb3093e7ac2bf83fcf28b3bcf5818fe8ae71cf360c231
+- annotations:
+    kbld.carvel.dev/id: gitpod/openvscode-server
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: latest
+          url: gitpod/openvscode-server
+  image: index.docker.io/gitpod/openvscode-server@sha256:ed1d86933fcb70d17e37666844da2d5b01eb54491416cae5057523cfefb0d595
+kind: ImagesLock

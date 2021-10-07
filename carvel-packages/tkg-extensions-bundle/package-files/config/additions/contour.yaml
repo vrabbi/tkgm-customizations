@@ -1,0 +1,15 @@
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: contour
+spec:
+  packageRef:
+    refName: contour.tanzu.vmware.com
+    versionSelection:
+      constraints: 1.17.1+vmware.1-tkg.1
+      prereleases: {}
+  serviceAccountName: tkg-packages-sa
+  values:
+  - secretRef:
+      name: contour-values

@@ -1,0 +1,10 @@
+#@data/values
+---          
+install_plugins: false
+plugin_list: "https://github.com/aquasecurity/starboard-octant-plugin/releases/download/v0.12.0/starboard-octant-plugin_linux_x86_64.tar.gz https://github.com/bloodorangeio/octant-helm/releases/download/v0.2.0/octant-helm_0.2.0_linux_amd64.tar.gz"
+octant_image: "aleveille/octant-dashboard:v0.24.0"
+init_container_image: "alpine:latest"
+octant_fqdn: "octant.example.com"
+contour_ingress: false
+ingress_tls: false
+cert_manager_cluster_issuer: "selfsigned"

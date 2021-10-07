@@ -1,0 +1,164 @@
+#@ load("@ytt:data", "data")
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: octant-readonly-sa
+  labels:
+    app.kubernetes.io/name: octant
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  annotations:
+    rbac.authorization.kubernetes.io/autoupdate: "true"
+  labels:
+    app: octant
+  name: octant-readonly-everything
+rules:
+  - apiGroups:
+      - ""
+    resources: ["*"]
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - extensions
+    resources: ["*"]
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources: ["*"]
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+      - apps
+    resources: ["*"]
+    verbs:
+      - get
+      - list
+      - watch
+  - apiGroups:
+    - '*'
+    resources:
+    - '*'
+    verbs:
+    - get
+    - list
+    - watch
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: octant-role-binding
+  labels:
+    app: octant
+subjects:
+- kind: ServiceAccount
+  name: octant-readonly-sa
+  namespace: octant
+roleRef:
+  kind: ClusterRole
+  name: octant-readonly-everything
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: octant
+  labels:
+    app.kubernetes.io/name: octant
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8000
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/name: octant
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: octant
+  labels:
+    app.kubernetes.io/name: octant
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: octant
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: octant
+    spec:
+      serviceAccountName: octant-readonly-sa
+      securityContext:
+        fsGroup: 2000
+      containers:
+        - name: octant
+          securityContext:
+            capabilities:
+              drop:
+              - ALL
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            runAsUser: 1000
+          image: #@ data.values.octant_image
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8000
+              protocol: TCP
+          env:
+            - name: OCTANT_HTTP_PORT
+              value: "8000"
+            - name: OCTANT_PLUGINS_DIR
+              value: "/home/octant/.config/octant/plugins/"
+            - name: OCTANT_PLUGINS_LIST
+              value: ""
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+          volumeMounts:
+            - name: tmp-mount
+              mountPath: /tmp
+            - name: plugins-mount
+              mountPath: "/home/octant/.config/octant/plugins/"
+          resources:
+            {}
+      volumes:
+        - name: tmp-mount
+          emptyDir: {}
+        - name: plugins-mount
+          
+          emptyDir: {}
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: octant
+  labels:
+    app.kubernetes.io/name: octant
+spec:
+  rules:
+    - host: #@ data.values.octant_fqdn
+      http:
+        paths:
+          - path: /
+            backend:
+              serviceName: octant
+              servicePort: http

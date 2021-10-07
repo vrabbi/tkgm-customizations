@@ -1,0 +1,80 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: tkg-extensions.terasky.com.1.4.0
+  namespace: default
+spec:
+  refName: tkg-extensions.terasky.com
+  releaseNotes: |
+        Opinionated installation package for all workload cluster TKG Standard packages for vSphere
+  valuesSchema:
+    openAPIv3:
+      title: simple-app.corp.com values schema
+      examples:
+      - domain: example.com
+        cluster_name: tkg-workload-01
+        mgmt_cluster_name: tkg-mgmt-cluster
+        dns_server: dns01.example.com
+        syslog_server: loginsight.example.com
+        grafana_admin_password: VMware1!
+        grafana_fqdn: grafana.example.com
+      properties:
+        domain:
+          type: string
+          default: ""
+          description: Domain name to create DNS records under - used by External DNS
+          examples:
+          - example.com
+        cluster_name:
+          type: string
+          default: ""
+          description: The Cluster name on which you are installing these extensions - used by Fluent Bit to enrich logs
+          examples:
+          - tkg-workload-01
+        mgmt_cluster_name: 
+          type: string
+          default: ""
+          description: The TKG Management Cluster Name - used by Fluent Bit to enrich logs
+          examples:
+          - tkg-mgmt-cluster
+        dns_server: 
+          type: string
+          default: ""
+          description: Windows DNS Server to be used by External DNS
+          examples: 
+          - dns01.example.com
+        syslog_server: 
+          type: string
+          default: ""
+          description: Syslog Server address to send logs to via Fluent Bit
+          examples: 
+          - loginsight.example.com
+        grafana_admin_password: 
+          type: string
+          default: ""
+          description: The Admin Password for Grafana
+          examples:
+          - VMware1!
+        grafana_fqdn: 
+          type: string
+          default: ""
+          description: FQDN to assign to the ingress for Grafana
+          examples: 
+          - grafana.example.com
+  template:
+    spec:
+      deploy:
+      - kapp: {}
+      fetch:
+      - imgpkgBundle:
+          image: vrabbi/tkg-extensions-package:1.4.0
+      template:
+      - ytt:
+          paths:
+          - config/
+      - kbld:
+          paths:
+          - '-'
+          - .imgpkg/images.yml
+  version: 1.4.0

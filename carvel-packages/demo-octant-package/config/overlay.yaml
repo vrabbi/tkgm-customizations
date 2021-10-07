@@ -1,0 +1,50 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml","yaml")
+#@ if data.values.install_plugins:
+#@overlay/match by=overlay.subset({"kind": "Deployment", "metadata":{"name":"octant"}})
+---
+spec:
+  template:
+    spec:
+      #@overlay/match missing_ok=True
+      initContainers:
+        - name: plugins-installer                                                                                
+          image: #@ data.values.init_container_image
+          imagePullPolicy: Always                                                                                
+          command:                                                                                               
+            - /bin/sh                                                                                            
+            - -c                                                                                                 
+            #@yaml/text-templated-strings
+            - |
+              echo "Downloading plugins"
+              OCTANT_PLUGINS_DIR=${OCTANT_PLUGINS_DIR%/}
+              OCTANT_PLUGINS_DIR=${OCTANT_PLUGINS_DIR:-/home/octant/.config/octant/plugins}
+              mkdir ${OCTANT_PLUGINS_DIR}/tmp
+              for plugin in ${OCTANT_PLUGINS_LIST}; do
+                plugin_file=$(echo "${plugin}" | rev | cut -d'/' -f1 | rev)
+                echo "Downloading plugin: ${plugin}"
+                wget -q ${plugin}
+                if [[ $? -ne 0 ]]; then
+                  echo "Error downloading plugin"
+                  continue
+                fi;
+                tar -xz -C ${OCTANT_PLUGINS_DIR}/tmp -f ${plugin_file}
+              done
+              find ${OCTANT_PLUGINS_DIR}/tmp -maxdepth 1 -executable -type f -exec mv {} ${OCTANT_PLUGINS_DIR} \;
+              rm -fr ${OCTANT_PLUGINS_DIR}/tmp
+              chown -R 1000:2000 ${OCTANT_PLUGINS_DIR}
+          env:                                                                                                   
+            - name: OCTANT_PLUGINS_DIR                                                                           
+              value: "/home/octant/.config/octant/plugins/"                                                      
+            - name: OCTANT_PLUGINS_LIST                                                                          
+              value: #@ data.values.plugin_list
+          volumeMounts:
+            - name: plugins-mount
+              mountPath: "/home/octant/.config/octant/plugins/"
+      containers:
+        #@overlay/match by=overlay.subset({"name":"octant"})
+        - env:
+            #@overlay/match by=overlay.subset({"name":"OCTANT_PLUGINS_LIST"})
+            - value: #@ data.values.plugin_list
+#@ end

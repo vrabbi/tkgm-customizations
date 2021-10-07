@@ -1,0 +1,13 @@
+#@data/values
+---
+app: openvscode-server
+namespace: openvscode
+domain: openvscode.terasky.demo
+storage_class: default
+storage_size: 2Gi
+storage_access_mode: ReadWriteOnce
+cert_manager_cluster_issuer: selfsigned
+service_type_lb: false
+enable_ingress: false
+contour_ingress: false
+ingress_tls: false

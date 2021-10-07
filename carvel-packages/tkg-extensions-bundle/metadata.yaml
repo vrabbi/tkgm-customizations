@@ -1,0 +1,7 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: tkg-extensions.terasky.com
+  namespace: default
+spec:
+  displayName: Deploy Scotts Opinionated TKG Extensions

@@ -1,0 +1,15 @@
+---
+apiVersion: packaging.carvel.dev/v1alpha1
+kind: PackageInstall
+metadata:
+  name: fluent-bit
+spec:
+  packageRef:
+    refName: fluent-bit.tanzu.vmware.com
+    versionSelection:
+      constraints: 1.7.5+vmware.1-tkg.1
+      prereleases: {}
+  serviceAccountName: tkg-packages-sa
+  values:
+  - secretRef:
+      name: fluent-bit-values
