@@ -9,4 +9,4 @@ spec:
     versionSelection:
       constraints: 1.1.0+vmware.1-tkg.2
       prereleases: {}
-  serviceAccountName: tkg-packages-sa
+  serviceAccountName: tkg-extensions-installer

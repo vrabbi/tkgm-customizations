@@ -9,7 +9,7 @@ spec:
     versionSelection:
       constraints: 0.8.0+vmware.1-tkg.1
       prereleases: {}
-  serviceAccountName: tkg-packages-sa
+  serviceAccountName: tkg-extensions-installer
   values:
   - secretRef:
       name: external-dns-values

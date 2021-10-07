@@ -1,18 +1,36 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: tkg-packages-sa
+  name: tkg-extensions-installer
   namespace: default
+  annotations:
+    kapp.k14s.io/change-rule: "delete after deleting terasky.com/official-packages"
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: tkg-packages-crb
+  name: tkg-extensions-installer-cluster-rolebinding
+  annotations:
+    kapp.k14s.io/change-rule: "delete after deleting terasky.com/official-packages"
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: cluster-admin
+  name: tkg-extensions-installer-cluster-role
 subjects:
 - kind: ServiceAccount
-  name: tkg-packages-sa
+  name: tkg-extensions-installer
   namespace: default
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: tkg-extensions-installer-cluster-role
+  annotations:
+    kapp.k14s.io/change-rule: "delete after deleting terasky.com/official-packages"
+rules:
+- apiGroups:
+  - '*'
+  resources:
+  - '*'
+  verbs:
+  - '*'

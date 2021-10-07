@@ -1,0 +1,17 @@
+apiVersion: kapp.k14s.io/v1alpha1
+kind: Config
+waitRules:
+- supportsObservedGeneration: true
+  conditionMatchers:
+  - status: "True"
+    type: ReconcileSucceeded
+    success: true
+  anyMatcher:
+    matchers:
+    - kindNamespaceNameMatcher: {kind: PackageInstall, namespace: default, name: prometheus}
+    - kindNamespaceNameMatcher: {kind: PackageInstall, namespace: default, name: fluent-bit}
+    - kindNamespaceNameMatcher: {kind: PackageInstall, namespace: default, name: contour}
+    - kindNamespaceNameMatcher: {kind: PackageInstall, namespace: default, name: external-dns}
+    - kindNamespaceNameMatcher: {kind: PackageInstall, namespace: default, name: cert-manager}
+    - kindNamespaceNameMatcher: {kind: PackageInstall, namespace: default, name: grafana}
+

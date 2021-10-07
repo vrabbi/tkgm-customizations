@@ -19,6 +19,16 @@ spec:
         syslog_server: loginsight.example.com
         grafana_admin_password: VMware1!
         grafana_fqdn: grafana.example.com
+        grafana_enable_ldap: true
+        ldap_host: dc01.example.com
+        ldap_port: 636
+        ldap_use_ssl: true
+        ldap_start_tls: false
+        ldap_skip_ssl_verify: true
+        ldap_bind_dn: "CN=example,OU=Users,DC=example,DC=com"
+        ldap_bind_password: "VMware1!"
+        user_search_base_dn: "DC=example,DC=com"
+        group_search_base_dn: "DC=example,DC=com"
       properties:
         domain:
           type: string
@@ -62,6 +72,71 @@ spec:
           description: FQDN to assign to the ingress for Grafana
           examples: 
           - grafana.example.com
+        grafana_enable_ldap: 
+          type: string 
+          default: false 
+          description: Enable LDAP Authentication to Grafana
+          examples:
+          - true
+          - false
+        ldap_host: 
+          type: string 
+          default: ""
+          description: LDAP Host for Authentication
+          examples: 
+          - dc01.example.com
+        ldap_port: 
+          type: integer
+          default: 636
+          description: LDAP/LDAPS Port
+          examples:
+          - 389
+          - 636
+        ldap_use_ssl: 
+          type: bool 
+          default: true
+          description: LDAP or LDAPS
+          examples:
+          - true
+          - false
+        ldap_start_tls: 
+          type: bool
+          default: false
+          description: Use StartTLS with LDAP
+          examples: 
+          - true
+          - false
+        ldap_skip_ssl_verify: 
+          type: bool
+          default: true
+          description: Skip TLS Verification (needed if using LDAPS or Start TLS with a self signed Cert)
+          examples:
+          - true
+          - false
+        ldap_bind_dn: 
+          type: string
+          default: ""
+          description: Bind DN for LDAP Configuration 
+          examples: 
+          - "CN=example,OU=Users,DC=example,DC=com"
+        ldap_bind_password:
+          type: string
+          default: ""
+          description: Bind DN Users Password
+          examples: 
+          - "VMware1!"
+        user_search_base_dn: 
+          type: string
+          default: ""
+          description: Base Search location in DN format for Group Search in LDAP
+          examples:
+          - "DC=example,DC=com"
+        group_search_base_dn: 
+          type: string
+          default: ""
+          description: Base Search location in DN format for Group Search in LDAP
+          examples:
+          - "DC=example,DC=com"
   template:
     spec:
       deploy:

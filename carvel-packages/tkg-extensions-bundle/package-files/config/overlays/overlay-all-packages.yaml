@@ -1,0 +1,11 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+#@overlay/match by=overlay.subset({"kind": "PackageInstall"}),expects="1+"
+---
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    kapp.k14s.io/change-group: "terasky.com/official-packages"

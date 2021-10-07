@@ -2,7 +2,86 @@
 #@ load("@ytt:data", "data")
 #@ load("@ytt:yaml", "yaml")
 #@ load("@ytt:base64", "base64")
-
+#@ if data.values.grafana_enable_ldap:
+#@ def config():
+namespace: tanzu-system-dashboards
+grafana:
+  config: 
+    grafana_ini: |
+      [auth.ldap]
+      enabled = true
+      config_file = /etc/grafana/ldap.toml
+      allow_sign_up = true
+      [analytics]
+      check_for_updates = false
+      [grafana_net]
+      url = https://grafana.com
+      [log]
+      mode = console
+      [paths]
+      data = /var/lib/grafana/data
+      logs = /var/log/grafana
+      plugins = /var/lib/grafana/plugins
+      provisioning = /etc/grafana/provisioning
+  secret:
+    admin_user: YWRtaW4K
+    admin_password: #@ base64.encode(data.values.grafana_admin_password)
+ingress:
+  virtual_host_fqdn: #@ data.values.grafana_fqdn
+#@ end
+#@ def secret_gen():
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-ldap
+  namespace: tanzu-system-dashboards
+  annotations:
+    kapp.k14s.io/change-group: "terasky.com/package-customizations"
+type: Opaque
+stringData:
+  #@yaml/text-templated-strings
+  ldap-toml: |
+    [[servers]]
+    host = "(@= data.values.ldap_host @)"
+    port = (@= str(data.values.ldap_port) @)
+    use_ssl = (@= str(data.values.ldap_use_ssl).lower() @)
+    start_tls = (@= str(data.values.ldap_start_tls).lower() @)
+    ssl_skip_verify = (@= str(data.values.ldap_skip_ssl_verify).lower() @)
+    bind_dn = "(@= data.values.ldap_bind_dn @)"
+    bind_password = "(@= data.values.ldap_bind_password @)"
+    search_filter = "(|(sAMAccountName=%s)(userPrincipalName=%s)(mail=%s))"
+    search_base_dns = ["(@= data.values.user_search_base_dn @)"]
+    group_search_filter = "(&(objectClass=group)(memberUid=%s))"
+    group_search_filter_user_attribute = "DN"
+    group_search_base_dns = ["(@= data.values.group_search_base_dn @)"]
+    [servers.attributes]
+    member_of = "memberOf"
+    email =  "mail"
+#@ end
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-ldap-deployment-overlay
+data:
+  overlay.yaml: I0AgbG9hZCgiQHl0dDpvdmVybGF5IiwgIm92ZXJsYXkiKQojQG92ZXJsYXkvbWF0Y2ggYnk9b3ZlcmxheS5zdWJzZXQoeyJraW5kIjogIkRlcGxveW1lbnQiLCAibWV0YWRhdGEiOnsibmFtZSI6ImdyYWZhbmEifX0pLGV4cGVjdHM9MQotLS0Kc3BlYzoKICB0ZW1wbGF0ZToKICAgIHNwZWM6CiAgICAgIGNvbnRhaW5lcnM6CiAgICAgICNAb3ZlcmxheS9tYXRjaCBieT0ibmFtZSIKICAgICAgLSBuYW1lOiBncmFmYW5hCiAgICAgICAgdm9sdW1lTW91bnRzOgogICAgICAgICNAb3ZlcmxheS9hcHBlbmQKICAgICAgICAtIG1vdW50UGF0aDogL2V0Yy9ncmFmYW5hL2xkYXAudG9tbAogICAgICAgICAgbmFtZTogbGRhcC10b21sCiAgICAgICAgICBzdWJQYXRoOiBsZGFwLnRvbWwKICAgICAgdm9sdW1lczoKICAgICAgI0BvdmVybGF5L2FwcGVuZAogICAgICAtIG5hbWU6IGxkYXAtdG9tbAogICAgICAgIHNlY3JldDoKICAgICAgICAgIGRlZmF1bHRNb2RlOiA0MjAKICAgICAgICAgIGl0ZW1zOgogICAgICAgICAgLSBrZXk6IGxkYXAtdG9tbAogICAgICAgICAgICBwYXRoOiBsZGFwLnRvbWwKICAgICAgICAgIHNlY3JldE5hbWU6IGdyYWZhbmEtbGRhcAo=
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-ldap-secret-overlay
+data:
+  sec-overlay.yaml: #@ base64.encode(yaml.encode(secret_gen()))
+#@overlay/match by=overlay.subset({"kind": "PackageInstall", "metadata":{"name": "grafana"}})
+---
+metadata:
+  #@overlay/match missing_ok=True
+  annotations:
+    #@overlay/match missing_ok=True
+    ext.packaging.carvel.dev/ytt-paths-from-secret-name.0: grafana-ldap-deployment-overlay
+    #@overlay/match missing_ok=True
+    ext.packaging.carvel.dev/ytt-paths-from-secret-name.1: grafana-ldap-secret-overlay
+#@ else:
 #@ def config():
 namespace: tanzu-system-dashboards
 grafana:
@@ -12,7 +91,7 @@ grafana:
 ingress:
   virtual_host_fqdn: #@ data.values.grafana_fqdn
 #@ end
-
+#@ end
 #@overlay/match by=overlay.subset({"metadata":{"name": "grafana-values"}})
 ---
 stringData:
