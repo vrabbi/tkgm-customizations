@@ -9,7 +9,7 @@ spec:
     versionSelection:
       constraints: 1.17.1+vmware.1-tkg.1
       prereleases: {}
-  serviceAccountName: tkg-packages-sa
+  serviceAccountName: tkg-extensions-installer
   values:
   - secretRef:
       name: contour-values

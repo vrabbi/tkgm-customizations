@@ -25,7 +25,17 @@ mgmt_cluster_name:
 dns_server: 
 syslog_server: 
 grafana_admin_password: 
-grafana_fqdn: 
+grafana_fqdn:
+grafana_enable_ldap: false
+ldap_host:
+ldap_port: 636
+ldap_use_ssl: true
+ldap_start_tls: false
+ldap_skip_ssl_verify: true
+ldap_bind_dn:
+ldap_bind_password:
+user_search_base_dn:
+group_search_base_dn:
 EOF
 ```  
 6. update the values file with your relevant inputs
