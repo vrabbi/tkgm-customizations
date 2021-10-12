@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kafka.bitnami.charts
+spec:
+  displayName: "kafka"
+  longDescription: "Bitnami kafka 2.8.1 - Helm Chart version 14.2.1"
+  shortDescription: "kafka Version 2.8.1"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: jenkins.bitnami.charts
+spec:
+  displayName: "jenkins"
+  longDescription: "Bitnami jenkins 2.303.1 - Helm Chart version 8.0.14"
+  shortDescription: "jenkins Version 2.303.1"
+  categories:
+  - bitnami
+  - helm

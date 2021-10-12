@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: redmine.bitnami.charts
+spec:
+  displayName: "redmine"
+  longDescription: "Bitnami redmine 4.2.3 - Helm Chart version 17.0.10"
+  shortDescription: "redmine Version 4.2.3"
+  categories:
+  - bitnami
+  - helm

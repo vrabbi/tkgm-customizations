@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: thanos.bitnami.charts
+spec:
+  displayName: "thanos"
+  longDescription: "Bitnami thanos 0.23.1 - Helm Chart version 6.0.12"
+  shortDescription: "thanos Version 0.23.1"
+  categories:
+  - bitnami
+  - helm

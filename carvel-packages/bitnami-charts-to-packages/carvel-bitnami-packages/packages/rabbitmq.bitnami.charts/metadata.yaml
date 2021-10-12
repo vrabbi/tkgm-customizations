@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: rabbitmq.bitnami.charts
+spec:
+  displayName: "rabbitmq"
+  longDescription: "Bitnami rabbitmq 3.9.7 - Helm Chart version 8.22.4"
+  shortDescription: "rabbitmq Version 3.9.7"
+  categories:
+  - bitnami
+  - helm

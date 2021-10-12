@@ -1,0 +1,399 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: wavefront-prometheus-storage-adapter.bitnami.charts.1.0.8
+spec:
+  refName: wavefront-prometheus-storage-adapter.bitnami.charts
+  version: 1.0.8
+  releaseNotes: |
+        Wavefront Storage Adapter is a Prometheus integration to transfer metrics from Prometheus to Wavefront. It lets you save Prometheus data in Wavefront without changing your existing Prometheus setup.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Adapter image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/wavefront-prometheus-storage-adapter"
+              description: "Adapter image repository"
+            tag: 
+              type: "string"
+              default: "1.0.3-debian-10-r173"
+              description: "Adapter image tag (immutabe tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Adapter image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Adapter image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 15
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 15
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Adapter container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resourcesc for the Adapter container"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Adapter containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set Adapter container's Security Context runAsUser"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set Adapter container's Security Context runAsNonRoot"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Adapter pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set Adapter pod's Security Context fsGroup"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Adapter pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for Adapter pods"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Adapter pod priority"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "Add lifecycle hooks to the Adapter deployment"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Adapter deployment update strategy"
+        containerPort: 
+          type: "number"
+          default: 1234
+          description: "Adapter container port"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Add extra environment variables to the Adapter container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for Adapter pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for Adapter container(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the Adapter pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the Adapter pod"
+        externalProxy: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "Host of a wavefront-proxy instance (required if wavefront.enabled = false)"
+            port: 
+              type: "number"
+              default: 2878
+              description: "Host of a wavefront-proxy instance (required if wavefront.enabled = false)"
+        adapterPrefix: 
+          type: "string"
+          default: ""
+          description: "Adapter `prefix` parameter"
+        adapterTags: 
+          type: "string"
+          default: ""
+          description: "Adapter `tags` parameter"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Adapter service type"
+            port: 
+              type: "number"
+              default: 1234
+              description: "Adapter service port"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Adapter service LoadBalancer IP"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "loadBalancerIP source ranges for the Service"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "NodePort for the HTTP endpoint"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "External traffic policy for the service"
+        wavefront: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy Wavefront chart (necessary if externalProxyHost is not set)"
+            wavefront: 
+              type: "object"
+              properties: 
+                url: 
+                  type: "string"
+                  default: "https://YOUR_CLUSTER.wavefront.com"
+                  description: "Wavefront SAAS service URL"
+                token: 
+                  type: "string"
+                  default: "YOUR_API_TOKEN"
+                  description: "Wavefront SAAS token"
+            collector: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Deploy Wavefront collector (not used by the Adapter pod)"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Create RBAC rules (not necessary as the Adapter only uses wavefront-proxy)"
+            proxy: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Deploy Wavefront Proxy (required if externalProxyHost is not set)"
+                port: 
+                  type: "number"
+                  default: 2878
+                  description: "Deployed Wavefront Proxy port (required if externalProxyHost is not set)"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Create Wavefront serivce account (not necessary as the Adapter only uses wavefront-proxy)"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: wavefront-prometheus-storage-adapter
+          version: "1.0.8"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

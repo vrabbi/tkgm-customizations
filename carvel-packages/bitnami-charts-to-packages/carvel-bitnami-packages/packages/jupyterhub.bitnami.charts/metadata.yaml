@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: jupyterhub.bitnami.charts
+spec:
+  displayName: "jupyterhub"
+  longDescription: "Bitnami jupyterhub 1.4.2 - Helm Chart version 0.1.20"
+  shortDescription: "jupyterhub Version 1.4.2"
+  categories:
+  - bitnami
+  - helm

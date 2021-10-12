@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kube-prometheus.bitnami.charts
+spec:
+  displayName: "kube-prometheus"
+  longDescription: "Bitnami kube-prometheus 0.51.2 - Helm Chart version 6.1.13"
+  shortDescription: "kube-prometheus Version 0.51.2"
+  categories:
+  - bitnami
+  - helm

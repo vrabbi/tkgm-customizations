@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: phabricator.bitnami.charts
+spec:
+  displayName: "phabricator"
+  longDescription: "Bitnami phabricator 2021.26.0 - Helm Chart version 11.0.30"
+  shortDescription: "phabricator Version 2021.26.0"
+  categories:
+  - bitnami
+  - helm

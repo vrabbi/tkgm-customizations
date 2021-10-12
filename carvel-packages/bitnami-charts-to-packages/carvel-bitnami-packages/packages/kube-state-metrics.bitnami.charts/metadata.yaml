@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kube-state-metrics.bitnami.charts
+spec:
+  displayName: "kube-state-metrics"
+  longDescription: "Bitnami kube-state-metrics 2.2.1 - Helm Chart version 2.1.11"
+  shortDescription: "kube-state-metrics Version 2.2.1"
+  categories:
+  - bitnami
+  - helm

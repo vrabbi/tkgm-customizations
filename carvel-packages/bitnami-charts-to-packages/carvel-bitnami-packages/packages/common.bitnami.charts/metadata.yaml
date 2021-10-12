@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: common.bitnami.charts
+spec:
+  displayName: "common"
+  longDescription: "Bitnami common 1.10.0 - Helm Chart version 1.10.0"
+  shortDescription: "common Version 1.10.0"
+  categories:
+  - bitnami
+  - helm

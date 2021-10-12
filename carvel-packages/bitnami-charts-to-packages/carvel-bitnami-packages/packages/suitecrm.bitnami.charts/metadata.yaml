@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: suitecrm.bitnami.charts
+spec:
+  displayName: "suitecrm"
+  longDescription: "Bitnami suitecrm 7.11.22 - Helm Chart version 9.3.25"
+  shortDescription: "suitecrm Version 7.11.22"
+  categories:
+  - bitnami
+  - helm

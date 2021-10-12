@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: wavefront-adapter-for-istio.bitnami.charts
+spec:
+  displayName: "wavefront-adapter-for-istio"
+  longDescription: "Bitnami wavefront-adapter-for-istio 0.1.5 - Helm Chart version 1.0.8"
+  shortDescription: "wavefront-adapter-for-istio Version 0.1.5"
+  categories:
+  - bitnami
+  - helm

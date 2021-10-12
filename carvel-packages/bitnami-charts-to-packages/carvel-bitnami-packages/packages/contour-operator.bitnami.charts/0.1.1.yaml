@@ -1,0 +1,493 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: contour-operator.bitnami.charts.0.1.1
+spec:
+  refName: contour-operator.bitnami.charts
+  version: 0.1.1
+  releaseNotes: |
+        The Contour Operator extends the Kubernetes API to create, configure and manage instances of Contour on behalf of users.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Contour Operator image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/contour-operator"
+              description: "Contour Operator image repository"
+            tag: 
+              type: "string"
+              default: "1.18.2-scratch-r2"
+              description: "Contour Operator image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Contour Operator image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Contour Operator image pull secrets"
+        contourImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Contour Image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/contour"
+              description: "Contour Image repository"
+            tag: 
+              type: "string"
+              default: "1.18.2-debian-10-r0"
+              description: "Contour Image tag (immutable tags are recommended)"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Contour Image pull secrets"
+        envoyImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Envoy Image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/envoy"
+              description: "Envoy Image repository"
+            tag: 
+              type: "string"
+              default: "1.19.1-debian-10-r42"
+              description: "Envoy Image tag (immutable tags are recommended)"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Envoy Image pull secrets"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Contour Operator replicas to deploy"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe on Contour Operator nodes"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 30
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe on Contour Operator nodes"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 30
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        startupProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable startupProbe on Contour Operator nodes"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for startupProbe"
+            periodSeconds: 
+              type: "number"
+              default: 30
+              description: "Period seconds for startupProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for startupProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for startupProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for startupProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom livenessProbe that overrides the default one"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readinessProbe that overrides the default one"
+        customStartupProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom startupProbe that overrides the default one"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Contour Operator containers"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Contour Operator containers"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Contour Operator pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set Contour Operator pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Contour Operator containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set Contour Operator containers' Security Context runAsUser"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set Contour Operator containers' Security Context runAsNonRoot"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Contour Operator pods host aliases"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Name of the Kubernetes scheduler (other than default)"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Contour Operator pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for Contour Operator pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for Contour Operator pods assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for Contour Operator pods assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for Contour Operator pods assignment"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Contour Operator deployment strategy type"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Contour Operator pods' priorityClassName"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "for the Contour Operator container(s) to automate configuration before or after startup"
+        terminationGracePeriodSeconds: 
+          type: "string"
+          default: ""
+          description: "Termination grace period in seconds"
+        topologySpreadConstraints: 
+          type: "array"
+          default: "[]"
+          description: "Topology Spread Constraints for pod assignment spread across your cluster among failure-domains. Evaluated as a template"
+        containerPorts: 
+          type: "object"
+          properties: 
+            metrics: 
+              type: "number"
+              default: 8080
+              description: "Metrics port for the Contour Operator container"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array with extra environment variables to add to Contour Operator nodes"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars for Contour Operator nodes"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars for Contour Operator nodes"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for the Contour Operator pod(s)"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for the Contour Operator container(s)"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the Contour Operator pod(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the Contour Operator pod(s)"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether RBAC resources should be created"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use."
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: true
+              description: "Automount service account token"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Create a service for accessing the metrics endpoint"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Contour Operator metrics service type"
+                ports: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "number"
+                      default: 80
+                      description: "Contour Operator metrics service HTTP port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose (normally used with the `sidecar` value)"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Contour Operator metrics service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Contour Operator metrics service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Contour Operator metrics service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Contour Operator metrics service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Contour Operator metrics service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify if a servicemonitor will be deployed for prometheus-operator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                labels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Extra labels for the ServiceMonitor"
+                jobLabel: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the label on the target service to use as the job name in Prometheus"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval. If not set, the Prometheus default scrape interval is used"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape Timeout duration for prometheus"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify additional relabeling of metrics"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify general relabeling"
+                selector: 
+                  type: "array"
+                  default: "[]"
+                  description: "Prometheus instance selector labels"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: contour-operator
+          version: "0.1.1"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

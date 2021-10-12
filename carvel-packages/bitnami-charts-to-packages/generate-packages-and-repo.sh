@@ -1,3 +1,5 @@
+#!/bin/bash
+
 mkdir -p /tmp/helm-to-pkg
 cd /tmp/helm-to-pkg
 helm repo add bitnami https://charts.bitnami.com/bitnami

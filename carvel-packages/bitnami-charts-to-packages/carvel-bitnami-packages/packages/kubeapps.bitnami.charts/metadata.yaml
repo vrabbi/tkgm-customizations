@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kubeapps.bitnami.charts
+spec:
+  displayName: "kubeapps"
+  longDescription: "Bitnami kubeapps 2.4.1 - Helm Chart version 7.5.7"
+  shortDescription: "kubeapps Version 2.4.1"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: osclass.bitnami.charts
+spec:
+  displayName: "osclass"
+  longDescription: "Bitnami osclass 4.4.0 - Helm Chart version 11.0.16"
+  shortDescription: "osclass Version 4.4.0"
+  categories:
+  - bitnami
+  - helm

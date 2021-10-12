@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: fluentd.bitnami.charts
+spec:
+  displayName: "fluentd"
+  longDescription: "Bitnami fluentd 1.14.1 - Helm Chart version 4.2.3"
+  shortDescription: "fluentd Version 1.14.1"
+  categories:
+  - bitnami
+  - helm

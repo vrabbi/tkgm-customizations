@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: nginx.bitnami.charts
+spec:
+  displayName: "nginx"
+  longDescription: "Bitnami nginx 1.21.3 - Helm Chart version 9.5.7"
+  shortDescription: "nginx Version 1.21.3"
+  categories:
+  - bitnami
+  - helm

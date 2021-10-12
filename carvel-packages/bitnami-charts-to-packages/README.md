@@ -2,6 +2,11 @@
 One of the key strengths of the Carvel Packaging is that it is not only for YTT and KAPP rather can also manage things like helm  
 In this Folder i have an example script that will generate a package repository and all the needed files within it to install any bitnami helm chart as a package install object  
 
+## Using pore generated manifests
+* In this repo i have added pre generated manifests you can use.  
+* these may not be up to date with the latest chart version depending on when you are using this
+* if using this method and not generating the manifests your self you can skip ahead to step 2 under "building and publishing the repo" namely the kbld step.  
+
 ## Running the script
 in order to run the script you will need to have pre installed:  
 1. YQ
@@ -12,7 +17,7 @@ once this is all installed run:
 ``` bash
 ./generate-packages-and-repo.sh
 ```  
-The files will be generated ath the path: /tmp/carvel-bitnami-packages/
+The files will be generated at the path: /tmp/carvel-bitnami-packages/
 
 ## building and publishing the repo
 1. go to the parent folder of the generated folder path

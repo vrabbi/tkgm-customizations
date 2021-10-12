@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: minio.bitnami.charts
+spec:
+  displayName: "minio"
+  longDescription: "Bitnami minio 2021.10.6 - Helm Chart version 8.1.9"
+  shortDescription: "minio Version 2021.10.6"
+  categories:
+  - bitnami
+  - helm

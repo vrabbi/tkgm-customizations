@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: wavefront-prometheus-storage-adapter.bitnami.charts
+spec:
+  displayName: "wavefront-prometheus-storage-adapter"
+  longDescription: "Bitnami wavefront-prometheus-storage-adapter 1.0.3 - Helm Chart version 1.0.8"
+  shortDescription: "wavefront-prometheus-storage-adapter Version 1.0.3"
+  categories:
+  - bitnami
+  - helm

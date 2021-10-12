@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: wavefront.bitnami.charts
+spec:
+  displayName: "wavefront"
+  longDescription: "Bitnami wavefront 1.7.1 - Helm Chart version 3.1.12"
+  shortDescription: "wavefront Version 1.7.1"
+  categories:
+  - bitnami
+  - helm

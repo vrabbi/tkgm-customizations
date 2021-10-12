@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: ejbca.bitnami.charts
+spec:
+  displayName: "ejbca"
+  longDescription: "Bitnami ejbca 7.4.3-2 - Helm Chart version 3.0.1"
+  shortDescription: "ejbca Version 7.4.3-2"
+  categories:
+  - bitnami
+  - helm

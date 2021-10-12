@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: mongodb-sharded.bitnami.charts
+spec:
+  displayName: "mongodb-sharded"
+  longDescription: "Bitnami mongodb-sharded 4.4.9 - Helm Chart version 3.9.8"
+  shortDescription: "mongodb-sharded Version 4.4.9"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: metallb.bitnami.charts
+spec:
+  displayName: "metallb"
+  longDescription: "Bitnami metallb 0.10.3 - Helm Chart version 2.5.6"
+  shortDescription: "metallb Version 0.10.3"
+  categories:
+  - bitnami
+  - helm

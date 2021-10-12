@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: opencart.bitnami.charts
+spec:
+  displayName: "opencart"
+  longDescription: "Bitnami opencart 3.0.3-8 - Helm Chart version 10.0.26"
+  shortDescription: "opencart Version 3.0.3-8"
+  categories:
+  - bitnami
+  - helm

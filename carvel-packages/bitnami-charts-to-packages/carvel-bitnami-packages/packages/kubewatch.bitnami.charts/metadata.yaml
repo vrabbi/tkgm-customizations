@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kubewatch.bitnami.charts
+spec:
+  displayName: "kubewatch"
+  longDescription: "Bitnami kubewatch 0.1.0 - Helm Chart version 3.2.16"
+  shortDescription: "kubewatch Version 0.1.0"
+  categories:
+  - bitnami
+  - helm

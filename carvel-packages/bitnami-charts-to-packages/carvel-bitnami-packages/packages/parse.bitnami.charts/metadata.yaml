@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: parse.bitnami.charts
+spec:
+  displayName: "parse"
+  longDescription: "Bitnami parse 4.10.4 - Helm Chart version 15.0.10"
+  shortDescription: "parse Version 4.10.4"
+  categories:
+  - bitnami
+  - helm

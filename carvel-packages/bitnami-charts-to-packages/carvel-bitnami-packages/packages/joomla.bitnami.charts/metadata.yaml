@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: joomla.bitnami.charts
+spec:
+  displayName: "joomla"
+  longDescription: "Bitnami joomla 3.10.2 - Helm Chart version 10.1.24"
+  shortDescription: "joomla Version 3.10.2"
+  categories:
+  - bitnami
+  - helm

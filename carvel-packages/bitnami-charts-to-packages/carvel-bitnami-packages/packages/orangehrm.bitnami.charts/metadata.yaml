@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: orangehrm.bitnami.charts
+spec:
+  displayName: "orangehrm"
+  longDescription: "Bitnami orangehrm 4.8.0-0 - Helm Chart version 10.1.23"
+  shortDescription: "orangehrm Version 4.8.0-0"
+  categories:
+  - bitnami
+  - helm

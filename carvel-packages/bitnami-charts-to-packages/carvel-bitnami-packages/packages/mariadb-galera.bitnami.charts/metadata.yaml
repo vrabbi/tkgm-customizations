@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: mariadb-galera.bitnami.charts
+spec:
+  displayName: "mariadb-galera"
+  longDescription: "Bitnami mariadb-galera 10.6.4 - Helm Chart version 6.0.1"
+  shortDescription: "mariadb-galera Version 10.6.4"
+  categories:
+  - bitnami
+  - helm

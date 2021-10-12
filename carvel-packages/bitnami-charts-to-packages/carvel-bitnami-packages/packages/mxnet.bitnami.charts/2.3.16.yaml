@@ -1,0 +1,534 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: mxnet.bitnami.charts.2.3.16
+spec:
+  refName: mxnet.bitnami.charts
+  version: 2.3.16
+  releaseNotes: |
+        A flexible and efficient library for deep learning
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Apache MXNet (Incubating) image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/mxnet"
+              description: "Apache MXNet (Incubating) image repository"
+            tag: 
+              type: "string"
+              default: "1.8.0-debian-10-r171"
+              description: "Apache MXNet (Incubating) image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        git: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Git image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/git"
+              description: "Git image repository"
+            tag: 
+              type: "string"
+              default: "2.33.0-debian-10-r38"
+              description: "Git image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Git image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r202"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes service type"
+            port: 
+              type: "number"
+              default: 9092
+              description: "Scheduler Service port"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Provide any additional annotations which may be required."
+        entrypoint: 
+          type: "object"
+          default: "{}"
+          description: "The main entrypoint of your app, this will be executed as:"
+        mode: 
+          type: "string"
+          default: "standalone"
+          description: "Apache MXNet (Incubating) deployment mode. Can be `standalone` or `distributed`"
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Name of a secret with sensitive data to mount in the pods"
+        configMap: 
+          type: "string"
+          default: ""
+          description: "Name of an existing config map containing all the files you want to load in Apache MXNet (Incubating)"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        cloneFilesFromGit: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable in order to download files from git repository"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volume mounts for the GIT container"
+        commonExtraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Additional environment variables for all node types"
+        podManagementPolicy: 
+          type: "string"
+          default: "Parallel"
+          description: "StatefulSet (worker and server nodes) pod management policy"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment. Evaluated as a template."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Mxnet container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Mxnet container"
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 15
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 15
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Use a PVC to persist data"
+            mountPath: 
+              type: "string"
+              default: "/bitnami/mxnet"
+              description: "Path to mount the volume at"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "Persistent Volume Access Mode"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "Size of data volume"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Persistent Volume annotations"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional containers to the pods (scheduler, worker and server nodes)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional init containers to the pods (scheduler, worker and server nodes)"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra volumes (evaluated as a template)"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra mounts (normally used with extraVolumes, evaluated as a template)"
+        server: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Server nodes that will execute your code"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to add to the Server nodes"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Mxnet Server container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Mxnet Server container"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Mxnet Server pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Mxnet Server pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Mxnet Server node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Mxnet Server node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Mxnet Server node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Mxnet Server affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Mxnet Server node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Mxnet Server tolerations for pod assignment"
+        worker: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Worker nodes that will execute your code"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to add to the Server nodes"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Mxnet Worker container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Mxnet Worker container"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Mxnet Worker pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Mxnet Worker pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Mxnet Worker node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Mxnet Worker node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Mxnet Worker node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Mxnet Worker affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Mxnet Worker node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Mxnet Worker tolerations for pod assignment"
+        scheduler: 
+          type: "object"
+          properties: 
+            port: 
+              type: "number"
+              default: 9092
+              description: "The port used to communicate with the scheduler"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Mxnet Scheduler container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Mxnet Scheduler container"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Mxnet Scheduler pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Mxnet Scheduler pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Mxnet Scheduler node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Mxnet Scheduler node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Mxnet Scheduler node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Mxnet Scheduler affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Mxnet Scheduler node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Mxnet Scheduler tolerations for pod assignment"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: mxnet
+          version: "2.3.16"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: etcd.bitnami.charts
+spec:
+  displayName: "etcd"
+  longDescription: "Bitnami etcd 3.5.0 - Helm Chart version 6.9.0"
+  shortDescription: "etcd Version 3.5.0"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: phpmyadmin.bitnami.charts
+spec:
+  displayName: "phpmyadmin"
+  longDescription: "Bitnami phpmyadmin 5.1.1 - Helm Chart version 8.2.16"
+  shortDescription: "phpmyadmin Version 5.1.1"
+  categories:
+  - bitnami
+  - helm

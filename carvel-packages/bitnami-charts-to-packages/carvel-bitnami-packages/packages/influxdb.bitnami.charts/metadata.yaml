@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: influxdb.bitnami.charts
+spec:
+  displayName: "influxdb"
+  longDescription: "Bitnami influxdb 2.0.9 - Helm Chart version 2.3.15"
+  shortDescription: "influxdb Version 2.0.9"
+  categories:
+  - bitnami
+  - helm

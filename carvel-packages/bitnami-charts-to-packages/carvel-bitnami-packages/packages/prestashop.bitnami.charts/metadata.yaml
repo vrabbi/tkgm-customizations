@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: prestashop.bitnami.charts
+spec:
+  displayName: "prestashop"
+  longDescription: "Bitnami prestashop 1.7.8-0 - Helm Chart version 13.2.3"
+  shortDescription: "prestashop Version 1.7.8-0"
+  categories:
+  - bitnami
+  - helm

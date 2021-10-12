@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: spring-cloud-dataflow.bitnami.charts
+spec:
+  displayName: "spring-cloud-dataflow"
+  longDescription: "Bitnami spring-cloud-dataflow 2.8.2 - Helm Chart version 4.1.1"
+  shortDescription: "spring-cloud-dataflow Version 2.8.2"
+  categories:
+  - bitnami
+  - helm

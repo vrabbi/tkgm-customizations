@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: external-dns.bitnami.charts
+spec:
+  displayName: "external-dns"
+  longDescription: "Bitnami external-dns 0.10.0 - Helm Chart version 5.4.10"
+  shortDescription: "external-dns Version 0.10.0"
+  categories:
+  - bitnami
+  - helm

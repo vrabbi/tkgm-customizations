@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: dokuwiki.bitnami.charts
+spec:
+  displayName: "dokuwiki"
+  longDescription: "Bitnami dokuwiki 20200729.0.0 - Helm Chart version 11.2.9"
+  shortDescription: "dokuwiki Version 20200729.0.0"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: pytorch.bitnami.charts
+spec:
+  displayName: "pytorch"
+  longDescription: "Bitnami pytorch 1.9.0 - Helm Chart version 2.3.14"
+  shortDescription: "pytorch Version 1.9.0"
+  categories:
+  - bitnami
+  - helm

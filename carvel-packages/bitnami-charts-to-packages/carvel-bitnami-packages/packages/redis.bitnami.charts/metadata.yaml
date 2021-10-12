@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: redis.bitnami.charts
+spec:
+  displayName: "redis"
+  longDescription: "Bitnami redis 6.2.6 - Helm Chart version 15.4.1"
+  shortDescription: "redis Version 6.2.6"
+  categories:
+  - bitnami
+  - helm

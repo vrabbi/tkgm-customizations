@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: phpbb.bitnami.charts
+spec:
+  displayName: "phpbb"
+  longDescription: "Bitnami phpbb 3.3.5 - Helm Chart version 10.1.24"
+  shortDescription: "phpbb Version 3.3.5"
+  categories:
+  - bitnami
+  - helm

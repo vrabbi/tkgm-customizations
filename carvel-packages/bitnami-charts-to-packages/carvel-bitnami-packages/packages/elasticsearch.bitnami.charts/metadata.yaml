@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: elasticsearch.bitnami.charts
+spec:
+  displayName: "elasticsearch"
+  longDescription: "Bitnami elasticsearch 7.14.2 - Helm Chart version 17.1.0"
+  shortDescription: "elasticsearch Version 7.14.2"
+  categories:
+  - bitnami
+  - helm

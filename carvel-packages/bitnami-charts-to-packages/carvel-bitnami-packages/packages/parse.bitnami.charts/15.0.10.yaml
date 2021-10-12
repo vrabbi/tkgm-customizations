@@ -1,0 +1,609 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: parse.bitnami.charts.15.0.10
+spec:
+  refName: parse.bitnami.charts
+  version: 15.0.10
+  releaseNotes: |
+        Parse is a platform that enables users to add a scalable and powerful backend to launch a full-featured app for iOS, Android, JavaScript, Windows, Unity, and more.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilites if not set)"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        server: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Parse image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/parse"
+                  description: "Parse image repository"
+                tag: 
+                  type: "string"
+                  default: "4.10.4-debian-10-r0"
+                  description: "Parse image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for Parse Server"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for Parse Server container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for Parse Server container"
+            port: 
+              type: "number"
+              default: 1337
+              description: "Parse server port"
+            mountPath: 
+              type: "string"
+              default: "/parse"
+              description: "Parse server API mount path"
+            appId: 
+              type: "string"
+              default: "myappID"
+              description: "Parse server App ID"
+            masterKey: 
+              type: "string"
+              default: ""
+              description: "Parse server Master Key"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of a ConfigMap containing extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of a Secret containing extra environment variables"
+            enableCloudCode: 
+              type: "boolean"
+              default: false
+              description: "Enable Parse Cloud Code"
+            cloudCodeScripts: 
+              type: "object"
+              default: "{}"
+              description: "Cloud Code scripts"
+            existingCloudCodeScriptsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with Cloud Code scripts (Note: Overrides `cloudCodeScripts`)."
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Parse Server pods' resource requests and limits"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Parse server pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Parse server pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Parse server node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Parse server node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Parse server node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Parse server affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Parse server node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Parse server tolerations for pod assignment"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Service HTTP port (Dashboard)"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTP node port"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            dashboard: 
+              type: "object"
+              properties: 
+                hostname: 
+                  type: "string"
+                  default: "parse-dashboard.local"
+                  description: "Default host for the ingress resource"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "The Path to WordPress. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            server: 
+              type: "object"
+              properties: 
+                hostname: 
+                  type: "string"
+                  default: "parse-server.local"
+                  description: "Default host for the ingress resource"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Default path for the ingress resource*' in order to use this with ALB ingress controllers."
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Parse persistence using PVC"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for Parse volume"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "PVC Access Mode for Parse volume"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for Parse volume"
+        dashboard: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable parse dashboard"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Dashboard image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/parse-dashboard"
+                  description: "Dashboard image repository"
+                tag: 
+                  type: "string"
+                  default: "2.2.0-debian-10-r35"
+                  description: "Dashboard image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for Dashboard"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for Dashboard container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for Dashboard container"
+            username: 
+              type: "string"
+              default: "user"
+              description: "Parse Dashboard application username"
+            password: 
+              type: "string"
+              default: ""
+              description: "Parse Dashboard application password"
+            appName: 
+              type: "string"
+              default: "MyDashboard"
+              description: "Parse Dashboard application name"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Parse Dashboard pods' resource requests and limits"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 240
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Parse dashboard pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Parse dashboard pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Parse dashboard node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Parse dashboard node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Parse dashboard node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Parse dashboard affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Parse dashboard node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Parse dashboard tolerations for pod assignment"
+            parseServerUrlProtocol: 
+              type: "string"
+              default: "http"
+              description: "Protocol used by Parse Dashboard to form the URLs to Parse server"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of a ConfigMap containing extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of a Secret containing extra environment variables"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image name"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r207"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Init container volume-permissions image pull secrets"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "The resources for the container"
+        mongodb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable MongoDB&reg; chart"
+            auth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable MongoDB&reg; password authentication"
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "MongoDB&reg; admin password"
+                username: 
+                  type: "string"
+                  default: "bn_parse"
+                  description: "MongoDB&reg; user"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "MongoDB&reg; user password"
+                database: 
+                  type: "string"
+                  default: "bitnami_parse"
+                  description: "MongoDB&reg; database"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable MongoDB&reg; persistence using PVC"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "PVC Storage Class for MongoDB&reg; volume"
+                accessMode: 
+                  type: "string"
+                  default: "ReadWriteOnce"
+                  description: "PVC Access Mode for MongoDB&reg; volume"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "PVC Storage Request for MongoDB&reg; volume"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: parse
+          version: "15.0.10"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

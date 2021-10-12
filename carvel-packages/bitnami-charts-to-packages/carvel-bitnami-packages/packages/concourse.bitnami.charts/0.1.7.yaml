@@ -1,0 +1,1092 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: concourse.bitnami.charts.0.1.7
+spec:
+  refName: concourse.bitnami.charts
+  version: 0.1.7
+  releaseNotes: |
+        Concourse is a pipeline-based continuous thing-doer.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/concourse"
+              description: "image repository"
+            tag: 
+              type: "string"
+              default: "7.5.0-debian-10-r0"
+              description: "image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "image pull secrets"
+        secrets: 
+          type: "object"
+          properties: 
+            localAuth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "the use of local authentication (basic auth)."
+            teamAuthorizedKeys: 
+              type: "array"
+              default: "[]"
+              description: "Array of team names and public keys for team external workers. A single"
+            localUsers: 
+              type: "string"
+              default: ""
+              description: "List of `username:password` or `username:bcrypted_password` combinations for all your local concourse users. Auto-generated if not set"
+            hostKey: 
+              type: "string"
+              default: "\"\""
+              description: "Concourse Host Keys."
+            hostKeyPub: 
+              type: "string"
+              default: "\"\""
+              description: "Concourse Host Keys."
+            sessionSigningKey: 
+              type: "string"
+              default: "\"\""
+              description: "Concourse Session Signing Keys."
+            workerKey: 
+              type: "string"
+              default: "\"\""
+              description: "Concourse Worker Keys."
+            workerKeyPub: 
+              type: "string"
+              default: "\"\""
+              description: "Concourse Worker Keys."
+            workerAdditionalCerts: 
+              type: "string"
+              default: ""
+              description: "Additional certificates to add to the worker nodes"
+        web: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable web"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of web replicas to deploy"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default args of the startup command for the web component."
+            baseUrl: 
+              type: "string"
+              default: "/"
+              description: "url"
+            logLevel: 
+              type: "string"
+              default: "debug"
+              description: "Minimum level of logs to see. Possible options: debug, info, error."
+            clusterName: 
+              type: "string"
+              default: ""
+              description: "A name for this Concourse cluster, to be displayed on the dashboard page."
+            bindIp: 
+              type: "string"
+              default: "0.0.0.0"
+              description: "IP address on which to listen for HTTP traffic (web UI and API)."
+            containerPort: 
+              type: "number"
+              default: 8080
+              description: "Port on which to listen for HTTP traffic (web UI and API)."
+            peerAddress: 
+              type: "string"
+              default: ""
+              description: "Network address of this web node, reachable by other web nodes."
+            externalUrl: 
+              type: "string"
+              default: ""
+              description: "URL used to reach any ATC from the outside world."
+            enableAcrossStep: 
+              type: "boolean"
+              default: false
+              description: "Enable the experimental across step to be used in jobs. The API is subject to change."
+            enablePipelineInstances: 
+              type: "boolean"
+              default: false
+              description: "Enable the creation of instanced pipelines."
+            enableCacheStreamedVolumes: 
+              type: "boolean"
+              default: false
+              description: "Enable caching streamed resource volumes on the destination worker."
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on web nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the web containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested for the web containers"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether RBAC resources should be created"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Override Web service account name"
+            tls: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "enable serving HTTPS traffic directly through the web component."
+                containerPort: 
+                  type: "number"
+                  default: 443
+                  description: "on which to listen for HTTPS traffic."
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "The name of an existing ConfigMap with your custom configuration for web"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for web pods"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled web pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set web pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled web containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set web containers' Security Context runAsUser"
+            psp: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Specifies whether a PodSecurityPolicy should be created (set `psp.create` to `true` to enable it)"
+            tsa: 
+              type: "object"
+              properties: 
+                logLevel: 
+                  type: "string"
+                  default: "debug"
+                  description: "Minimum level of logs to see. Possible values: debug, info, error."
+                bindIp: 
+                  type: "string"
+                  default: "0.0.0.0"
+                  description: "IP address on which to listen for SSH."
+                containerPort: 
+                  type: "number"
+                  default: 2222
+                  description: "Port on which to listen for SSH."
+                debugbindIp: 
+                  type: "string"
+                  default: "127.0.0.1"
+                  description: "IP address on which to listen for the pprof debugger endpoints (default: 127.0.0.1)"
+                debugContainerPort: 
+                  type: "number"
+                  default: 2221
+                  description: "Port on which to listen for TSA pprof server."
+                heartbeatInterval: 
+                  type: "string"
+                  default: "30s"
+                  description: "Interval on which to heartbeat workers to the ATC."
+                gardenRequestTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "How long to wait for requests to Garden to complete. 0 means no timeout."
+            configRBAC: 
+              type: "string"
+              default: ""
+              description: "set RBAC configuration"
+            auth: 
+              type: "object"
+              properties: 
+                cookieSecure: 
+                  type: "boolean"
+                  default: false
+                  description: "use cookie secure true or flase"
+                duration: 
+                  type: "string"
+                  default: "24h"
+                  description: "Length of time for which tokens are valid. Afterwards, users will have to log back in."
+                passwordConnector: 
+                  type: "string"
+                  default: ""
+                  description: "The connector to use for password authentication for `fly login -u ... -p ...`."
+                mainTeam: 
+                  type: "object"
+                  properties: 
+                    config: 
+                      type: "string"
+                      default: ""
+                      description: "Configuration file for specifying the main teams params."
+                    localUser: 
+                      type: "string"
+                      default: "user"
+                      description: "Comma-separated list of local Concourse users to be included as members of the `main` team."
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for web pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `web.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `web.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `web.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `web.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `web.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for web pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for web pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for web pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "web statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "web pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the web container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to web nodes"
+            baseResourceTypeDefaults: 
+              type: "string"
+              default: ""
+              description: "Configuration file for specifying defaults for base resource types"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for web nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for web nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the web pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the web container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the web pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the web pod(s)"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Use an existing secret for the Web service credentials"
+        worker: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable worker nodes"
+            replicaCount: 
+              type: "number"
+              default: 2
+              description: "Number of worker replicas"
+            mode: 
+              type: "string"
+              default: "deployment"
+              description: "Selects kind of Deployment. Valid Options are: statefulSet | deployment"
+            logLevel: 
+              type: "string"
+              default: "debug"
+              description: "Minimum level of logs to see. Possible options: debug, info, error"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override worker default args"
+            bindIp: 
+              type: "string"
+              default: "127.0.0.1"
+              description: "IP address on which to listen for the Garden server."
+            containerPort: 
+              type: "number"
+              default: 7777
+              description: "Port on which to listen for the Garden server."
+            healthCheckContainerPort: 
+              type: "number"
+              default: 8888
+              description: "Port on which to listen for the healh checks."
+            tsa: 
+              type: "object"
+              properties: 
+                hosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "TSA host(s) to forward the worker through."
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether RBAC resources should be created"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Override Worker service account name"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for the worker nodes"
+                maxReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Set maximum number of replicas to the worker nodes"
+                minReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Set minimum number of replicas to the worker nodes"
+                builtInMetrics: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array with built-in metrics"
+                customMetrics: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array with custom metrics"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Create Pod disruption budget object for worker nodes"
+                minAvailable: 
+                  type: "number"
+                  default: 2
+                  description: "Minimum number of workers available after an eviction"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on worker nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Failure threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readiness probe on worker nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Configure resource limits."
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Configure resource request"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled worker pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set worker pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled worker containers' Security Context"
+                privileged: 
+                  type: "boolean"
+                  default: true
+                  description: "Set worker containers' Security Context with privileged or not"
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "Set worker containers' Security Context user"
+            psp: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Specifies whether a PodSecurityPolicy should be created (set `psp.create` to `true` to enable it)"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Custom labels for worker pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for worker pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `worker.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity type"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for worker pod assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "worker statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "worker pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the worker container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to worker nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for worker nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for worker nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the worker pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the worker container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the worker pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the worker pod(s)"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "name of an existing secret resource containing the keys and the pub"
+            baggageclaim: 
+              type: "object"
+              properties: 
+                logLevel: 
+                  type: "string"
+                  default: "info"
+                  description: "Minimum level of logs to see. Possible values: debug, info, error"
+                bindIp: 
+                  type: "string"
+                  default: "127.0.0.1"
+                  description: "IP address on which to listen for API traffic."
+                containerPort: 
+                  type: "number"
+                  default: 7788
+                  description: "Port on which to listen for API traffic."
+                debugbindIp: 
+                  type: "string"
+                  default: "127.0.0.1"
+                  description: "IP address on which to listen for the pprof debugger endpoints."
+                debugContainerPort: 
+                  type: "number"
+                  default: 7787
+                  description: "Port on which to listen for baggageclaim pprof server."
+                disableUserNamespaces: 
+                  type: "string"
+                  default: ""
+                  description: "Disable remapping of user/group IDs in unprivileged volumes."
+                volumes: 
+                  type: "string"
+                  default: ""
+                  description: "Directory in which to place volume data."
+                driver: 
+                  type: "string"
+                  default: ""
+                  description: "Driver to use for managing volumes."
+                btrfsBin: 
+                  type: "string"
+                  default: "btrfs"
+                  description: "Path to btrfs binary"
+                mkfsBin: 
+                  type: "string"
+                  default: "mkfs.btrfs"
+                  description: "Path to mkfs.btrfs binary"
+                overlaysDir: 
+                  type: "string"
+                  default: ""
+                  description: "Path to directory in which to store overlay data"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence using Persistent Volume Claims"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Persistent Volume storage class"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Persistent Volume Claim annotations"
+                accessModes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Persistent Volume access modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Persistent Volume size"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels to match for the PVC"
+        service: 
+          type: "object"
+          properties: 
+            web: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "LoadBalancer"
+                  description: "For minikube, set this to ClusterIP, elsewhere use LoadBalancer or NodePort"
+                port: 
+                  type: "number"
+                  default: 80
+                  description: "Service HTTP port"
+                tlsPort: 
+                  type: "number"
+                  default: 443
+                  description: "Service HTTPS port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "When using `service.web.type: ClusterIP`, sets the user-specified cluster IP."
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "When using `service.web.type: LoadBalancer`, sets the user-specified load balancer IP."
+                labels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional Labels to be added to the web api service."
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations to be added to the web api service."
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "When using `service.web.type: LoadBalancer`, restrict access to the load balancer to particular IPs"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "When using `service.web.type: NodePort`, sets the nodePort for api"
+                tlsnodePort: 
+                  type: "string"
+                  default: ""
+                  description: "When using `service.web.type: NodePort`, sets the nodePort for api tls"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: ""
+                  description: "Set service externalTraffic policy"
+            workerGateway: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "For minikube, set this to ClusterIP, elsewhere use LoadBalancer or NodePort"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "When using `service.workerGateway.type: ClusterIP`, sets the user-specified cluster IP."
+                port: 
+                  type: "number"
+                  default: 2222
+                  description: "Service HTTP port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "When using `service.workerGateway.type: LoadBalancer`, sets the user-specified load balancer IP."
+                labels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional Labels to be added to the web workerGateway service."
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations to be added to the web workerGateway service."
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "When using `service.workerGateway.type: LoadBalancer`, restrict access to the load balancer to particular IPs"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "When using `service.workerGateway.type: NodePort`, sets the nodePort for tsa"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Ingress configuration enabled"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            hostname: 
+              type: "string"
+              default: "concourse.local"
+              description: "Hostename for the Ingress object"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to Concourse"
+            rulesOverride: 
+              type: "array"
+              default: "[]"
+              description: "Ingress rules override"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "TLS configuration."
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress Path type"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami Shell image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Bitnami Shell image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r195"
+                  description: "Bitnami Shell image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Bitnami Shell image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami Shell image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable init container's Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set init container's Security Context runAsUser"
+        postgresql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the PostgreSQL helm chart"
+            nameOverride: 
+              type: "string"
+              default: ""
+              description: "Override Concourse Postgresql name"
+            postgresqlUsername: 
+              type: "string"
+              default: "bn_concourse"
+              description: "Concourse Postgresql username"
+            postgresqlDatabase: 
+              type: "string"
+              default: "bitnami_concourse"
+              description: "Concourse Postgresql database"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret containing the PostgreSQL password ('postgresql-password' key)"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Database host"
+            user: 
+              type: "string"
+              default: "bn_concourse"
+              description: "non-root Username for Airflow Database"
+            password: 
+              type: "string"
+              default: ""
+              description: "Database password"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret resource containing the DB password"
+            existingSecretPasswordKey: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret key containing the DB password"
+            database: 
+              type: "string"
+              default: "bitnami_concourse"
+              description: "Database name"
+            port: 
+              type: "number"
+              default: 5432
+              description: "Database port number"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: concourse
+          version: "0.1.7"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: harbor.bitnami.charts
+spec:
+  displayName: "harbor"
+  longDescription: "Bitnami harbor 2.3.3 - Helm Chart version 11.0.4"
+  shortDescription: "harbor Version 2.3.3"
+  categories:
+  - bitnami
+  - helm

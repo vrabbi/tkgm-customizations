@@ -1,0 +1,745 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: suitecrm.bitnami.charts.9.3.25
+spec:
+  refName: suitecrm.bitnami.charts
+  version: 9.3.25
+  releaseNotes: |
+        SuiteCRM is a completely open source enterprise-grade Customer Relationship Management (CRM) application. SuiteCRM is a software fork of the popular customer relationship management (CRM) system SugarCRM.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override suitecrm.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override suitecrm.fullname template"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array with extra yaml to deploy with the chart. Evaluated as a template"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Common annotations to add to all SuiteCRM resources (sub-charts are not considered). Evaluated as a template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Common labels to add to all SuiteCRM resources (sub-charts are not considered). Evaluated as a template"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "SuiteCRM image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/suitecrm"
+              description: "SuiteCRM image repository"
+            tag: 
+              type: "string"
+              default: "7.11.22-debian-10-r14"
+              description: "SuiteCRM image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "SuiteCRM image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of replicas (requires ReadWriteMany PVC support)"
+        suitecrmSkipInstall: 
+          type: "boolean"
+          default: false
+          description: "Skip SuiteCRM installation wizard. Useful for migrations and restoring from SQL dump"
+        suitecrmValidateUserIP: 
+          type: "boolean"
+          default: false
+          description: "Whether to validate the user IP address or not"
+        suitecrmHost: 
+          type: "string"
+          default: ""
+          description: "SuiteCRM host to create application URLs"
+        suitecrmUsername: 
+          type: "string"
+          default: "user"
+          description: "User of the application"
+        suitecrmPassword: 
+          type: "string"
+          default: ""
+          description: "Application password"
+        suitecrmEmail: 
+          type: "string"
+          default: "user@example.com"
+          description: "Admin email"
+        allowEmptyPassword: 
+          type: "boolean"
+          default: false
+          description: "Allow DB blank passwords"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "An array to add extra environment variables"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap containing extra environment variables"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret containing extra environment variables"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Extra volumes to add to the deployment. Requires setting `extraVolumeMounts`"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Extra volume mounts to add to the container. Requires setting `extraVolumeMounts"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Extra init containers to add to the deployment"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Extra sidecar containers to add to the deployment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Name of a secret with the application password"
+        suitecrmSmtpHost: 
+          type: "string"
+          default: ""
+          description: "SMTP host"
+        suitecrmSmtpPort: 
+          type: "string"
+          default: ""
+          description: "SMTP port"
+        suitecrmSmtpUser: 
+          type: "string"
+          default: ""
+          description: "SMTP user"
+        suitecrmSmtpPassword: 
+          type: "string"
+          default: ""
+          description: "SMTP password"
+        suitecrmSmtpProtocol: 
+          type: "string"
+          default: ""
+          description: "SMTP protocol [`ssl`, `tls`]"
+        suitecrmNotifyAddress: 
+          type: "string"
+          default: ""
+          description: "SuiteCRM notify address"
+        suitecrmNotifyName: 
+          type: "string"
+          default: ""
+          description: "SuiteCRM notify name"
+        containerPorts: 
+          type: "object"
+          default: "{}"
+          description: "Container ports"
+        sessionAffinity: 
+          type: "string"
+          default: "None"
+          description: "Control where client requests go, to the same pod or round-robin"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        resources: 
+          type: "object"
+          properties: 
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable SuiteCRM pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "SuiteCRM pods' group ID"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable SuiteCRM containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "SuiteCRM containers' Security Context"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            path: 
+              type: "string"
+              default: "/index.php"
+              description: "Request path for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 600
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            path: 
+              type: "string"
+              default: "/index.php"
+              description: "Request path for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 3
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        startupProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable startupProbe"
+            path: 
+              type: "string"
+              default: "/index.php"
+              description: "Request path for startupProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 0
+              description: "Initial delay seconds for startupProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for startupProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 3
+              description: "Timeout seconds for startupProbe"
+            failureThreshold: 
+              type: "number"
+              default: 60
+              description: "Failure threshold for startupProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for startupProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        customStartupProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default startup probe"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "lifecycleHooks for the container to automate configuration before or after startup"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Pod extra labels"
+        mariadb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to deploy a mariadb server to satisfy the applications database requirements"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "MariaDB architecture. Allowed values: `standalone` or `replication`"
+            auth: 
+              type: "object"
+              properties: 
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the MariaDB `root` user"
+                database: 
+                  type: "string"
+                  default: "bitnami_suitecrm"
+                  description: "Database name to create"
+                username: 
+                  type: "string"
+                  default: "bn_suitecrm"
+                  description: "Database user to create"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the database"
+            primary: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable database persistence using PVC"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "MariaDB data Persistent Volume Storage Class"
+                    accessModes: 
+                      type: "array"
+                      default: "[\"ReadWriteOnce\"]"
+                      description: "Database Persistent Volume Access Modes"
+                    size: 
+                      type: "string"
+                      default: "8Gi"
+                      description: "Database Persistent Volume Size"
+                    hostPath: 
+                      type: "string"
+                      default: ""
+                      description: "Set path in case you want to use local host path volumes (not recommended in production)"
+                    existingClaim: 
+                      type: "string"
+                      default: ""
+                      description: "Name of an existing `PersistentVolumeClaim` for MariaDB primary replicas"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "Host of the existing database"
+            port: 
+              type: "number"
+              default: 3306
+              description: "Port of the existing database"
+            user: 
+              type: "string"
+              default: "bn_suitecrm"
+              description: "Existing username in the external database"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the above username"
+            database: 
+              type: "string"
+              default: "bitnami_suitecrm"
+              description: "Name of the existing database"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using PVC"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for SuiteCRM volume"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "PVC Access Mode for SuiteCRM volume"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for SuiteCRM volume"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "An Existing PVC name for SuiteCRM volume"
+            hostPath: 
+              type: "string"
+              default: ""
+              description: "Host mount path for SuiteCRM volume"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r215"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 8080
+              description: "Service HTTP port"
+            httpsPort: 
+              type: "number"
+              default: 8443
+              description: "Service HTTPS port"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Static clusterIP or None for headless services"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Service Load Balancer sources"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "loadBalancerIP for the SuiteCRM Service (optional, cloud specific)"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTP node port"
+                https: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTPS node port"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            hostname: 
+              type: "string"
+              default: "suitecrm.local"
+              description: "Default host for the ingress resource"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            hosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            tls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for the ingress"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Ingress path"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Apache exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/apache-exporter"
+                  description: "Apache exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.10.1-debian-10-r16"
+                  description: "Apache exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter resource requests and limits"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for Metrics exporter pod"
+        certificates: 
+          type: "object"
+          properties: 
+            customCertificate: 
+              type: "object"
+              properties: 
+                certificateSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing the certificate and key to add"
+                chainSecret: 
+                  type: "object"
+                  properties: 
+                    name: 
+                      type: "string"
+                      default: ""
+                      description: "Name of the secret containing the certificate chain"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Key of the certificate chain file inside the secret"
+                certificateLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+                  description: "Location in the container to store the certificate"
+                keyLocation: 
+                  type: "string"
+                  default: "/etc/ssl/private/ssl-cert-snakeoil.key"
+                  description: "Location in the container to store the private key"
+                chainLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/mychain.pem"
+                  description: "Location in the container to store the certificate chain"
+            customCAs: 
+              type: "array"
+              default: "[]"
+              description: "Defines a list of secrets to import into the container trust store"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Container sidecar extra environment variables"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra environment variables (in case of sensitive data)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Container sidecar registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Container sidecar image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r215"
+                  description: "Container sidecar image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Container sidecar image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Container sidecar image pull secrets"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: suitecrm
+          version: "9.3.25"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

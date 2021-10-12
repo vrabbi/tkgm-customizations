@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: argo-cd.bitnami.charts
+spec:
+  displayName: "argo-cd"
+  longDescription: "Bitnami argo-cd 2.1.3 - Helm Chart version 2.0.4"
+  shortDescription: "argo-cd Version 2.1.3"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: keycloak.bitnami.charts
+spec:
+  displayName: "keycloak"
+  longDescription: "Bitnami keycloak 15.0.2 - Helm Chart version 5.1.2"
+  shortDescription: "keycloak Version 15.0.2"
+  categories:
+  - bitnami
+  - helm

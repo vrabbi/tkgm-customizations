@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: testlink.bitnami.charts
+spec:
+  displayName: "testlink"
+  longDescription: "Bitnami testlink 1.9.20 - Helm Chart version 9.2.24"
+  shortDescription: "testlink Version 1.9.20"
+  categories:
+  - bitnami
+  - helm

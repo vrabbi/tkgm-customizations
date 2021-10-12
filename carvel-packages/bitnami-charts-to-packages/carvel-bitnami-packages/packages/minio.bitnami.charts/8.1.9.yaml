@@ -1,0 +1,881 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: minio.bitnami.charts.8.1.9
+spec:
+  refName: minio.bitnami.charts
+  version: 8.1.9
+  releaseNotes: |
+        Bitnami Object Storage based on MinIO&reg; is an object storage server, compatible with Amazon S3 cloud storage service, mainly used for storing unstructured data (such as photos, videos, log files, etc.)
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+            minio: 
+              type: "object"
+              default: "{}"
+              description: "Global MinIO&reg; credentials"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Default Kubernetes cluster domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "MinIO&reg; image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/minio"
+              description: "MinIO&reg; image repository"
+            tag: 
+              type: "string"
+              default: "2021.10.6-debian-10-r0"
+              description: "MinIO&reg; image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        clientImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "MinIO&reg; Client image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/minio-client"
+              description: "MinIO&reg; Client image repository"
+            tag: 
+              type: "string"
+              default: "2021.9.23-debian-10-r13"
+              description: "MinIO&reg; Client image tag (immutable tags are recommended)"
+        mode: 
+          type: "string"
+          default: "standalone"
+          description: "MinIO&reg; server mode (`standalone` or `distributed`)"
+        accessKey: 
+          type: "object"
+          properties: 
+            password: 
+              type: "string"
+              default: ""
+              description: "MinIO&reg; Access Key. Ignored if existing secret is provided."
+            forcePassword: 
+              type: "boolean"
+              default: false
+              description: "Option to force users to specify a password. That is required for 'helm upgrade' to work properly."
+        secretKey: 
+          type: "object"
+          properties: 
+            password: 
+              type: "string"
+              default: ""
+              description: "MinIO&reg; Secret Key. Ignored if existing secret is provided."
+            forcePassword: 
+              type: "boolean"
+              default: false
+              description: "Option to force users to specify a password. That is required for 'helm upgrade' to work properly."
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Use existing secret (ignores accessKey, and secretKey passwords)"
+        useCredentialsFile: 
+          type: "boolean"
+          default: false
+          description: "Mount MinIO&reg; secret as a file instead of passing environment variable"
+        forceNewKeys: 
+          type: "boolean"
+          default: false
+          description: "Force admin credentials (access and secret key) to be reconfigured every time they change in the secrets"
+        defaultBuckets: 
+          type: "string"
+          default: ""
+          description: "Comma, semi-colon or space separated list of buckets to create at initialization (only in standalone mode)"
+        disableWebUI: 
+          type: "boolean"
+          default: false
+          description: "Disable MinIO&reg; Web UI"
+        tls: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable tls in front of the container"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret holding the certificate information"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "DEPRECATED. Use `tls.existingSecret` instead."
+            mountPath: 
+              type: "string"
+              default: ""
+              description: "The mount path where the secret will be located"
+        extraEnv: 
+          type: "object"
+          default: "{}"
+          description: "Extra environment variables to be set on MinIO&reg; container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with extra environment variables"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret with extra environment variables"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Default container command (useful when using custom images). Use array form"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Default container args (useful when using custom images). Use array form"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Specifies the schedulerName, if it's nil uses kube-scheduler"
+        deployment: 
+          type: "object"
+          properties: 
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "Recreate"
+                  description: "Set to Recreate if you use persistent volume that cannot be mounted by more than one pods to make sure the pods is destroyed first."
+        statefulset: 
+          type: "object"
+          properties: 
+            updateStrategy: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy, can be set to `RollingUpdate` or `OnDelete`"
+            podManagementPolicy: 
+              type: "string"
+              default: "Parallel"
+              description: "StatefulSet controller supports relax its ordering guarantees while preserving its uniqueness and identity guarantees. There are two valid pod management policies: OrderedReady and Parallel"
+            replicaCount: 
+              type: "number"
+              default: 4
+              description: "Number of pods per zone (only for MinIO&reg; distributed mode). Should be even and `>= 4`"
+            zones: 
+              type: "number"
+              default: 1
+              description: "Number of zones (only for MinIO&reg; distributed mode)"
+            drivesPerNode: 
+              type: "number"
+              default: 1
+              description: "Number of drives attached to every node (only for MinIO&reg; distributed mode)"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "MinIO&reg; pod host aliases"
+        containerPorts: 
+          type: "object"
+          properties: 
+            api: 
+              type: "number"
+              default: 9000
+              description: "MinIO&reg; container port to open for MinIO&reg; API"
+            console: 
+              type: "number"
+              default: 9001
+              description: "MinIO&reg; container port to open for MinIO&reg; Console"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable pod Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable container Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Avoid running as root User"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for MinIO&reg; pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for MinIO&reg; pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment. Evaluated as a template."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the MinIO&reg; container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the MinIO&reg; container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        startupProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable startupProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 0
+              description: "Initial delay seconds for startupProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for startupProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for startupProbe"
+            failureThreshold: 
+              type: "number"
+              default: 60
+              description: "Failure threshold for startupProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for startupProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        customStartupProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default startup probe"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for MinIO&reg; pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for MinIO&reg; container(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the MinIO&reg; pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the MinIO&reg; pods"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "MinIO&reg; service type"
+            ports: 
+              type: "object"
+              properties: 
+                api: 
+                  type: "number"
+                  default: 9000
+                  description: "MinIO&reg; API service port"
+                console: 
+                  type: "number"
+                  default: 9001
+                  description: "MinIO&reg; Console service port"
+            nodePorts: 
+              type: "object"
+              properties: 
+                api: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the MinIO&reg API nodePort value for the LoadBalancer and NodePort service types"
+                console: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the MinIO&reg Console nodePort value for the LoadBalancer and NodePort service types"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "loadBalancerIP if service type is `LoadBalancer` (optional, cloud specific)"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Addresses that are allowed when service is LoadBalancer"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for MinIO&reg; service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "minio.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to MinIO&reg;. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            servicePort: 
+              type: "string"
+              default: "minio-console"
+              description: "Service port to be used"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at `ingress.hostname` parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional paths that may need to be added to the ingress under the main host"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        apiIngress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "minio.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to MinIO&reg;. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            servicePort: 
+              type: "string"
+              default: "minio-api"
+              description: "Service port to be used"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at `apiIngress.hostname` parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional paths that may need to be added to the ingress under the main host"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable the default NetworkPolicy policy"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "Don't require client label for connections"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable MinIO&reg; data persistence using PVC. If false, use emptyDir"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for MinIO&reg; data volume"
+            mountPath: 
+              type: "string"
+              default: "/data"
+              description: "Data volume mount path"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "PVC Access Modes for MinIO&reg; data volume"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for MinIO&reg; data volume"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the PVC"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Name of an existing PVC to use (only in `standalone` mode)"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r214"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource limits"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource requests"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "User ID for the init container"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable the creation of a ServiceAccount for MinIO&reg; pods"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of the created ServiceAccount"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number/percentage of pods that must still be available after the eviction"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number/percentage of pods that may be made unavailable after the eviction"
+        metrics: 
+          type: "object"
+          properties: 
+            prometheusAuthType: 
+              type: "string"
+              default: "public"
+              description: "Authentication mode for Prometheus (`jwt` or `public`)"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "If the operator is installed in your cluster, set to true to create a Service Monitor Entry"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace which Prometheus is running in"
+                path: 
+                  type: "string"
+                  default: "/minio/v2/metrics/cluster"
+                  description: "HTTP path to scrape for metrics"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "Interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the timeout after which the scrape is ended"
+                relabellings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify Metric Relabellings to add to the scrape endpoint"
+                honorLabels: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify honorLabels parameter to add the scrape endpoint"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Used to pass Labels that are required by the installed Prometheus Operator"
+        gateway: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Use MinIO&reg; as Gateway for other storage systems"
+            type: 
+              type: "string"
+              default: "s3"
+              description: "Gateway type. Supported types are: `azure`, `gcs`, `nas`, `s3`"
+            replicaCount: 
+              type: "number"
+              default: 4
+              description: "Number of MinIO&reg; Gateway replicas"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "Recreate"
+                  description: "Update strategy type for MinIO&reg; Gateway replicas"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for MinIO&reg; Gateway deployment"
+                minReplicas: 
+                  type: "string"
+                  default: "4"
+                  description: "Minimum number of replicas to scale back"
+                maxReplicas: 
+                  type: "string"
+                  default: "4"
+                  description: "Maximum number of replicas to scale out"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Target CPU utilization percentage"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Target Memory utilization percentage"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Pod priority class name for MinIO&reg; Gateway"
+            auth: 
+              type: "object"
+              properties: 
+                azure: 
+                  type: "object"
+                  properties: 
+                    accessKey: 
+                      type: "string"
+                      default: ""
+                      description: "Access Key to access MinIO using Azure Gateway"
+                    secretKey: 
+                      type: "string"
+                      default: ""
+                      description: "Secret Key to access MinIO using Azure Gateway"
+                    storageAccountName: 
+                      type: "string"
+                      default: ""
+                      description: "Azure Storage Account Name to use to access Azure Blob Storage"
+                    storageAccountKey: 
+                      type: "string"
+                      default: ""
+                      description: "Azure Storage Account Key to use to access Azure Blob Storage"
+                    storageAccountNameExistingSecret: 
+                      type: "string"
+                      default: ""
+                      description: "Existing Secret name to extract Azure Storage Account Name from to access Azure Blob Storage"
+                    storageAccountNameExistingSecretKey: 
+                      type: "string"
+                      default: ""
+                      description: "Existing Secret key to extract Azure Storage Account Name from to use to access Azure Blob Storage"
+                    storageAccountKeyExistingSecret: 
+                      type: "string"
+                      default: ""
+                      description: "Existing Secret name to extract Azure Storage Account Key from to access Azure Blob Storage"
+                    storageAccountKeyExistingSecretKey: 
+                      type: "string"
+                      default: ""
+                      description: "Existing Secret key to extract Azure Storage Account Key from to use to access Azure Blob Storage"
+                gcs: 
+                  type: "object"
+                  properties: 
+                    accessKey: 
+                      type: "string"
+                      default: ""
+                      description: "Access Key to access MinIO using GCS Gateway"
+                    secretKey: 
+                      type: "string"
+                      default: ""
+                      description: "Secret Key to access MinIO using GCS Gateway"
+                    keyJSON: 
+                      type: "string"
+                      default: ""
+                      description: "Service Account key to access GCS"
+                    projectID: 
+                      type: "string"
+                      default: ""
+                      description: "GCP Project ID to use"
+                nas: 
+                  type: "object"
+                  properties: 
+                    accessKey: 
+                      type: "string"
+                      default: ""
+                      description: "Access Key to access MinIO using NAS Gateway"
+                    secretKey: 
+                      type: "string"
+                      default: ""
+                      description: "Secret Key to access MinIO using NAS Gateway"
+                s3: 
+                  type: "object"
+                  properties: 
+                    accessKey: 
+                      type: "string"
+                      default: ""
+                      description: "Access Key to use to access AWS S3"
+                    secretKey: 
+                      type: "string"
+                      default: ""
+                      description: "Secret Key to use to access AWS S3"
+                    serviceEndpoint: 
+                      type: "string"
+                      default: "https://s3.amazonaws.com"
+                      description: "AWS S3 endpoint"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: minio
+          version: "8.1.9"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

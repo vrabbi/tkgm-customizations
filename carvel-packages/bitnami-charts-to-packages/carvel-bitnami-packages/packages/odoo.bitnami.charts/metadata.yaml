@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: odoo.bitnami.charts
+spec:
+  displayName: "odoo"
+  longDescription: "Bitnami odoo 14.0.20211010 - Helm Chart version 19.0.11"
+  shortDescription: "odoo Version 14.0.20211010"
+  categories:
+  - bitnami
+  - helm

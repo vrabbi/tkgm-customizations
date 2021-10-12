@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: consul.bitnami.charts
+spec:
+  displayName: "consul"
+  longDescription: "Bitnami consul 1.10.3 - Helm Chart version 10.0.0"
+  shortDescription: "consul Version 1.10.3"
+  categories:
+  - bitnami
+  - helm

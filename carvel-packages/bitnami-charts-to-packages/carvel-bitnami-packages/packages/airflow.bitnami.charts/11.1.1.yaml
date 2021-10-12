@@ -1,0 +1,1198 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: airflow.bitnami.charts.11.1.1
+spec:
+  refName: airflow.bitnami.charts
+  version: 11.1.1
+  releaseNotes: |
+        Apache Airflow is a platform to programmatically author, schedule and monitor workflows.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override airflow.fullname template with a string (will prepend the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override airflow.fullname template with a string"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment (evaluated as a template)"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable container security context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "A list of extra kubernetes resources to be deployed"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to add to web, worker and scheduler pods"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap containing extra env vars to add to web, worker and scheduler pods"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret containing extra env vars to add to web, worker and scheduler pods"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "List of init containers to be added to the web, worker and scheduler pods"
+        networkPolicies: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Switch to enable network policies"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`."
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`."
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable pod security context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "fsGroup ID for the pod"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "If true, create & use RBAC resources"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for service account. Evaluated as a template. Only used if `create` is `true`."
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of the service account to use. If not set and create is true, a name is generated using the fullname template."
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "List of sidecar containers to be added to web, worker and scheduler pods"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        auth: 
+          type: "object"
+          properties: 
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret containing password, fernet key and secret key ('airflow-password', 'airflow-fernetKey' and 'airflow-secretKey' keys)"
+            fernetKey: 
+              type: "string"
+              default: ""
+              description: "Fernet key to secure connections"
+            forcePassword: 
+              type: "boolean"
+              default: false
+              description: "Force users to specify a password"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password to access web UI"
+            username: 
+              type: "string"
+              default: "user"
+              description: "Username to access web UI"
+            secretKey: 
+              type: "string"
+              default: ""
+              description: "Secret key to run your flask app"
+        configurationConfigMap: 
+          type: "string"
+          default: ""
+          description: "Name of an existing config map containing the Airflow config file"
+        executor: 
+          type: "string"
+          default: "CeleryExecutor"
+          description: "Airflow executor, it should be one of 'SequentialExecutor', 'LocalExecutor', 'CeleryExecutor', 'KubernetesExecutor', 'CeleryKubernetesExecutor'"
+        dags: 
+          type: "object"
+          properties: 
+            configMap: 
+              type: "string"
+              default: ""
+              description: "Name of an existing config map containing all the DAGs files you want to load in Airflow"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Container sidecar registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Container sidecar image"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r215"
+                  description: "Container sidecar image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Container sidecar image pull policy"
+        loadExamples: 
+          type: "boolean"
+          default: false
+          description: "Switch to load some Airflow examples"
+        web: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Airflow image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/airflow"
+                  description: "Airflow image repository"
+                tag: 
+                  type: "string"
+                  default: "2.1.4-debian-10-r13"
+                  description: "Airflow image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Airflow image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Airflow image pull secrets"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable image debug mode"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of web replicas"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            baseUrl: 
+              type: "string"
+              default: ""
+              description: "URL used to access to airflow web ui"
+            configMap: 
+              type: "string"
+              default: ""
+              description: "Name of an existing config map containing the Airflow webserver config file"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add extra labels to the web's pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Add extra annotations to the web's pods"
+            containerPort: 
+              type: "number"
+              default: 8080
+              description: "Container port to be used for exposing http server"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volume mounts"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volumes"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra environment variables"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra environment variables (in case of sensitive data)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Web container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Web container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 180
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom liveness probe for the Web component"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom rediness probe for the Web component"
+            podDisruptionBudget: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable PodDisruptionBudget for web pods"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum available instances; ignored if there is no PodDisruptionBudget"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum available instances; ignored if there is no PodDisruptionBudget"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the Web pods"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add initContainers to the Web pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Priority Class Name"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Airflow service type"
+            port: 
+              type: "number"
+              default: 8080
+              description: "Airflow service HTTP port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Airflow service NodePort"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "loadBalancerIP if service type is `LoadBalancer` (optional, cloud specific)"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for Airflow service"
+        scheduler: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Airflow Scheduler image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/airflow-scheduler"
+                  description: "Airflow Scheduler image repository"
+                tag: 
+                  type: "string"
+                  default: "2.1.4-debian-10-r18"
+                  description: "Airflow Scheduler image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Airflow Scheduler image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Airflow Scheduler image pull secrets"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable image debug mode"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of scheduler replicas"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override cmd"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override args"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add extra labels to the web's pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Add extra annotations to the web's pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volume mounts"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volumes"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Add extra environment variables"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with extra environment variables"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Scheduler container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Scheduler container"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom Liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom Liveness probe"
+            podDisruptionBudget: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable PodDisruptionBudget for scheduler pods"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum available instances; ignored if there is no PodDisruptionBudget"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the scheduler pods."
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add initContainers to the scheduler pods."
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Priority Class Name"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+        worker: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Airflow Worker image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/airflow-worker"
+                  description: "Airflow Worker image repository"
+                tag: 
+                  type: "string"
+                  default: "2.1.4-debian-10-r18"
+                  description: "Airflow Worker image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Airflow Worker image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Airflow Worker image pull secrets"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable image debug mode"
+            port: 
+              type: "number"
+              default: 8793
+              description: "Port where the worker will be exposed"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of worker replicas"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            podTemplate: 
+              type: "object"
+              default: "{}"
+              description: "Template to replace the default one to be use when `executor=KubernetesExecutor` to create worker pods"
+            podManagementPolicy: 
+              type: "string"
+              default: ""
+              description: "podManagementPolicy to manage scaling operation of worker pods"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override cmd"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override args"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Add annotations to the worker pods"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add extra labels to the web's pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volume mounts"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volumes"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Add extra environment variables"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with extra environment variables"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Worker container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Worker container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 180
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom Liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom Liveness probe"
+            podDisruptionBudget: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable PodDisruptionBudget for worker pods"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum available instances; ignored if there is no PodDisruptionBudget"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum available instances; ignored if there is no PodDisruptionBudget"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Whether enable horizontal pod autoscale"
+                replicas: 
+                  type: "object"
+                  properties: 
+                    min: 
+                      type: "number"
+                      default: 1
+                      description: "Configure a minimum amount of pods"
+                    max: 
+                      type: "number"
+                      default: 3
+                      description: "Configure a maximum amount of pods"
+                targets: 
+                  type: "object"
+                  properties: 
+                    cpu: 
+                      type: "number"
+                      default: 80
+                      description: "Define the CPU target to trigger the scaling actions (utilization percentage)"
+                    memory: 
+                      type: "number"
+                      default: 80
+                      description: "Define the memory target to trigger the scaling actions (utilization percentage)"
+            updateStrategy: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "StatefulSet controller supports automated updates. There are two valid update strategies: RollingUpdate and OnDelete"
+            rollingUpdatePartition: 
+              type: "string"
+              default: ""
+              description: "Partition update strategy"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the worker pods."
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add initContainers to the worker pods."
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Priority Class Name"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for worker pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for worker pod assignment"
+        git: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Git image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/git"
+                  description: "Git image repository"
+                tag: 
+                  type: "string"
+                  default: "2.33.0-debian-10-r54"
+                  description: "Git image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Git image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Git image pull secrets"
+            dags: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable in order to download DAG files from git repositories."
+                repositories: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of repositories from which to download DAG files"
+            plugins: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable in order to download Plugins files from git repositories."
+                repositories: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of repositories from which to download DAG files"
+            clone: 
+              type: "object"
+              properties: 
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override cmd"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override args"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add extra volume mounts"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add extra environment variables"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap with extra environment variables"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret with extra environment variables"
+                resources: 
+                  type: "object"
+                  default: "{}"
+                  description: "Clone init container resource requests and limits"
+            sync: 
+              type: "object"
+              properties: 
+                interval: 
+                  type: "number"
+                  default: 60
+                  description: "Interval in seconds to pull the git repository containing the plugins and/or DAG files"
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override cmd"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override args"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add extra volume mounts"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add extra environment variables"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap with extra environment variables"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret with extra environment variables"
+                resources: 
+                  type: "object"
+                  default: "{}"
+                  description: "Sync sidecar container resource requests and limits"
+        ldap: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable LDAP authentication"
+            uri: 
+              type: "string"
+              default: "ldap://ldap_server:389"
+              description: "Server URI, eg. ldap://ldap_server:389"
+            base: 
+              type: "string"
+              default: "dc=example,dc=org"
+              description: "Base of the search, eg. ou=example,o=org"
+            uidField: 
+              type: "string"
+              default: "cn"
+              description: "if doing an indirect bind to ldap, this is the field that matches the username when searching for the account to bind to"
+            binddn: 
+              type: "string"
+              default: "cn=admin,dc=example,dc=org"
+              description: "Bind DN"
+            bindpw: 
+              type: "string"
+              default: ""
+              description: "Bind Password"
+            userRegistration: 
+              type: "string"
+              default: "True"
+              description: "Set to True to enable user self registration"
+            userRegistrationRole: 
+              type: "string"
+              default: "Public"
+              description: "Set role name to be assign when a user registers himself. This role must already exist. Mandatory when using ldap.userRegistration"
+            rolesMapping: 
+              type: "string"
+              default: "{ \"cn=All,ou=Groups,dc=example,dc=org\": [\"User\"], \"cn=Admins,ou=Groups,dc=example,dc=org\": [\"Admin\"], }"
+              description: "mapping from LDAP DN to a list of roles"
+            rolesSyncAtLogin: 
+              type: "string"
+              default: "True"
+              description: "replace ALL the user's roles each login, or only on registration"
+            tls: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enabled TLS/SSL for LDAP, you must include the CA file."
+                allowSelfSigned: 
+                  type: "boolean"
+                  default: true
+                  description: "Allow to use self signed certificates"
+                CAcertificateSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the certificate CA file that will be used by ldap client."
+                CAcertificateFilename: 
+                  type: "string"
+                  default: ""
+                  description: "LDAP CA cert filename"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress Path type"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            hosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, use this to add the certificates as secrets"
+        postgresql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the PostgreSQL helm chart"
+            postgresqlUsername: 
+              type: "string"
+              default: "bn_airflow"
+              description: "Airflow Postgresql username"
+            postgresqlPassword: 
+              type: "string"
+              default: ""
+              description: "Airflow Postgresql password"
+            postgresqlDatabase: 
+              type: "string"
+              default: "bitnami_airflow"
+              description: "Airflow Postgresql database"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret containing the PostgreSQL password ('postgresql-password' key)"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Database host"
+            user: 
+              type: "string"
+              default: "bn_airflow"
+              description: "non-root Username for Airflow Database"
+            password: 
+              type: "string"
+              default: ""
+              description: "Database password"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret resource containing the DB password"
+            existingSecretPasswordKey: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret key containing the DB password"
+            database: 
+              type: "string"
+              default: "bitnami_airflow"
+              description: "Database name"
+            port: 
+              type: "number"
+              default: 5432
+              description: "Database port number"
+        redis: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Redis&trade; helm"
+            auth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Switch to enable or disable authentication"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Redis&trade; password"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of existing secret object containing the password"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "Cluster settings"
+        externalRedis: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Redis&trade; host"
+            port: 
+              type: "number"
+              default: 6379
+              description: "Redis&trade; port number"
+            password: 
+              type: "string"
+              default: ""
+              description: "Redis&trade; password"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret resource containing the Redis&trade; password in a 'redis-password' key"
+            username: 
+              type: "string"
+              default: ""
+              description: "Redis&trade; username"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Airflow Exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/airflow-exporter"
+                  description: "Airflow Exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.20210126.0-debian-10-r240"
+                  description: "Airflow Exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Airflow Exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Airflow Exporter image pull secrets"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor resource"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "The namespace in which the ServiceMonitor will be created"
+                interval: 
+                  type: "string"
+                  default: "60s"
+                  description: "Interval in which prometheus scrapes"
+                scrapeTimeout: 
+                  type: "string"
+                  default: "10s"
+                  description: "Scrape Timeout duration for prometheus"
+                labels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels to attach"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra environment variables"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra environment variables (in case of sensitive data)"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter resource requests and limits"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Metrics exporter labels and tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter pod Annotation and Labels"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: airflow
+          version: "11.1.1"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

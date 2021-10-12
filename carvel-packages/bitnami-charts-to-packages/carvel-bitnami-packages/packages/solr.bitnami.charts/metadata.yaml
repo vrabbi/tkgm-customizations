@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: solr.bitnami.charts
+spec:
+  displayName: "solr"
+  longDescription: "Bitnami solr 8.9.0 - Helm Chart version 2.0.7"
+  shortDescription: "solr Version 8.9.0"
+  categories:
+  - bitnami
+  - helm

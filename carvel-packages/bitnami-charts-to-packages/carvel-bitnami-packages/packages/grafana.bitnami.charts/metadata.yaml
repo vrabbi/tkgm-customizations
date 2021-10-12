@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: grafana.bitnami.charts
+spec:
+  displayName: "grafana"
+  longDescription: "Bitnami grafana 8.2.1 - Helm Chart version 6.3.3"
+  shortDescription: "grafana Version 8.2.1"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: metrics-server.bitnami.charts
+spec:
+  displayName: "metrics-server"
+  longDescription: "Bitnami metrics-server 0.5.1 - Helm Chart version 5.10.4"
+  shortDescription: "metrics-server Version 0.5.1"
+  categories:
+  - bitnami
+  - helm

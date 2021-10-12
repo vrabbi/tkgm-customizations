@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: node-exporter.bitnami.charts
+spec:
+  displayName: "node-exporter"
+  longDescription: "Bitnami node-exporter 1.2.2 - Helm Chart version 2.3.9"
+  shortDescription: "node-exporter Version 1.2.2"
+  categories:
+  - bitnami
+  - helm

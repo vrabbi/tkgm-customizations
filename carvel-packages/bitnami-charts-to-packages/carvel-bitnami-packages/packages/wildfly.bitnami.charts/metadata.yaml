@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: wildfly.bitnami.charts
+spec:
+  displayName: "wildfly"
+  longDescription: "Bitnami wildfly 24.0.1 - Helm Chart version 11.1.4"
+  shortDescription: "wildfly Version 24.0.1"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: argo-workflows.bitnami.charts
+spec:
+  displayName: "argo-workflows"
+  longDescription: "Bitnami argo-workflows 3.1.13 - Helm Chart version 0.1.1"
+  shortDescription: "argo-workflows Version 3.1.13"
+  categories:
+  - bitnami
+  - helm

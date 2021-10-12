@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: apache.bitnami.charts
+spec:
+  displayName: "apache"
+  longDescription: "Bitnami apache 2.4.51 - Helm Chart version 8.8.4"
+  shortDescription: "apache Version 2.4.51"
+  categories:
+  - bitnami
+  - helm

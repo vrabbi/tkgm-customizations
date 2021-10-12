@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: mxnet.bitnami.charts
+spec:
+  displayName: "mxnet"
+  longDescription: "Bitnami mxnet 1.8.0 - Helm Chart version 2.3.16"
+  shortDescription: "mxnet Version 1.8.0"
+  categories:
+  - bitnami
+  - helm

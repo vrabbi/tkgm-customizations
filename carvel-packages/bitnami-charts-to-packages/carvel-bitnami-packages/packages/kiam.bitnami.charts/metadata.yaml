@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kiam.bitnami.charts
+spec:
+  displayName: "kiam"
+  longDescription: "Bitnami kiam 3.6.0 - Helm Chart version 0.3.15"
+  shortDescription: "kiam Version 3.6.0"
+  categories:
+  - bitnami
+  - helm

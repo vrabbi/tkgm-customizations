@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kong.bitnami.charts
+spec:
+  displayName: "kong"
+  longDescription: "Bitnami kong 2.6.0 - Helm Chart version 4.1.4"
+  shortDescription: "kong Version 2.6.0"
+  categories:
+  - bitnami
+  - helm

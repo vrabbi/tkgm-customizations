@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: drupal.bitnami.charts
+spec:
+  displayName: "drupal"
+  longDescription: "Bitnami drupal 9.2.7 - Helm Chart version 10.3.4"
+  shortDescription: "drupal Version 9.2.7"
+  categories:
+  - bitnami
+  - helm

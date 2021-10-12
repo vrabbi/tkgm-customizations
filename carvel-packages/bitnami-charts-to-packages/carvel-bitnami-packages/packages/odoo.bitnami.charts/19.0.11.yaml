@@ -1,0 +1,667 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: odoo.bitnami.charts.19.0.11
+spec:
+  refName: odoo.bitnami.charts
+  version: 19.0.11
+  releaseNotes: |
+        A suite of web based open source business apps.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Odoo image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/odoo"
+              description: "Odoo image repository"
+            tag: 
+              type: "string"
+              default: "14.0.20211010-debian-10-r0"
+              description: "Odoo image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Odoo image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Odoo image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        odooEmail: 
+          type: "string"
+          default: "user@example.com"
+          description: "Odoo user email"
+        odooPassword: 
+          type: "string"
+          default: ""
+          description: "Odoo user password"
+        loadDemoData: 
+          type: "boolean"
+          default: false
+          description: "Whether to load demo data for all modules during initialization"
+        customPostInitScripts: 
+          type: "object"
+          default: "{}"
+          description: "Custom post-init.d user scripts"
+        smtpHost: 
+          type: "string"
+          default: ""
+          description: "SMTP server host"
+        smtpPort: 
+          type: "string"
+          default: ""
+          description: "SMTP server port"
+        smtpUser: 
+          type: "string"
+          default: ""
+          description: "SMTP username"
+        smtpPassword: 
+          type: "string"
+          default: ""
+          description: "SMTP user password"
+        smtpProtocol: 
+          type: "string"
+          default: ""
+          description: "SMTP protocol"
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing secret containing Odoo credentials"
+        smtpExistingSecret: 
+          type: "string"
+          default: ""
+          description: "The name of an existing secret with SMTP credentials"
+        allowEmptyPassword: 
+          type: "boolean"
+          default: false
+          description: "Allow the container to be started with blank passwords"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array with extra environment variables to add to the Odoo container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Odoo replicas to deploy"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Odoo deployment strategy type"
+            rollingUpdate: 
+              type: "object"
+              default: "{}"
+              description: "Odoo deployment rolling update configuration parameters"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Alternate scheduler"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to create"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Odoo pod host aliases"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for Odoo pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for Odoo container(s)"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the Odoo pod"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the Odoo pods"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Odoo pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for Odoo pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Odoo container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Odoo container"
+        containerPort: 
+          type: "number"
+          default: 8069
+          description: "Odoo HTTP container port"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enabled Odoo pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set Odoo pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enabled Odoo containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set Odoo container's Security Context runAsUser"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Path for to check for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 600
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 30
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Path to check for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        startupProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable startupProbe"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Path to check for startupProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 300
+              description: "Initial delay seconds for startupProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for startupProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for startupProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for startupProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for startupProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom livenessProbe that overrides the default one"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readinessProbe that overrides the default one"
+        customStartupProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom startupProbe that overrides the default one"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Odoo service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Odoo service HTTP port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Node port for HTTP"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Odoo service Cluster IP"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Odoo service Load Balancer IP"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Odoo service Load Balancer sources"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Odoo service external traffic policy"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for Odoo service"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Extra port to expose on Odoo service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress record generation for Odoo"
+            selfSigned: 
+              type: "boolean"
+              default: false
+              description: "Create a TLS secret for this ingress record using self-signed certificates generated by Helm"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "odoo.local"
+              description: "Default host for the ingress record"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Default path for the ingress record"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the host defined at `ingress.hostname` parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional hostname(s) to be covered with the ingress record"
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional arbitrary paths that may need to be added to the ingress under the main host"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Custom TLS certificates as secrets"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using Persistent Volume Claims"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume storage class"
+            accessModes: 
+              type: "array"
+              default: "[]"
+              description: "Persistent Volume access modes"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "Persistent Volume access mode (DEPRECATED: use `persistence.accessModes` instead)"
+            size: 
+              type: "string"
+              default: "10Gi"
+              description: "Persistent Volume size"
+            dataSource: 
+              type: "object"
+              default: "{}"
+              description: "Custom PVC data source"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "The name of an existing PVC to use for persistence"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+            securityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "Set init container's Security Context runAsUser"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number/percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number/percentage of pods that may be made unavailable"
+        autoscaling: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Horizontal POD autoscaling for Odoo"
+            minReplicas: 
+              type: "number"
+              default: 1
+              description: "Minimum number of Odoo replicas"
+            maxReplicas: 
+              type: "number"
+              default: 11
+              description: "Maximum number of Odoo replicas"
+            targetCPU: 
+              type: "number"
+              default: 50
+              description: "Target CPU utilization percentage"
+            targetMemory: 
+              type: "number"
+              default: 50
+              description: "Target Memory utilization percentage"
+        postgresql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy PostgreSQL container(s)"
+            postgresqlUsername: 
+              type: "string"
+              default: "bn_odoo"
+              description: "PostgreSQL username"
+            postgresqlPassword: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL password"
+            postgresqlDatabase: 
+              type: "string"
+              default: "bitnami_odoo"
+              description: "PostgreSQL database"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing secret object"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable PostgreSQL persistence using PVC"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Provide an existing `PersistentVolumeClaim`, the value is evaluated as a template"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "PVC Storage Class for PostgreSQL volume"
+                accessMode: 
+                  type: "string"
+                  default: "ReadWriteOnce"
+                  description: "PVC Access Mode for PostgreSQL volume"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "PVC Storage Request for PostgreSQL volume"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "External Database server host"
+            port: 
+              type: "number"
+              default: 5432
+              description: "External Database server port"
+            user: 
+              type: "string"
+              default: "bn_odoo"
+              description: "External Database username"
+            password: 
+              type: "string"
+              default: ""
+              description: "External Database user password"
+            database: 
+              type: "string"
+              default: "bitnami_odoo"
+              description: "External Database database name"
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable PostgreSQL user and database creation (when using an external db)"
+            postgresqlPostgresUser: 
+              type: "string"
+              default: "postgres"
+              description: "External Database admin username"
+            postgresqlPostgresPassword: 
+              type: "string"
+              default: ""
+              description: "External Database admin password"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing secret object"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: odoo
+          version: "19.0.11"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

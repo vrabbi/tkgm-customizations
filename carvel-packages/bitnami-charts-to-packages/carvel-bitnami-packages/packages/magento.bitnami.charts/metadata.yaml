@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: magento.bitnami.charts
+spec:
+  displayName: "magento"
+  longDescription: "Bitnami magento 2.4.3 - Helm Chart version 19.0.4"
+  shortDescription: "magento Version 2.4.3"
+  categories:
+  - bitnami
+  - helm

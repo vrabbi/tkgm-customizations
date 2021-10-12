@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: dataplatform-bp2.bitnami.charts
+spec:
+  displayName: "dataplatform-bp2"
+  longDescription: "Bitnami dataplatform-bp2 0.0.10 - Helm Chart version 8.0.3"
+  shortDescription: "dataplatform-bp2 Version 0.0.10"
+  categories:
+  - bitnami
+  - helm

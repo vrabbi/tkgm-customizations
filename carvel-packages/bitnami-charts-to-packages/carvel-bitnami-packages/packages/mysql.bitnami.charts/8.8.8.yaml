@@ -1,0 +1,1018 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: mysql.bitnami.charts.8.8.8
+spec:
+  refName: mysql.bitnami.charts
+  version: 8.8.8
+  releaseNotes: |
+        Chart to create a Highly available MySQL cluster
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Cluster domain"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Common annotations to add to all MySQL resources (sub-charts are not considered). Evaluated as a template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Common labels to add to all MySQL resources (sub-charts are not considered). Evaluated as a template"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array with extra yaml to deploy with the chart. Evaluated as a template"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Use an alternate scheduler, e.g. \"stork\"."
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "MySQL image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/mysql"
+              description: "MySQL image repository"
+            tag: 
+              type: "string"
+              default: "8.0.26-debian-10-r60"
+              description: "MySQL image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "MySQL image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        architecture: 
+          type: "string"
+          default: "standalone"
+          description: "MySQL architecture (`standalone` or `replication`)"
+        auth: 
+          type: "object"
+          properties: 
+            rootPassword: 
+              type: "string"
+              default: ""
+              description: "Password for the `root` user. Ignored if existing secret is provided"
+            database: 
+              type: "string"
+              default: "my_database"
+              description: "Name for a custom database to create"
+            username: 
+              type: "string"
+              default: ""
+              description: "Name for a custom user to create"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the new user. Ignored if existing secret is provided"
+            replicationUser: 
+              type: "string"
+              default: "replicator"
+              description: "MySQL replication user"
+            replicationPassword: 
+              type: "string"
+              default: ""
+              description: "MySQL replication user password. Ignored if existing secret is provided"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Use existing secret for password details. The secret has to contain the keys `mysql-root-password`, `mysql-replication-password` and `mysql-password`"
+            forcePassword: 
+              type: "boolean"
+              default: false
+              description: "Force users to specify required passwords"
+            usePasswordFiles: 
+              type: "boolean"
+              default: false
+              description: "Mount credentials as files instead of using an environment variable"
+            customPasswordFiles: 
+              type: "object"
+              default: "{}"
+              description: "Use custom password files when `auth.usePasswordFiles` is set to `true`. Define path for keys `root` and `user`, also define `replicator` if `architecture` is set to `replication`"
+        initdbScripts: 
+          type: "object"
+          default: "{}"
+          description: "Dictionary of initdb scripts"
+        initdbScriptsConfigMap: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with the initdb scripts (Note: Overrides `initdbScripts`)"
+        primary: 
+          type: "object"
+          properties: 
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command on MySQL Primary container(s) (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args on MySQL Primary container(s) (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            configuration: 
+              type: "string"
+              default: "\"\""
+              description: "Configure MySQL Primary with a custom my.cnf file"
+            existingConfiguration: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with MySQL Primary configuration."
+            updateStrategy: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy type for the MySQL primary statefulset"
+            rollingUpdatePartition: 
+              type: "string"
+              default: ""
+              description: "Partition update strategy for MySQL Primary statefulset"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations for MySQL primary pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "MySQL primary pod affinity preset. Ignored if `primary.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "MySQL primary pod anti-affinity preset. Ignored if `primary.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL primary node affinity preset type. Ignored if `primary.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL primary node label key to match Ignored if `primary.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "MySQL primary node label values to match. Ignored if `primary.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for MySQL primary pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for MySQL primary pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for MySQL primary pods assignment"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for MySQL primary pods"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the mounted volumes' filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "MySQL primary container securityContext"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the MySQL primary container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for MySQL primary containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for MySQL primary containers"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 10
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe for MySQL primary containers"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe for MySQL primary containers"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default startup probe for MySQL primary containers"
+            extraFlags: 
+              type: "string"
+              default: ""
+              description: "MySQL primary additional command line flags"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to be set on MySQL primary containers"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for MySQL primary containers"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for MySQL primary containers"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence on MySQL primary replicas using a `PersistentVolumeClaim`. If false, use emptyDir"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Name of an existing `PersistentVolumeClaim` for MySQL primary replicas"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL primary persistent volume storage Class"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "MySQL primary persistent volume claim annotations"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "MySQL primary persistent volume access Modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "MySQL primary persistent volume size"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector to match an existing Persistent Volume"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes to the MySQL Primary pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the MySQL Primary container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers for the MySQL Primary pod(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers for the MySQL Primary pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "MySQL Primary K8s service type"
+                port: 
+                  type: "number"
+                  default: 3306
+                  description: "MySQL Primary K8s service port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL Primary K8s service node port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL Primary K8s service clusterIP IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL Primary loadBalancerIP if service type is `LoadBalancer`"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Addresses that are allowed when MySQL Primary service is LoadBalancer"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Provide any additional annotations which may be required"
+            pdb: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation for MySQL primary pods"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of MySQL primary pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of MySQL primary pods that may be made unavailable"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "MySQL Primary pod label. If labels are same as commonLabels , this will take precedence"
+        secondary: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of MySQL secondary replicas"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command on MySQL Secondary container(s) (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args on MySQL Secondary container(s) (useful when using custom images)"
+            configuration: 
+              type: "string"
+              default: "\"\""
+              description: "Configure MySQL Secondary with a custom my.cnf file"
+            existingConfiguration: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with MySQL Secondary configuration."
+            updateStrategy: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy type for the MySQL secondary statefulset"
+            rollingUpdatePartition: 
+              type: "string"
+              default: ""
+              description: "Partition update strategy for MySQL Secondary statefulset"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations for MySQL secondary pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "MySQL secondary pod affinity preset. Ignored if `secondary.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "MySQL secondary pod anti-affinity preset. Ignored if `secondary.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL secondary node affinity preset type. Ignored if `secondary.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL secondary node label key to match Ignored if `secondary.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "MySQL secondary node label values to match. Ignored if `secondary.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for MySQL secondary pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for MySQL secondary pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for MySQL secondary pods assignment"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for MySQL secondary pods"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the mounted volumes' filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "MySQL secondary container securityContext"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the MySQL secondary container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for MySQL secondary containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for MySQL secondary containers"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 15
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe for MySQL secondary containers"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe for MySQL secondary containers"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default startup probe for MySQL secondary containers"
+            extraFlags: 
+              type: "string"
+              default: ""
+              description: "MySQL secondary additional command line flags"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra environment variables on MySQL secondary containers"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for MySQL secondary containers"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for MySQL secondary containers"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence on MySQL secondary replicas using a `PersistentVolumeClaim`"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL secondary persistent volume storage Class"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "MySQL secondary persistent volume claim annotations"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "MySQL secondary persistent volume access Modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "MySQL secondary persistent volume size"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector to match an existing Persistent Volume"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes to the MySQL secondary pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the MySQL secondary container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers for the MySQL secondary pod(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers for the MySQL secondary pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "MySQL secondary Kubernetes service type"
+                port: 
+                  type: "number"
+                  default: 3306
+                  description: "MySQL secondary Kubernetes service port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL secondary Kubernetes service node port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL secondary Kubernetes service clusterIP IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "MySQL secondary loadBalancerIP if service type is `LoadBalancer`"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Addresses that are allowed when MySQL secondary service is LoadBalancer"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Provide any additional annotations which may be required"
+            pdb: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation for MySQL secondary pods"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of MySQL secondary pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of MySQL secondary pods that may be made unavailable"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod labels for MySQL secondary pods"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable the creation of a ServiceAccount for MySQL pods"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of the created ServiceAccount"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for MySQL Service Account"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Whether to create & use RBAC resources or not"
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable creation of NetworkPolicy resources"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "The Policy model to apply."
+            explicitNamespacesSelector: 
+              type: "object"
+              default: "{}"
+              description: "A Kubernetes LabelSelector to explicitly select namespaces from which ingress traffic could be allowed to MySQL"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r202"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Init container volume-permissions resources"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/mysqld-exporter"
+                  description: "Exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.13.0-debian-10-r105"
+                  description: "Exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type for MySQL Prometheus Exporter"
+                port: 
+                  type: "number"
+                  default: 9104
+                  description: "MySQL Prometheus Exporter service port"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus exporter service annotations"
+            extraArgs: 
+              type: "object"
+              properties: 
+                primary: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra args to be passed to mysqld_exporter on Primary pods"
+                secondary: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra args to be passed to mysqld_exporter on Secondary pods"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for MySQL prometheus exporter containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for MySQL prometheus exporter containers"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the namespace in which the serviceMonitor resource will be created"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "Specify the interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the timeout after which the scrape is ended"
+                relabellings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify Metric Relabellings to add to the scrape endpoint"
+                honorLabels: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify honorLabels parameter to add the scrape endpoint"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Used to pass Labels that are used by the Prometheus installed in your cluster to select Service Monitors to work with"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: mysql
+          version: "8.8.8"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

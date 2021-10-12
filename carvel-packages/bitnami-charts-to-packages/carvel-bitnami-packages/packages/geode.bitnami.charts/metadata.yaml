@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: geode.bitnami.charts
+spec:
+  displayName: "geode"
+  longDescription: "Bitnami geode 1.14.0 - Helm Chart version 0.2.0"
+  shortDescription: "geode Version 1.14.0"
+  categories:
+  - bitnami
+  - helm

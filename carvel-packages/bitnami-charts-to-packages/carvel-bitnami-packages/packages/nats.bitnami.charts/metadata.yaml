@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: nats.bitnami.charts
+spec:
+  displayName: "nats"
+  longDescription: "Bitnami nats 2.6.1 - Helm Chart version 6.4.10"
+  shortDescription: "nats Version 2.6.1"
+  categories:
+  - bitnami
+  - helm

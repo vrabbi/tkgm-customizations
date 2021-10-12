@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kubernetes-event-exporter.bitnami.charts
+spec:
+  displayName: "kubernetes-event-exporter"
+  longDescription: "Bitnami kubernetes-event-exporter 0.10.0 - Helm Chart version 1.1.15"
+  shortDescription: "kubernetes-event-exporter Version 0.10.0"
+  categories:
+  - bitnami
+  - helm

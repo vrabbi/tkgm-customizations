@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: cassandra.bitnami.charts
+spec:
+  displayName: "cassandra"
+  longDescription: "Bitnami cassandra 4.0.1 - Helm Chart version 9.0.0"
+  shortDescription: "cassandra Version 4.0.1"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: cert-manager.bitnami.charts
+spec:
+  displayName: "cert-manager"
+  longDescription: "Bitnami cert-manager 1.5.4 - Helm Chart version 0.1.21"
+  shortDescription: "cert-manager Version 1.5.4"
+  categories:
+  - bitnami
+  - helm

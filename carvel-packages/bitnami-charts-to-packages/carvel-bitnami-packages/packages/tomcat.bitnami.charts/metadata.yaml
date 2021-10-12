@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: tomcat.bitnami.charts
+spec:
+  displayName: "tomcat"
+  longDescription: "Bitnami tomcat 10.0.12 - Helm Chart version 9.4.3"
+  shortDescription: "tomcat Version 10.0.12"
+  categories:
+  - bitnami
+  - helm

@@ -1,0 +1,11 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: owncloud.bitnami.charts
+spec:
+  displayName: "owncloud"
+  longDescription: "Bitnami owncloud 10.8.0 - Helm Chart version 10.2.27"
+  shortDescription: "owncloud Version 10.8.0"
+  categories:
+  - bitnami
+  - helm
