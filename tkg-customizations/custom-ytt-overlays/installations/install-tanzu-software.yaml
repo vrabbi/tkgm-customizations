@@ -1,0 +1,70 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:yaml", "yaml")
+
+#@ def tanzu_software_install_job():
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: tanzu-software-installer
+  namespace: kube-system
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: tanzu-software-installer
+subjects:
+- kind: ServiceAccount
+  name: tanzu-software-installer
+  namespace: kube-system
+roleRef:
+  kind: ClusterRole
+  name: cluster-admin
+  apiGroup: rbac.authorization.k8s.io
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: tanzu-software-installer
+  namespace: kube-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: installer
+        image: #@ data.values.TKG_HELPER_IMAGE_REF
+        command: ["/bin/sh"]
+        args:
+          - -c
+          - #@ "/install-tanzu-software.sh --in-cluster true --install-cert-manager {} --install-contour {} --install-external-dns {} --dns-server-fqdn {} --dns-zone {} --dns-record-owner {} --install-prometheus {} --install-grafana {} --grafana-password {} --grafana-fqdn {} --install-fluent-bit {} --cluster-name {} --mgmt-cluster-name {} --syslog-server {} --syslog-port {} --syslog-protocol {} --syslog-format {} --tanzu-net-user {} --tanzu-net-password {} --install-tbs {} --tbs-bundle {} --tbs-registry-repo {} --tbs-registry-user {} --tbs-registry-password {} --tbs-registry-ca-cert-content {} --install-tanzu-postgres {} --install-tanzu-rabbitmq {} --rabbitmq-bundle {} --install-tanzu-mysql {} --install-velero {} --velero-s3-access-key {} --velero-s3-secret-key {} --velero-s3-bucket-name {} --velero-s3-region {} --velero-s3-url {}".format(data.values.INSTALL_CERT_MANAGER, data.values.INSTALL_CONTOUR, data.values.INSTALL_EXTERNAL_DNS, data.values.DNS_SERVER, data.values.DNS_ZONE, data.values.CLUSTER_NAME, data.values.INSTALL_PROMETHEUS, data.values.INSTALL_GRAFANA, data.values.GRAFANA_PASSWORD:, data.values.GRAFANA_FQDN, data.values.INSTALL_FLUENT_BIT, data.values.CLUSTER_NAME, data.values.MGMT_CLUSTER_NAME, data.values.SYSLOG_SERVER, data.values.SYSLOG_PORT, data.values.SYSLOG_PROTOCOL, data.values.SYSLOG_FORMAT, data.values.TANZU_NET_USER, data.values.TANZU_NET_PASSWORD, data.values.INSTALL_TBS, data.values.TBS_BUNDLE, data.values.TBS_REGISTRY_REPO, data.values.TBS_REGISTRY_USER, data.values.TBS_REGISTRY_PASSWORD, data.values.TBS_REGISTRY_CA_CERT_B64, data.values.INSTALL_TANZU_POSTGRES, data.values.INSTALL_TANZU_RABBITMQ, data.values.RABBITMQ_BUNDLE, data.values.INSTALL_TANZU_MYSQL, data.values.INSTALL_VELERO, data.values.VELERO_S3_ACCESS_KEY, data.values.VELERO_S3_SECRET_KEY, data.values.VELERO_S3_BUCKET_NAME, data.values.VELERO_S3_REGION, data.values.VELERO_S3_URL)
+      restartPolicy: Never
+      serviceAccountName: tanzu-software-installer
+  backoffLimit: 10
+#@ end
+
+
+#@ if data.values.ENABLE_TANZU_SOFTWARE_AUTO_INSTALL and data.values.TKG_CLUSTER_ROLE == "workload":
+---
+apiVersion: addons.cluster.x-k8s.io/v1alpha3
+kind: ClusterResourceSet
+metadata:
+  name: #@ "{}-tanzu-software-auto-install".format(data.values.CLUSTER_NAME)
+  labels:
+    cluster.x-k8s.io/cluster-name: #@ data.values.CLUSTER_NAME
+spec:
+  strategy: "ApplyOnce"
+  clusterSelector:
+    matchLabels:
+      tkg.tanzu.vmware.com/cluster-name: #@ data.values.CLUSTER_NAME
+  resources:
+  - name: #@ "{}-tanzu-software-auto-install".format(data.values.CLUSTER_NAME)
+    kind: ConfigMap
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: #@ "{}-tanzu-software-auto-install".format(data.values.CLUSTER_NAME)
+data:
+  data: #@ yaml.encode(tanzu_software_install_job())
+#@ end
