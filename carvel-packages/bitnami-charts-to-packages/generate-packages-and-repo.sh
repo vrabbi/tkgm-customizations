@@ -29,12 +29,12 @@ for f in *; do
           else
             continue
           fi
-          mkdir -p /tmp/carvel-bitnami-packages/$f-package/packages
+          mkdir -p /tmp/carvel-bitnami-packages/packages/$f.bitnami.charts
           cat <<EOF > /tmp/carvel-bitnami-packages/packages/$f.bitnami.charts/metadata.yaml
 apiVersion: data.packaging.carvel.dev/v1alpha1
 kind: PackageMetadata
 metadata:
-  name: redis.bitnami.charts
+  name: ${f}.bitnami.charts
 spec:
   displayName: "${f}"
   longDescription: "Bitnami ${f} ${APP_VERSION} - Helm Chart version ${CHART_VERSION}"
@@ -66,10 +66,7 @@ spec:
           repository:
             url: https://charts.bitnami.com/bitnami
       template:
-      - helmTemplate:
-          valuesFrom:
-          - secretRef:
-              name: ${f}-values
+      - helmTemplate: {}
       deploy:
       - kapp:
           delete:
