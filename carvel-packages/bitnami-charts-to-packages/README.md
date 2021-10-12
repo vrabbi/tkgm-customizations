@@ -33,7 +33,7 @@ kbld -f carvel-bitnami-packages/packages/ --imgpkg-lock-output carvel-bitnami-pa
 ``` bash
 imgpkg push -b ${REPO_HOST}/packages/bitnami-charts-repo:1.0.0 -f carvel-bitnami-packages
 ```  
-4. Generate the Package Repo manifest to add the repo to a cluster
+4. Generate the Package Repo manifest
 ``` bash
 cat > repo.yml << EOF
 ---
@@ -47,7 +47,10 @@ spec:
       image: ${REPO_HOST}/packages/bitnami-charts-repo:1.0.0
 EOF
 ```  
-
+5. in TCE (0.9.1+) or TKGm (1.4+) install the package via the Tanzu CLI globally
+``` bash
+tanzu package repository add bitnami-charts --url ghcr.io/vrabbi/bitnami-charts-repo:1.0.0 -n tanzu-package-repo-global --create-namespace
+```
 ## Usage Notes
 * the script generates the OpenAPIv3 Schema for the entire Helm Values file on the package for ease of discovery of allowed values.  
 * the same values and in the same format as can be passed to helm can be done now with the packages.  
