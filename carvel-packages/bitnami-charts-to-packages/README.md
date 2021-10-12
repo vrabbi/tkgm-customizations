@@ -40,7 +40,7 @@ cat > repo.yml << EOF
 apiVersion: packaging.carvel.dev/v1alpha1
 kind: PackageRepository
 metadata:
-  name: simple-package-repository
+  name: bitnami-charts-repo
 spec:
   fetch:
     imgpkgBundle:
