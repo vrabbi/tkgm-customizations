@@ -1,0 +1,549 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: dokuwiki.bitnami.charts.11.2.7
+spec:
+  refName: dokuwiki.bitnami.charts
+  version: 11.2.7
+  releaseNotes: |
+        DokuWiki is a standards-compliant, simple to use wiki optimized for creating documentation. It is targeted at developer teams, workgroups, and small companies. All data is stored in plain text files, so no database is required.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override dokuwiki.fullname template with a string (will prepend the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override dokuwiki.fullname template with a string"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)."
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "DokuWiki image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/dokuwiki"
+              description: "DokuWiki image repository"
+            tag: 
+              type: "string"
+              default: "20200729.0.0-debian-10-r370"
+              description: "DokuWiki image tag"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Image pull policy"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debugging"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        dokuwikiUsername: 
+          type: "string"
+          default: "user"
+          description: "User of the application"
+        dokuwikiPassword: 
+          type: "string"
+          default: ""
+          description: "Application password"
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Use an existing secret with the dokuwiki password"
+        dokuwikiEmail: 
+          type: "string"
+          default: "user@example.com"
+          description: "Admin email"
+        dokuwikiFullName: 
+          type: "string"
+          default: "User Name"
+          description: "User's Full Name"
+        dokuwikiWikiName: 
+          type: "string"
+          default: "My Wiki"
+          description: "Wiki name"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using PVC"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for DokuWiki volume"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "PVC Access Mode for DokuWiki volume"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for DokuWiki volume"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Name of an existing PVC to be used"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable securityContext on for DokuWiki deployment"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group to configure permissions for volumes"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable securityContext on for DokuWiki deployment"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User for the securityContext"
+        resources: 
+          type: "object"
+          properties: 
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable the liveness probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Delay before liveness probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Minimum consecutive failures to be considered failed"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes to be considered successful"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable the readiness probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Delay before readinessProbe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Minimum consecutive failures to be considered failed"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes to be considered successful"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "An array to add extra env vars"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret containing extra env vars (in case of sensitive data)"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "LifecycleHook to set additional configuration at startup. Evaluated as a template"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add additional labels to the pod (evaluated as a template)"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional containers to the pod (evaluated as a template)"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Kubernetes Service type"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Use serviceLoadBalancerIP to request a specific static IP, otherwise leave blank"
+            port: 
+              type: "number"
+              default: 80
+              description: "Service HTTP port"
+            httpsPort: 
+              type: "number"
+              default: 443
+              description: "Service HTTPS port"
+            nodePorts: 
+              type: "object"
+              default: "{}"
+              description: "Use nodePorts to request some specific ports when using NodePort"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress Path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "dokuwiki.local"
+              description: "When the ingress is enabled, a host pointing to this will be created"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to Dokuwiki. You may need to set this to '/*' in order to use this"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image name"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r202"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a exporter side-car"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Apache exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/apache-exporter"
+                  description: "Apache exporter image name"
+                tag: 
+                  type: "string"
+                  default: "0.10.1-debian-10-r4"
+                  description: "Apache exporter image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for Metrics exporter pod"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Exporter resource requests/limit"
+        certificates: 
+          type: "object"
+          properties: 
+            customCertificate: 
+              type: "object"
+              properties: 
+                certificateSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing the certificate and key to add"
+                chainSecret: 
+                  type: "object"
+                  properties: 
+                    name: 
+                      type: "string"
+                      default: ""
+                      description: "Name of the secret containing the certificate chain"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Key of the certificate chain file inside the secret"
+                certificateLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+                  description: "Location in the container to store the certificate"
+                keyLocation: 
+                  type: "string"
+                  default: "/etc/ssl/private/ssl-cert-snakeoil.key"
+                  description: "Location in the container to store the private key"
+                chainLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/mychain.pem"
+                  description: "Location in the container to store the certificate chain"
+            customCAs: 
+              type: "array"
+              default: "[]"
+              description: "Defines a list of secrets to import into the container trust store"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Container sidecar extra environment variables (eg proxy)"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars (in case of sensitive data)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Container sidecar registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Container sidecar image"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r202"
+                  description: "Container sidecar image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Container sidecar image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Container sidecar image pull secrets"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: dokuwiki
+          version: "11.2.7"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

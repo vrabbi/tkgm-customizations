@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: nats.bitnami.charts
+spec:
+  displayName: "nats"
+  longDescription: "Bitnami nats Helm Chart"
+  shortDescription: "nats Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - nats
+  - messaging
+  - addressing
+  - discovery

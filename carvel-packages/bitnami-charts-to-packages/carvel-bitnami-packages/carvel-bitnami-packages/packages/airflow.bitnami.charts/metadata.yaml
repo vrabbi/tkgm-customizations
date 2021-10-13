@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: airflow.bitnami.charts
+spec:
+  displayName: "airflow"
+  longDescription: "Bitnami airflow Helm Chart"
+  shortDescription: "airflow Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - apache
+  - airflow
+  - workflow
+  - dag

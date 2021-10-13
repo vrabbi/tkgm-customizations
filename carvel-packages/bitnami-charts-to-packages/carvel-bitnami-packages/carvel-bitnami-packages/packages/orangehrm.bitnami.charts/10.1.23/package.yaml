@@ -1,0 +1,722 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: orangehrm.bitnami.charts.10.1.23
+spec:
+  refName: orangehrm.bitnami.charts
+  version: 10.1.23
+  releaseNotes: |
+        OrangeHRM is a free HR management system that offers a wealth of modules to suit the needs of your business.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override orangehrm.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override orangehrm.fullname template"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Common annotations to add to all OrangeHRM resources (sub-charts are not considered). Evaluated as a template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Common labels to add to all OrangeHRM resources (sub-charts are not considered). Evaluated as a template"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "OrangeHRM image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/orangehrm"
+              description: "OrangeHRM image repository"
+            tag: 
+              type: "string"
+              default: "4.8.0-0-debian-10-r181"
+              description: "OrangeHRM Image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "OrangeHRM image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of OrangeHRM Pods to run (requires ReadWriteMany PVC support)"
+        orangehrmSkipInstall: 
+          type: "boolean"
+          default: false
+          description: "Skip OrangeHRM installation wizard. Useful for migrations and restoring from SQL dump"
+        orangehrmUsername: 
+          type: "string"
+          default: "admin"
+          description: "User of the application"
+        orangehrmPassword: 
+          type: "string"
+          default: ""
+          description: "Application password"
+        orangehrmEnforcePasswordStrength: 
+          type: "boolean"
+          default: true
+          description: "Whether the OrangeHRM password validation should use strong or medium level"
+        allowEmptyPassword: 
+          type: "boolean"
+          default: true
+          description: "Allow DB blank passwords"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "An array to add extra env vars"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with extra environment variables"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret with extra environment variables"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra volumes to be added to the deployment. Requires setting `extraVolumeMounts`"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra volume mounts to be added to the container. Normally used with `extraVolumes`"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Extra init containers to add to the deployment"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Extra sidecar containers to add to the deployment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Use existing secret for the application password"
+        smtpHost: 
+          type: "string"
+          default: ""
+          description: "SMTP host"
+        smtpPort: 
+          type: "string"
+          default: ""
+          description: "SMTP port"
+        smtpUser: 
+          type: "string"
+          default: ""
+          description: "SMTP user"
+        smtpPassword: 
+          type: "string"
+          default: ""
+          description: "SMTP password. Ignored if `smtpExistingSecret` is set"
+        smtpProtocol: 
+          type: "string"
+          default: ""
+          description: "SMTP Protocol (options: ssl, none)"
+        smtpExistingSecret: 
+          type: "string"
+          default: ""
+          description: "Use an existing secret for the SMTP Password"
+        containerPorts: 
+          type: "object"
+          default: "{}"
+          description: "Container ports"
+        sessionAffinity: 
+          type: "string"
+          default: "None"
+          description: "Control where client requests go, to the same pod or round-robin"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using PVC"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "OrangeHRM Data Persistent Volume Storage Class"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "PVC Access Mode for OrangeHRM volume"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for OrangeHRM volume"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "A manually managed Persistent Volume Claim"
+            hostPath: 
+              type: "string"
+              default: ""
+              description: "If defined, the orangehrm-data volume will mount to the specified hostPath"
+            subPath: 
+              type: "string"
+              default: "orangehrm"
+              description: "volumeMount subPath, use it for compatibility with previous versions of the chart"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        resources: 
+          type: "object"
+          properties: 
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable OrangeHRM pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "OrangeHRM pods' group ID"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable OrangeHRM containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "OrangeHRM containers' Security Context"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            path: 
+              type: "string"
+              default: "/symfony/web/index.php"
+              description: "Request path for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            path: 
+              type: "string"
+              default: "/symfony/web/index.php"
+              description: "Request path for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 3
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "LifecycleHooks for the container to automate configuration before or after startup"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Pod extra labels"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Service HTTP port"
+            httpsPort: 
+              type: "number"
+              default: 443
+              description: "Service HTTPS port"
+            httpsTargetPort: 
+              type: "string"
+              default: "https"
+              description: "Service Target HTTPS port"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "OrangeHRM service cluster IP"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Control hosts connecting to \"LoadBalancer\" only"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Load balancer IP for the OrangeHRM Service (optional, cloud specific)"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTP node port"
+                https: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTPS node port"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Provide any additional annotations that may be required (evaluated as a template)"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Extra ports to expose in the service (normally used with the `sidecar` value)"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "orangehrm.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to OrangeHRM. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        mariadb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to deploy a MariaDB server to satisfy the applications database requirements"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "MariaDB architecture. Allowed values: `standalone` or `replication`"
+            auth: 
+              type: "object"
+              properties: 
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the MariaDB `root` user"
+                database: 
+                  type: "string"
+                  default: "bitnami_orangehrm"
+                  description: "Database name to create"
+                username: 
+                  type: "string"
+                  default: "bn_orangehrm"
+                  description: "Database user to create"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the database"
+            primary: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable database persistence using PVC"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "MariaDB primary persistent volume storage Class"
+                    accessModes: 
+                      type: "array"
+                      default: "[\"ReadWriteOnce\"]"
+                      description: "Database Persistent Volume Access Modes"
+                    size: 
+                      type: "string"
+                      default: "8Gi"
+                      description: "Database Persistent Volume Size"
+                    hostPath: 
+                      type: "string"
+                      default: ""
+                      description: "Set path in case you want to use local host path volumes (not recommended in production)"
+                    existingClaim: 
+                      type: "string"
+                      default: ""
+                      description: "Name of an existing `PersistentVolumeClaim` for MariaDB primary replicas"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "Host of the existing database"
+            port: 
+              type: "number"
+              default: 3306
+              description: "Port of the existing database"
+            user: 
+              type: "string"
+              default: "bn_orangehrm"
+              description: "Existing username in the external db"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the above username"
+            database: 
+              type: "string"
+              default: "bitnami_orangehrm"
+              description: "Name of the existing database"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r215"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Apache exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/apache-exporter"
+                  description: "Apache exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.10.1-debian-10-r16"
+                  description: "Apache exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Apache exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter resource requests and limits"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter pod Annotation and Labels"
+        certificates: 
+          type: "object"
+          properties: 
+            customCertificate: 
+              type: "object"
+              properties: 
+                certificateSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing the certificate and key to add"
+                chainSecret: 
+                  type: "object"
+                  properties: 
+                    name: 
+                      type: "string"
+                      default: ""
+                      description: "Name of the secret containing the certificate chain"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Key of the certificate chain file inside the secret"
+                certificateLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+                  description: "Location in the container to store the certificate"
+                keyLocation: 
+                  type: "string"
+                  default: "/etc/ssl/private/ssl-cert-snakeoil.key"
+                  description: "Location in the container to store the private key"
+                chainLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/mychain.pem"
+                  description: "Location in the container to store the certificate chain"
+            customCAs: 
+              type: "array"
+              default: "[]"
+              description: "Defines a list of secrets to import into the container trust store"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Container sidecar extra environment variables"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with extra environment variables"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Container sidecar registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Container sidecar image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r215"
+                  description: "Container sidecar image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Container sidecar image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Container sidecar image pull secrets"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: orangehrm
+          version: "10.1.23"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

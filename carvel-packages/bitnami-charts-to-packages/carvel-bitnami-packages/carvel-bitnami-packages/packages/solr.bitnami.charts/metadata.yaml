@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: solr.bitnami.charts
+spec:
+  displayName: "solr"
+  longDescription: "Bitnami solr Helm Chart"
+  shortDescription: "solr Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - solr
+  - zookeeper
+  - apache

@@ -1,0 +1,576 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: metallb.bitnami.charts.2.5.4
+spec:
+  refName: metallb.bitnami.charts
+  version: 2.5.4
+  releaseNotes: |
+        The Metal LB for Kubernetes
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override metallb.fullname include (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override metallb.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        existingConfigMap: 
+          type: "string"
+          default: ""
+          description: "Specify the name of an externally-defined ConfigMap to use as the configuration. This is mutually exclusive with the `configInline` option."
+        configInline: 
+          type: "object"
+          default: "{}"
+          description: "Specifies MetalLB's configuration directly, in yaml format."
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether to install and use RBAC rules"
+        psp: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "create specifies whether to install Pod Security Policies."
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable NetworkPolicy"
+            ingressNSMatchLabels: 
+              type: "object"
+              default: "{}"
+              description: "Allow connections from other namespaces"
+            ingressNSPodMatchLabels: 
+              type: "object"
+              default: "{}"
+              description: "For other namespaces match by pod labels and namespace labels"
+        prometheusRule: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Prometheus Operator alertmanager alerts are created"
+        controller: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "MetalLB Controller image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/metallb-controller"
+                  description: "MetalLB Controller image repository"
+                tag: 
+                  type: "string"
+                  default: "0.10.2-debian-10-r64"
+                  description: "MetalLB Controller  image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "MetalLB Controller image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "create specifies whether to install and use RBAC rules."
+            psp: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "create specifies whether to install Pod Security Policies."
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Set pod priorityClassName"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for controller pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for controller pod assignment"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for controller pod assignment"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Controller Pod annotations"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Controller Pod labels"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Controller Pod affinitypreset. Allowed values: soft, hard"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Controller Pod anti affinitypreset. Allowed values: soft, hard"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Controller Pod Node affinity preset. Allowed values: soft, hard"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Controller Pod Node affinity label key to match"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Controller Pod Node affinity label values to match"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable pods' security context"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "MetalLB Controller must runs as nonRoot."
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the pods."
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the pods."
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "This defines if privilegeEscalation is allowed on that container"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: true
+                  description: "This defines if the container can read the root fs on the host"
+                capabilities: 
+                  type: "object"
+                  properties: 
+                    drop: 
+                      type: "array"
+                      default: "[]"
+                      description: "Drop capabilities for the securityContext"
+            revisionHistoryLimit: 
+              type: "number"
+              default: 3
+              description: "Configure the revisionHistoryLimit of the Controller deployment"
+            terminationGracePeriodSeconds: 
+              type: "number"
+              default: 0
+              description: "Configure the grace time period for sig term"
+            containerPort: 
+              type: "object"
+              properties: 
+                metrics: 
+                  type: "number"
+                  default: 7472
+                  description: "Configures the ports the MetalLB Controller listens on for metrics"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            prometheus: 
+              type: "object"
+              properties: 
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Specify if a servicemonitor will be deployed for prometheus-operator"
+                    jobLabel: 
+                      type: "string"
+                      default: "app.kubernetes.io/name"
+                      description: "Specify the jobLabel to use for the prometheus-operator"
+                    interval: 
+                      type: "string"
+                      default: ""
+                      description: "Scrape interval. If not set, the Prometheus default scrape interval is used"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify additional relabeling of metrics"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify general relabeling"
+        speaker: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "MetalLB Speaker image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/metallb-speaker"
+                  description: "MetalLB Speaker image repository"
+                tag: 
+                  type: "string"
+                  default: "0.10.2-debian-10-r68"
+                  description: "MetalLB Speaker  image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "MetalLB Speaker image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "create specifies whether to install and use RBAC rules."
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            psp: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "create specifies whether to install Pod Security Policies."
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Set pod priorityClassName."
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for speaker pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for speaker pod assignment"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for speaker pod assignment"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Speaker Pod annotations"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Speaker Pod labels"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use.  If not set and create is true, a name is generated using the fullname template"
+            daemonset: 
+              type: "object"
+              properties: 
+                terminationGracePeriodSeconds: 
+                  type: "number"
+                  default: 2
+                  description: "Configure the grace time period for sig term"
+                hostPorts: 
+                  type: "object"
+                  properties: 
+                    metrics: 
+                      type: "number"
+                      default: 7472
+                      description: "HTTP Metrics Endpoint"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "References a Secret name for the member secret outside of the helm chart"
+            secretKey: 
+              type: "string"
+              default: ""
+              description: "References a Secret key the member secret outside of the helm chart"
+            secretValue: 
+              type: "string"
+              default: ""
+              description: "Custom value for `speaker.secretKey`"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Extra initContainers to add to the daemonset"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable pods' security context"
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "User ID for the pods."
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Enables privilege Escalation context for the pod."
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: true
+                  description: "Allows the pod to mount the RootFS as ReadOnly"
+                capabilities: 
+                  type: "object"
+                  properties: 
+                    drop: 
+                      type: "array"
+                      default: "[]"
+                      description: "Drop capabilities for the securityContext"
+                    add: 
+                      type: "array"
+                      default: "[]"
+                      description: "Add capabilities for the securityContext"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variable to pass to the running container."
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            prometheus: 
+              type: "object"
+              properties: 
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable support for Prometheus Operator"
+                    jobLabel: 
+                      type: "string"
+                      default: "app.kubernetes.io/name"
+                      description: "Job label for scrape target"
+                    interval: 
+                      type: "string"
+                      default: ""
+                      description: "Scrape interval. If not set, the Prometheus default scrape interval is used"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify additional relabeling of metrics"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify general relabeling"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: metallb
+          version: "2.5.4"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

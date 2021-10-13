@@ -1,0 +1,960 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: contour.bitnami.charts.5.7.0
+spec:
+  refName: contour.bitnami.charts
+  version: 5.7.0
+  releaseNotes: |
+        Contour Ingress controller for Kubernetes
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override contour.fullname include (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override contour.fullname template"
+        ingress: 
+          type: "object"
+          properties: 
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        replicaCount: 
+          type: "number"
+          default: 2
+          description: "Number of Contour Pod replicas"
+        existingConfigMap: 
+          type: "string"
+          default: ""
+          description: "Specifies the name of an externally-defined ConfigMap to use as the configuration (this is mutually exclusive with `configInline`)"
+        configInline: 
+          type: "object"
+          default: "{}"
+          description: "Specifies Contour's configuration directly in YAML format"
+        contour: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Contour Deployment creation."
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Contour image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/contour"
+                  description: "Contour image name"
+                tag: 
+                  type: "string"
+                  default: "1.18.2-debian-10-r0"
+                  description: "Contour image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Contour Image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Contour Image pull secrets"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            extraArgs: 
+              type: "array"
+              default: "[]"
+              description: "Extra arguments passed to Contour container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Specify resource limits which the container is not allowed to succeed."
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Specify resource requests which the container needs to spawn."
+            manageCRDs: 
+              type: "boolean"
+              default: true
+              description: "Manage the creation, upgrade and deletion of Contour CRDs."
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Contour Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Contour Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Contour Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Contour Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Contour Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Contour pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Contour pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Contour pod assignment"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Contour Pod annotations"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Create a serviceAccount for the Contour pod"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Use the serviceAccount with the specified name, a name is generated using the fullname template"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable/disable the Liveness probe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Delay before liveness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Minimum consecutive failures for the probe to be considered failed after having succeeded."
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe to be considered successful after having failed."
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable/disable the readiness probe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Delay before readiness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Minimum consecutive failures for the probe to be considered failed after having succeeded."
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe to be considered successful after having failed."
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "If the pod should run in a securityContext."
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "If the pod should run as a non root container."
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "define the uid with which the pod will run"
+                runAsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "define the gid with which the pod will run"
+            certgen: 
+              type: "object"
+              properties: 
+                serviceAccount: 
+                  type: "object"
+                  properties: 
+                    create: 
+                      type: "boolean"
+                      default: true
+                      description: "Create a serviceAccount for the Contour pod"
+                    name: 
+                      type: "string"
+                      default: ""
+                      description: "Use the serviceAccount with the specified name, a name is generated using the fullname template"
+            tlsExistingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the existingSecret to be use in Contour deployment. If it is not nil `contour.certgen` will be disabled."
+            service: 
+              type: "object"
+              properties: 
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose (normally used with the `sidecar` value)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional init containers to Contour pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Contour pods"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra volumes"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra mounts (normally used with extraVolumes)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars to be added to all Contour containers"
+            extraEnvVarsConfigMap: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars to be added to all Contour containers"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars to be added to all Contour containers"
+            ingressClass: 
+              type: "object"
+              properties: 
+                name: 
+                  type: "string"
+                  default: "contour"
+                  description: "Name of the ingress class to route through this controller"
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to create or not the IngressClass resource"
+                default: 
+                  type: "boolean"
+                  default: true
+                  description: "Mark IngressClass resource as default for cluster"
+        envoy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Envoy Proxy creation"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Envoy Proxy image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/envoy"
+                  description: "Envoy Proxy image repository"
+                tag: 
+                  type: "string"
+                  default: "1.19.1-debian-10-r40"
+                  description: "Envoy Proxy image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Envoy image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Envoy image pull secrets"
+            extraArgs: 
+              type: "array"
+              default: "[]"
+              description: "Extra arguments passed to Envoy container"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Specify resource limits which the container is not allowed to succeed."
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Specify resource requests which the container needs to spawn."
+            shutdownManager: 
+              type: "object"
+              properties: 
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "Specify resource limits which the container is not allowed to succeed."
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "Specify resource requests which the container needs to spawn."
+            kind: 
+              type: "string"
+              default: "daemonset"
+              description: "Install as deployment or daemonset"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Desired number of Controller pods"
+            updateStrategy: 
+              type: "object"
+              default: "{}"
+              description: "Strategy to use to update Pods"
+            minReadySeconds: 
+              type: "number"
+              default: 0
+              description: "The minimum number of seconds for which a newly created Pod should be ready"
+            revisionHistoryLimit: 
+              type: "number"
+              default: 10
+              description: "The number of old history to retain to allow rollback"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for Controller"
+                minReplicas: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number of Controller replicas"
+                maxReplicas: 
+                  type: "number"
+                  default: 11
+                  description: "Maximum number of Controller replicas"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Target CPU utilization percentage"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Target Memory utilization percentage"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Envoy Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Envoy Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Envoy Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Envoy Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Envoy Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Envoy pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Envoy pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Envoy pod assignment"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Envoy Pod annotations"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Envoy Pod securityContext"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Envoy Container securityContext"
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "User ID for the Envoy container (to change this, http and https containerPorts must be set to >1024)"
+            hostNetwork: 
+              type: "boolean"
+              default: false
+              description: "Envoy Pod host network access"
+            dnsPolicy: 
+              type: "string"
+              default: "ClusterFirst"
+              description: "Envoy Pod Dns Policy's DNS Policy"
+            tlsExistingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the existingSecret to be use in Envoy deployment"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template"
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: false
+                  description: "Whether to auto mount API credentials for a service account"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable/disable the readiness probe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Delay before readiness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Minimum consecutive failures for the probe to be considered failed after having succeeded."
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe to be considered successful after having failed."
+            terminationGracePeriodSeconds: 
+              type: "number"
+              default: 300
+              description: "Envoy termination grace period in seconds"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Envoy log level"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "LoadBalancer"
+                  description: "Type of Envoy service to create"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Local"
+                  description: "Envoy Service external cluster policy. If `envoy.service.type` is NodePort or LoadBalancer"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Internal envoy cluster service IP"
+                externalIPs: 
+                  type: "array"
+                  default: "[]"
+                  description: "Envoy service external IP addresses"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "IP address to assign to load balancer (if supported)"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "List of IP CIDRs allowed access to load balancer (if supported)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Envoy service"
+                ports: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "number"
+                      default: 80
+                      description: "Sets service http port"
+                    https: 
+                      type: "number"
+                      default: 443
+                      description: "Sets service https port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "HTTP Port. If `envoy.service.type` is NodePort and this is non-empty"
+                    https: 
+                      type: "string"
+                      default: ""
+                      description: "HTTPS Port. If `envoy.service.type` is NodePort and this is non-empty"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose (normally used with the `sidecar` value)"
+            useHostPort: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable `hostPort` for TCP/80 and TCP/443"
+            useHostIP: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable `hostIP`"
+            hostPorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "number"
+                  default: 80
+                  description: "Sets `hostPort` http port"
+                https: 
+                  type: "number"
+                  default: 443
+                  description: "Sets `hostPort` https port"
+            hostIPs: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: "127.0.0.1"
+                  description: "Sets `hostIP` http IP"
+                https: 
+                  type: "string"
+                  default: "127.0.0.1"
+                  description: "Sets `hostIP` https IP"
+            containerPorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "number"
+                  default: 80
+                  description: "Sets http port inside Envoy pod  (change this to >1024 to run envoy as a non-root user)"
+                https: 
+                  type: "number"
+                  default: 443
+                  description: "Sets https port inside Envoy pod  (change this to >1024 to run envoy as a non-root user)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional init containers to Envoy pods"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra volumes"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra mounts (normally used with extraVolumes)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars to be added to all Envoy containers"
+            extraEnvVarsConfigMap: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars to be added to all Envoy containers"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars to be added to all Envoy containers"
+        defaultBackend: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable a default backend based on NGINX"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Default backend image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/nginx"
+                  description: "Default backend image name"
+                tag: 
+                  type: "string"
+                  default: "1.21.3-debian-10-r26"
+                  description: "Default backend image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            extraArgs: 
+              type: "object"
+              default: "{}"
+              description: "Additional command line arguments to pass to NGINX container"
+            containerPort: 
+              type: "number"
+              default: 8080
+              description: "HTTP container port number"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Desired number of default backend pods"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Default backend Pod securityContext"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Default backend Pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Default backend container securityContext"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the Envoy container (to change this, http and https containerPorts must be set to >1024)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Default backend container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Default backend container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                httpGet: 
+                  type: "object"
+                  default: "{}"
+                  description: "Path, port and scheme for the livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                httpGet: 
+                  type: "object"
+                  default: "{}"
+                  description: "Path, port and scheme for the readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 0
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe, it overrides the default one (evaluated as a template)"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe, it overrides the default one (evaluated as a template)"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Controller pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Controller pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Priority class assigned to the pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for pod assignment. Evaluated as a template."
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment. Evaluated as a template."
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment. Evaluated as a template."
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Service type"
+                port: 
+                  type: "number"
+                  default: 80
+                  description: "Service port"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Pod Disruption Budget configuration"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of Default backend pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of Default backend pods that should remain scheduled"
+        prometheus: 
+          type: "object"
+          properties: 
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Specify if the servicemonitors will be deployed into a different namespace (blank deploys into same namespace as chart)"
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify if a servicemonitor will be deployed for prometheus-operator."
+                jobLabel: 
+                  type: "string"
+                  default: "app.kubernetes.io/name"
+                  description: "Specify the jobLabel to use for the prometheus-operator"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the scrape interval if not specified use default prometheus scrapeIntervall, the Prometheus default scrape interval is used."
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify additional relabeling of metrics."
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify general relabeling."
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Create the RBAC roles for API accessibility"
+            rules: 
+              type: "array"
+              default: "[]"
+              description: "Custom RBAC rules to set"
+        tlsExistingSecret: 
+          type: "string"
+          default: ""
+          description: "Name of the existingSecret to be use in both contour and envoy. If it is not nil `contour.certgen` will be disabled."
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: contour
+          version: "5.7.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

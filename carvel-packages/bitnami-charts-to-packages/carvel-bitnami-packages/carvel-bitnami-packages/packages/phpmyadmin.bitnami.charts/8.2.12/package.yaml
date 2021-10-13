@@ -1,0 +1,540 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: phpmyadmin.bitnami.charts.8.2.12
+spec:
+  refName: phpmyadmin.bitnami.charts
+  version: 8.2.12
+  releaseNotes: |
+        phpMyAdmin is an mysql administration frontend
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes Cluster Domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "phpMyAdmin image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/phpmyadmin"
+              description: "phpMyAdmin image repository"
+            tag: 
+              type: "string"
+              default: "5.1.1-debian-10-r69"
+              description: "phpMyAdmin image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on PhpMyAdmin container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of a existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of a existing Secret containing extra env vars"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        containerPorts: 
+          type: "object"
+          properties: 
+            http: 
+              type: "number"
+              default: 8080
+              description: "HTTP port to expose at container level"
+            https: 
+              type: "number"
+              default: 8443
+              description: "HTTPS port to expose at container level"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Strategy to use to update Pods"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable phpMyAdmin pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable phpMyAdmin containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the volumes of the pod"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the PhpMyAdmin container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the PhpMyAdmin container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Request path for livenessProbe"
+                port: 
+                  type: "string"
+                  default: "http"
+                  description: "Port for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 30
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Request path for readinessProbe"
+                port: 
+                  type: "string"
+                  default: "http"
+                  description: "Port for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 30
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for PhpMyAdmin pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for PhpMyAdmin pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment. Evaluated as a template."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for PhpMyAdmin pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for PhpMyAdmin container(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add init containers to the PhpMyAdmin pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add sidecar containers to the PhpMyAdmin pods"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Service HTTP port"
+            httpsPort: 
+              type: "number"
+              default: 443
+              description: "Service HTTPS port"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes http node port"
+                https: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes https node port"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "PhpMyAdmin service clusterIP IP"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Load balancer IP for the phpMyAdmin Service (optional, cloud specific)"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Addresses that are allowed when service is LoadBalancer"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Provide any additional annotations that may be required for the PhpMyAdmin service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Set this to true in order to add the corresponding annotations for cert-manager"
+            hostname: 
+              type: "string"
+              default: "phpmyadmin.local"
+              description: "When the ingress is enabled, a host pointing to this will be created"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at `ingress.hostname` parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        db: 
+          type: "object"
+          properties: 
+            allowArbitraryServer: 
+              type: "boolean"
+              default: true
+              description: "Enable connection to arbitrary MySQL server"
+            port: 
+              type: "number"
+              default: 3306
+              description: "Database port to use to connect"
+            chartName: 
+              type: "string"
+              default: ""
+              description: "Database suffix if included in the same release"
+            host: 
+              type: "string"
+              default: ""
+              description: "Database Hostname. Ignored when `db.chartName` is set."
+            bundleTestDB: 
+              type: "boolean"
+              default: false
+              description: "Deploy a MariaDB instance for testing purposes"
+            enableSsl: 
+              type: "boolean"
+              default: false
+              description: "Enable SSL for the connection between phpMyAdmin and the database"
+            ssl: 
+              type: "object"
+              properties: 
+                clientKey: 
+                  type: "string"
+                  default: ""
+                  description: "Client key file when using SSL"
+                clientCertificate: 
+                  type: "string"
+                  default: ""
+                  description: "Client certificate file when using SSL"
+                caCertificate: 
+                  type: "string"
+                  default: ""
+                  description: "CA file when using SSL"
+                ciphers: 
+                  type: "array"
+                  default: "[]"
+                  description: "List of allowable ciphers for connections when using SSL"
+                verify: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable SSL certificate validation"
+        mariadb: 
+          type: "object"
+          default: "{}"
+          description: "MariaDB chart configuration"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Apache exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/apache-exporter"
+                  description: "Apache exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.10.0-debian-10-r26"
+                  description: "Apache exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter resource requests and limits"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Prometheus metrics service type"
+                port: 
+                  type: "number"
+                  default: 9117
+                  description: "Prometheus metrics service port"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Prometheus metrics service"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load Balancer IP if the Prometheus metrics server type is `LoadBalancer`"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the namespace in which the serviceMonitor resource will be created"
+                jobLabel: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the label on the target service to use as the job name in prometheus."
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "Specify the interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the timeout after which the scrape is ended"
+                relabellings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify Relabellings to add to the scrape endpoint"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify Metric Relabelings to add to the scrape endpoint"
+                honorLabels: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify honorLabels parameter to add the scrape endpoint"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Used to pass Labels that are required by the installed Prometheus Operator"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: phpmyadmin
+          version: "8.2.12"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

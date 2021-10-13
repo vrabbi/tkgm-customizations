@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: argo-cd.bitnami.charts
+spec:
+  displayName: "argo-cd"
+  longDescription: "Bitnami argo-cd Helm Chart"
+  shortDescription: "argo-cd Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - Continuous delivery
+  - Continuous deployment
+  - Devops
+  - Kubernetes

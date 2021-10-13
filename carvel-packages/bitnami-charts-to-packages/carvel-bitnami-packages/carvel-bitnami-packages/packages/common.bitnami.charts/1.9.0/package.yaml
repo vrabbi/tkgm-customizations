@@ -1,0 +1,29 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: common.bitnami.charts.1.9.0
+spec:
+  refName: common.bitnami.charts
+  version: 1.9.0
+  releaseNotes: |
+        A Library Helm Chart for grouping common logic between bitnami charts. This chart is not deployable by itself.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: {}
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: common
+          version: "1.9.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

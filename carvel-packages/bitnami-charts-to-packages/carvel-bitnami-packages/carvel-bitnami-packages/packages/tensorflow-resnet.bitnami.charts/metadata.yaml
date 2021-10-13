@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: tensorflow-resnet.bitnami.charts
+spec:
+  displayName: "tensorflow-resnet"
+  longDescription: "Bitnami tensorflow-resnet Helm Chart"
+  shortDescription: "tensorflow-resnet Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - tensorflow
+  - serving
+  - resnet
+  - machine
+  - learning
+  - library

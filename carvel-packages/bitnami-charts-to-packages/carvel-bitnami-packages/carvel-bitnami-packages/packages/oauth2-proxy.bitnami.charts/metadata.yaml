@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: oauth2-proxy.bitnami.charts
+spec:
+  displayName: "oauth2-proxy"
+  longDescription: "Bitnami oauth2-proxy Helm Chart"
+  shortDescription: "oauth2-proxy Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - kubernetes
+  - oauth
+  - oauth2
+  - authentication
+  - google
+  - github

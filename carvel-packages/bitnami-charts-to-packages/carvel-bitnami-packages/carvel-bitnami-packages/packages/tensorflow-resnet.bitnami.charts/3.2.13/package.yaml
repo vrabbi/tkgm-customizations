@@ -1,0 +1,268 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: tensorflow-resnet.bitnami.charts.3.2.13
+spec:
+  refName: tensorflow-resnet.bitnami.charts
+  version: 3.2.13
+  releaseNotes: |
+        Open-source software library serving the ResNet machine learning model.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        server: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "TensorFlow Serving image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/tensorflow-serving"
+                  description: "TensorFlow Serving image repository"
+                tag: 
+                  type: "string"
+                  default: "2.5.1-debian-10-r87"
+                  description: "TensorFlow Serving Image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "TensorFlow Serving image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+        client: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "TensorFlow ResNet image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/tensorflow-resnet"
+                  description: "TensorFlow ResNet image repository"
+                tag: 
+                  type: "string"
+                  default: "2.6.0-debian-10-r0"
+                  description: "TensorFlow ResNet Image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "TensorFlow ResNet image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        containerPorts: 
+          type: "object"
+          properties: 
+            server: 
+              type: "number"
+              default: 8500
+              description: "Tensorflow server port"
+            restApi: 
+              type: "number"
+              default: 8501
+              description: "TensorFlow Serving Rest API Port"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of replicas"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment. Evaluated as a template."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 15
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 8500
+              description: "TensorFlow Serving server port"
+            restApiPort: 
+              type: "number"
+              default: 8501
+              description: "TensorFlow Serving Rest API port"
+            nodePorts: 
+              type: "object"
+              properties: 
+                server: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes server node port"
+                restApi: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes Rest API node port"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Set the LoadBalancer service type to internal only."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Service annotations"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Prometheus exporter to expose Tensorflow server metrics"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Prometheus exporter pod annotations"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: tensorflow-resnet
+          version: "3.2.13"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: logstash.bitnami.charts
+spec:
+  displayName: "logstash"
+  longDescription: "Bitnami logstash Helm Chart"
+  shortDescription: "logstash Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - logstash
+  - logging
+  - elk

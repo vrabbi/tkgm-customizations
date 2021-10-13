@@ -1,0 +1,3456 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: harbor.bitnami.charts.11.0.2
+spec:
+  refName: harbor.bitnami.charts
+  version: 11.0.2
+  releaseNotes: |
+        Harbor is an an open source trusted cloud native registry project that stores, signs, and scans content
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global storage class for dynamic provisioning"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template with a string"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)."
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image name"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r202"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        internalTLS: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Use TLS in all the supported containers: chartmuseum, clair, core, jobservice, portal, registry and trivy"
+        ipFamily: 
+          type: "object"
+          properties: 
+            ipv6: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable listening on IPv6 ([::]) for nginx-based components (nginx,portal)"
+            ipv4: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable listening on IPv4 for nginx-based components (nginx,portal)"
+        caBundleSecretName: 
+          type: "string"
+          default: ""
+          description: "The custom ca bundle secret name, the secret must contain key named \"ca.crt\" which will be injected into the trust store for chartmuseum, clair, core, jobservice, registry, trivy components."
+        externalURL: 
+          type: "string"
+          default: "https://core.harbor.domain"
+          description: "The external URL for Harbor core service"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set container's Security Context runAsUser"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set container's Security Context runAsNonRoot"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set pod's Security Context fsGroup"
+        logLevel: 
+          type: "string"
+          default: "debug"
+          description: "The log level used for Harbor services. Allowed values are [ fatal | error | warn | info | debug | trace ]"
+        forcePassword: 
+          type: "boolean"
+          default: false
+          description: "Option to force users to specify passwords (core.secret, harborAdminPassword, and secretKey). That is required for 'helm upgrade' to work properly."
+        harborAdminPassword: 
+          type: "string"
+          default: ""
+          description: "The initial password of Harbor admin. Change it from portal after launching Harbor"
+        proxy: 
+          type: "object"
+          properties: 
+            httpProxy: 
+              type: "string"
+              default: ""
+              description: "The URL of the HTTP proxy server"
+            httpsProxy: 
+              type: "string"
+              default: ""
+              description: "The URL of the HTTPS proxy server"
+            noProxy: 
+              type: "string"
+              default: "127.0.0.1,localhost,.local,.internal"
+              description: "The URLs that the proxy settings not apply to"
+            components: 
+              type: "array"
+              default: "[\"core\",\"jobservice\",\"clair\",\"trivy\"]"
+              description: "The component list that the proxy settings apply to"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "The way how to expose the service: `Ingress`, `ClusterIP`, `NodePort` or `LoadBalancer`"
+            tls: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable the tls or not (for external access)"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Existing secret name containing your own TLS certificates. The secret must contain the keys: `tls.crt` - the certificate (required), `tls.key` - the private key (required), `ca.crt` - the certificate of CA (optional). Self-signed TLS certificates will be used otherwise."
+                notaryExistingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "By default, the Notary service will use the same cert and key as described above. Fill the name of secret if you want to use a separated one. Only needed when the `service.type` is `ingress`."
+                commonName: 
+                  type: "string"
+                  default: "core.harbor.domain"
+                  description: "The common name used to generate the certificate, it's necessary when the `service.type` is `ClusterIP` or `NodePort` and `service.tls.existingSecret` is null"
+            ports: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "number"
+                  default: 80
+                  description: "The service port Harbor listens on when serving with HTTP"
+                https: 
+                  type: "number"
+                  default: 443
+                  description: "The service port Harbor listens on when serving with HTTPS"
+                notary: 
+                  type: "number"
+                  default: 4443
+                  description: "The service port Notary listens on. Only needed when `notary.enabled` is set to `true`"
+            nodePorts: 
+              type: "object"
+              default: "{}"
+              description: "Service parameters when type is \"nodePort\""
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Load Balancer IP"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "The annotations attached to the loadBalancer service"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "List of IP address ranges to assign to loadBalancerSourceRanges"
+            externalTrafficPolicy: 
+              type: "string"
+              default: ""
+              description: "Enable client source IP preservation"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Deploy ingress rules"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override ingress api version"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add annotations for cert-manager"
+            hosts: 
+              type: "object"
+              default: "{}"
+              description: "The list of hostnames to be covered with this ingress record"
+            controller: 
+              type: "string"
+              default: "default"
+              description: "The ingress controller type. Currently supports `default`, `gce` and `ncp`"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations done as key:value pairs"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable the data persistence or not"
+            resourcePolicy: 
+              type: "string"
+              default: "keep"
+              description: "Setting it to `keep` to avoid removing PVCs during a helm delete operation. Leaving it empty will delete PVCs after the chart deleted"
+            persistentVolumeClaim: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "object"
+                  properties: 
+                    existingClaim: 
+                      type: "string"
+                      default: ""
+                      description: "Use the existing PVC which must be created manually before bound, and specify the `subPath` if the PVC is shared with other components"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "Specify the `storageClass` used to provision the volume. Or the default StorageClass will be used (the default). Set it to `-` to disable dynamic provisioning"
+                    subPath: 
+                      type: "string"
+                      default: ""
+                      description: "The sub path used in the volume"
+                    accessMode: 
+                      type: "string"
+                      default: "ReadWriteOnce"
+                      description: "The access mode of the volume"
+                    size: 
+                      type: "string"
+                      default: "5Gi"
+                      description: "The size of the volume"
+                jobservice: 
+                  type: "object"
+                  properties: 
+                    existingClaim: 
+                      type: "string"
+                      default: ""
+                      description: "Use the existing PVC which must be created manually before bound, and specify the `subPath` if the PVC is shared with other components"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "Specify the `storageClass` used to provision the volume. Or the default StorageClass will be used(the default). Set it to `-` to disable dynamic provisioning"
+                    subPath: 
+                      type: "string"
+                      default: ""
+                      description: "The sub path used in the volume"
+                    accessMode: 
+                      type: "string"
+                      default: "ReadWriteOnce"
+                      description: "The access mode of the volume"
+                    size: 
+                      type: "string"
+                      default: "1Gi"
+                      description: "The size of the volume"
+                chartmuseum: 
+                  type: "object"
+                  properties: 
+                    existingClaim: 
+                      type: "string"
+                      default: ""
+                      description: "Use the existing PVC which must be created manually before bound, and specify the `subPath` if the PVC is shared with other components"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "Specify the `storageClass` used to provision the volume. Or the default StorageClass will be used(the default). Set it to `-` to disable dynamic provisioning"
+                    subPath: 
+                      type: "string"
+                      default: ""
+                      description: "The sub path used in the volume"
+                    accessMode: 
+                      type: "string"
+                      default: "ReadWriteOnce"
+                      description: "The access mode of the volume"
+                    size: 
+                      type: "string"
+                      default: "5Gi"
+                      description: "The size of the volume"
+                trivy: 
+                  type: "object"
+                  properties: 
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "Specify the `storageClass` used to provision the volume. Or the default StorageClass will be used(the default). Set it to `-` to disable dynamic provisioning"
+                    accessMode: 
+                      type: "string"
+                      default: "ReadWriteOnce"
+                      description: "The access mode of the volume"
+                    size: 
+                      type: "string"
+                      default: "5Gi"
+                      description: "The size of the volume"
+            imageChartStorage: 
+              type: "object"
+              properties: 
+                caBundleSecretName: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the `caBundleSecretName` if the storage service uses a self-signed certificate. The secret must contain keys named `ca.crt` which will be injected into the trust store  of registry's and chartmuseum's containers."
+                disableredirect: 
+                  type: "boolean"
+                  default: false
+                  description: "The configuration for managing redirects from content backends. For backends which do not supported it (such as using MinIO&reg; for `s3` storage type), please set it to `true` to disable redirects. Refer to the [guide](https://github.com/docker/distribution/blob/master/docs/configuration.md#redirect) for more information about the detail"
+                type: 
+                  type: "string"
+                  default: "filesystem"
+                  description: "The type of storage for images and charts: `filesystem`, `azure`, `gcs`, `s3`, `swift` or `oss`. The type must be `filesystem` if you want to use persistent volumes for registry and chartmuseum. Refer to the [guide](https://github.com/docker/distribution/blob/master/docs/configuration.md#storage) for more information about the detail"
+                filesystem: 
+                  type: "object"
+                  properties: 
+                    rootdirectory: 
+                      type: "string"
+                      default: "/storage"
+                      description: "Filesystem storage type setting: Storage root directory"
+                    maxthreads: 
+                      type: "string"
+                      default: ""
+                      description: "Filesystem storage type setting: Maximum threads directory"
+                azure: 
+                  type: "object"
+                  properties: 
+                    accountname: 
+                      type: "string"
+                      default: "accountname"
+                      description: "Azure storage type setting: Name of the Azure account"
+                    accountkey: 
+                      type: "string"
+                      default: "base64encodedaccountkey"
+                      description: "Azure storage type setting: Key of the Azure account"
+                    container: 
+                      type: "string"
+                      default: "containername"
+                      description: "Azure storage type setting: Container"
+                    storagePrefix: 
+                      type: "string"
+                      default: "/azure/harbor/charts"
+                      description: "Azure storage type setting: Storage prefix"
+                    realm: 
+                      type: "string"
+                      default: ""
+                      description: "Azure storage type setting: Realm of the Azure account"
+                gcs: 
+                  type: "object"
+                  properties: 
+                    bucket: 
+                      type: "string"
+                      default: "bucketname"
+                      description: "GCS storage type setting: Bucket name"
+                    encodedkey: 
+                      type: "string"
+                      default: "base64-encoded-json-key-file"
+                      description: "GCS storage type setting: Base64 encoded key"
+                    rootdirectory: 
+                      type: "string"
+                      default: ""
+                      description: "GCS storage type setting: Root directory name"
+                    chunksize: 
+                      type: "string"
+                      default: ""
+                      description: "GCS storage type setting: Chunk size name"
+                s3: 
+                  type: "object"
+                  properties: 
+                    region: 
+                      type: "string"
+                      default: "us-west-1"
+                      description: "S3 storage type setting: Region"
+                    bucket: 
+                      type: "string"
+                      default: "bucketname"
+                      description: "S3 storage type setting: Bucket name"
+                    accesskey: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: Access key name"
+                    secretkey: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: Secret Key name"
+                    regionendpoint: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: Region Endpoint"
+                    encrypt: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: Encrypt"
+                    keyid: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: Key ID"
+                    secure: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: Secure"
+                    skipverify: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: TLS skip verification"
+                    v4auth: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: V4 authorization"
+                    chunksize: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: V4 authorization"
+                    rootdirectory: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: Root directory name"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: Storage class"
+                    sse: 
+                      type: "string"
+                      default: ""
+                      description: "S3 storage type setting: SSE name"
+                swift: 
+                  type: "object"
+                  properties: 
+                    authurl: 
+                      type: "string"
+                      default: "https://storage.myprovider.com/v3/auth"
+                      description: "Swift storage type setting: Authentication url"
+                    username: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Authentication url"
+                    password: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Password"
+                    container: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Container"
+                    region: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Region"
+                    tenant: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Tenant"
+                    tenantid: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: TenantID"
+                    domain: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Domain"
+                    domainid: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: DomainID"
+                    trustid: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: TrustID"
+                    insecureskipverify: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Verification"
+                    chunksize: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Chunk"
+                    prefix: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Prefix"
+                    secretkey: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Secre Key"
+                    accesskey: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Access Key"
+                    authversion: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Auth"
+                    endpointtype: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Endpoint"
+                    tempurlcontainerkey: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Temp URL container key"
+                    tempurlmethods: 
+                      type: "string"
+                      default: ""
+                      description: "Swift storage type setting: Temp URL methods"
+                oss: 
+                  type: "object"
+                  properties: 
+                    accesskeyid: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Access key ID"
+                    accesskeysecret: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Access key secret name containing the token"
+                    region: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Region name"
+                    bucket: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Bucket name"
+                    endpoint: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Endpoint"
+                    internal: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Internal"
+                    encrypt: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Encrypt"
+                    secure: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Secure"
+                    chunksize: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Chunk"
+                    rootdirectory: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Directory"
+                    secretkey: 
+                      type: "string"
+                      default: ""
+                      description: "OSS storage type setting: Secret key"
+        nginxImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for Nginx image"
+            repository: 
+              type: "string"
+              default: "bitnami/nginx"
+              description: "Repository for Nginx image"
+            tag: 
+              type: "string"
+              default: "1.21.3-debian-10-r16"
+              description: "Tag for Nginx image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor Portal image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        nginx: 
+          type: "object"
+          properties: 
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            replicas: 
+              type: "number"
+              default: 1
+              description: "The replica count"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars (in case of sensitive data)"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Specify hostAliases for the Pod to use"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the pod (evaluated as a template)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional containers to the pod (evaluated as a template)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "NGINX Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "NGINX Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "NGINX Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "NGINX Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "NGINX Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "NGINX Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "NGINX Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "NGINX Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add additional labels to the pod (evaluated as a template)"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the nginx pod"
+            behindReverseProxy: 
+              type: "boolean"
+              default: false
+              description: "If nginx is behind another reverse proxy, set to true"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+        portalImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for portal image"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-portal"
+              description: "Repository for portal image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r29"
+              description: "Tag for portal image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor Portal image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        portal: 
+          type: "object"
+          properties: 
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            replicas: 
+              type: "number"
+              default: 1
+              description: "The replica count"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            tls: 
+              type: "object"
+              properties: 
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a secret with the certificates for internal TLS access. Requires internalTLS.enabled to be set to true. If this values is not set it will be automatically generated"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars (in case of sensitive data)"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Specify hostAliases for the Pod to use"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the pod (evaluated as a template)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional containers to the pod (evaluated as a template)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Harbor Portal Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Harbor Portal Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor Portal Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor Portal Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Harbor Portal Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Harbor Portal Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Harbor Portal Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Harbor Portal Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add additional labels to the pod (evaluated as a template)"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the portal pod"
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: false
+              description: "Automount service account token"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+        coreImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for core image"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-core"
+              description: "Repository for Harbor core image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r31"
+              description: "Tag for Harbor core image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor Core image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        core: 
+          type: "object"
+          properties: 
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            uaaSecretName: 
+              type: "string"
+              default: ""
+              description: "If using external UAA auth which has a self signed cert, you can provide a pre-created secret containing it under the key `ca.crt`."
+            secretKey: 
+              type: "string"
+              default: ""
+              description: "The key used for encryption. Must be a string of 16 chars"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            replicas: 
+              type: "number"
+              default: 1
+              description: "The replica count"
+            tls: 
+              type: "object"
+              properties: 
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a secret with the certificates for internal TLS access. Requires internalTLS.enabled to be set to true. If this values is not set it will be automatically generated"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default Startup Probe probe"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars (in case of sensitive data)"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Specify hostAliases for the Pod to use"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the pod (evaluated as a template)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional containers to the pod (evaluated as a template)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Harbor core Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Harbor core Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor core Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor core Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Harbor core Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Harbor core Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Harbor core Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Harbor core Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add additional labels to the pod (evaluated as a template)"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the core pod"
+            secret: 
+              type: "string"
+              default: ""
+              description: "Secret used when the core server communicates with other components. If a secret key is not specified, Helm will generate one. Must be a string of 16 chars."
+            secretName: 
+              type: "string"
+              default: ""
+              description: "Fill the name of a kubernetes secret if you want to use your own TLS certificate and private key for token encryption/decryption. The secret must contain two keys named: `tls.crt` - the certificate and `tls.key` - the private key. The default key pair will be used if it isn't set"
+            csrfKey: 
+              type: "string"
+              default: ""
+              description: "The CSRF key. Will be generated automatically if it isn't specified"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: false
+              description: "Automount service account token"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 30
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+        jobserviceImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for jobservice image"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-jobservice"
+              description: "Repository for jobservice image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r31"
+              description: "Tag for jobservice image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor Jobservice image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        jobservice: 
+          type: "object"
+          properties: 
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            replicas: 
+              type: "number"
+              default: 1
+              description: "The replica count"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "The update strategy for deployments with persistent volumes: RollingUpdate or Recreate. Set it as Recreate when RWM for volumes isn't supported"
+            maxJobWorkers: 
+              type: "number"
+              default: 10
+              description: "The max job workers"
+            jobLogger: 
+              type: "string"
+              default: "file"
+              description: "The logger for jobs: `file`, `database` or `stdout`"
+            tls: 
+              type: "object"
+              properties: 
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a secret with the certificates for internal TLS access. Requires internalTLS.enabled to be set to true. If this values is not set it will be automatically generated"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars (in case of sensitive data)"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Specify hostAliases for the Pod to use"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the pod (evaluated as a template)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional containers to the pod (evaluated as a template)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Harbor Jobservice Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Harbor Jobservice Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor Jobservice Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor Jobservice Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Harbor Jobservice Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Harbor Jobservice Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Harbor Jobservice Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Harbor Jobservice Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add additional labels to the pod (evaluated as a template)"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the jobservice pod"
+            secret: 
+              type: "string"
+              default: ""
+              description: "Secret used when the job service communicates with other components. If a secret key is not specified, Helm will generate one. Must be a string of 16 chars."
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: false
+              description: "Automount service account token"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+        registryImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for registry image"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-registry"
+              description: "Repository for registry image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r31"
+              description: "Tag for registry image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor Registry image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        registryctlImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for registryctl image"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-registryctl"
+              description: "Repository for registryctl controller image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r31"
+              description: "Tag for registrycrtl controller image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor Registryctl image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        registry: 
+          type: "object"
+          properties: 
+            replicas: 
+              type: "number"
+              default: 1
+              description: "The replica count"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "The update strategy for deployments with persistent volumes: RollingUpdate or Recreate. Set it as Recreate when RWM for volumes isn't supported"
+            tls: 
+              type: "object"
+              properties: 
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a secret with the certificates for internal TLS access. Requires internalTLS.enabled to be set to true. If this values is not set it will be automatically generated"
+            server: 
+              type: "object"
+              properties: 
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container command (useful when using custom images)"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container args (useful when using custom images)"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array containing extra env vars"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap containing extra env vars"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing extra env vars (in case of sensitive data)"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+                lifecycleHooks: 
+                  type: "object"
+                  default: "{}"
+                  description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable livenessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for livenessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for livenessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for livenessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for livenessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for livenessProbe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable readinessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for readinessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for readinessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for readinessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for readinessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for readinessProbe"
+                customLivenessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default liveness probe"
+                customReadinessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default readiness probe"
+            controller: 
+              type: "object"
+              properties: 
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container command (useful when using custom images)"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container args (useful when using custom images)"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array containing extra env vars"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap containing extra env vars"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing extra env vars (in case of sensitive data)"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+                lifecycleHooks: 
+                  type: "object"
+                  default: "{}"
+                  description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable livenessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for livenessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for livenessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for livenessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for livenessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for livenessProbe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable readinessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for readinessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for readinessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for readinessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for readinessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for readinessProbe"
+                customLivenessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default liveness probe"
+                customReadinessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default readiness probe"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Specify hostAliases for the Pod to use"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the pod (evaluated as a template)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional containers to the pod (evaluated as a template)"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Harbor Registry Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Harbor Registry Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor Registry Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor Registry Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Harbor Registry Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Harbor Registry Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Harbor Registry Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Harbor Registry Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add additional labels to the pod (evaluated as a template)"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the registry pod"
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: false
+              description: "Automount service account token"
+            secret: 
+              type: "string"
+              default: ""
+              description: "Secret is used to secure the upload state from client and registry storage backend. See: https://github.com/docker/distribution/blob/master/docs/configuration.md"
+            relativeurls: 
+              type: "boolean"
+              default: false
+              description: "Make the registry return relative URLs in Location headers. The client is responsible for resolving the correct URL."
+            credentials: 
+              type: "object"
+              properties: 
+                username: 
+                  type: "string"
+                  default: "harbor_registry_user"
+                  description: "The username for accessing the registry instance, which is hosted by htpasswd auth mode.  More details see [official docs](https://github.com/docker/distribution/blob/master/docs/configuration.md#htpasswd)"
+                password: 
+                  type: "string"
+                  default: "harbor_registry_password"
+                  description: "The password for accessing the registry instance, which is hosted by htpasswd auth mode.  More details see [official docs](https://github.com/docker/distribution/blob/master/docs/configuration.md#htpasswd). It is suggested you update this value before installation."
+                htpasswd: 
+                  type: "string"
+                  default: "harbor_registry_user:$2y$10$9L4Tc0DJbFFMB6RdSCunrOpTHdwhid4ktBJmLD00bYgqkkGOvll3m"
+                  description: "The content of htpasswd file based on the value of `registry.credentials.username` `registry.credentials.password`.  Currently `helm` does not support bcrypt in the template script, if the credential is updated you need to manually generated by calling"
+            middleware: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Middleware is used to add support for a CDN between backend storage and `docker pull` recipient.  See"
+                type: 
+                  type: "string"
+                  default: "cloudFront"
+                  description: "CDN type for the middleware"
+                cloudFront: 
+                  type: "object"
+                  properties: 
+                    baseurl: 
+                      type: "string"
+                      default: "example.cloudfront.net"
+                      description: "CloudFront CDN settings: Base URL"
+                    keypairid: 
+                      type: "string"
+                      default: "KEYPAIRID"
+                      description: "CloudFront CDN settings: Keypair ID"
+                    duration: 
+                      type: "string"
+                      default: "3000s"
+                      description: "CloudFront CDN settings: Duration"
+                    ipfilteredby: 
+                      type: "string"
+                      default: "none"
+                      description: "CloudFront CDN settings: IP filters"
+                    privateKeySecret: 
+                      type: "string"
+                      default: "my-secret"
+                      description: "CloudFront CDN settings: Secret name with the private key"
+        chartMuseumImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for ChartMuseum image"
+            repository: 
+              type: "string"
+              default: "bitnami/chartmuseum"
+              description: "Repository for clair image"
+            tag: 
+              type: "string"
+              default: "0.13.1-debian-10-r177"
+              description: "Tag for ChartMuseum image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "ChartMuseum image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        chartmuseum: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable ChartMuseum"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            replicas: 
+              type: "number"
+              default: 1
+              description: "Number of ChartMuseum replicas"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            useRedisCache: 
+              type: "boolean"
+              default: true
+              description: "Specify if ChartMuseum will use redis cache"
+            absoluteUrl: 
+              type: "boolean"
+              default: false
+              description: "Specify an absolute URL for ChartMuseum registry"
+            chartRepoName: 
+              type: "string"
+              default: "chartsRepo"
+              description: "Specify the endpoint for the chartmuseum registry. Only applicable if `chartmuseum.absoluteUrl` is `true`"
+            depth: 
+              type: "number"
+              default: 1
+              description: "Support for multitenancy. More info [here](https://chartmuseum.com/docs/#multitenancy)"
+            logJson: 
+              type: "boolean"
+              default: false
+              description: "Print logs on JSON format"
+            disableMetrics: 
+              type: "boolean"
+              default: false
+              description: "Disable prometheus metrics exposure"
+            disableApi: 
+              type: "boolean"
+              default: false
+              description: "Disable all the routes prefixed with `/api`"
+            disableStatefiles: 
+              type: "boolean"
+              default: false
+              description: "Disable use of index-cache.yaml"
+            allowOverwrite: 
+              type: "boolean"
+              default: true
+              description: "Allow chart versions to be re-uploaded without force querystring"
+            anonymousGet: 
+              type: "boolean"
+              default: false
+              description: "Allow anonymous GET operations"
+            tls: 
+              type: "object"
+              properties: 
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a secret with the certificates for internal TLS access. Requires internalTLS.enabled to be set to true. If this values is not set it will be automatically generated"
+            contextPath: 
+              type: "string"
+              default: ""
+              description: "Set the base context path for ChartMuseum"
+            indexLimit: 
+              type: "string"
+              default: ""
+              description: "Limit the number of parallels indexes for ChartMuseum"
+            chartPostFormFieldName: 
+              type: "string"
+              default: ""
+              description: "Form field which will be queried for the chart file content"
+            provPostFormFieldName: 
+              type: "string"
+              default: ""
+              description: "Form field which will be queried for the provenance file content"
+            maxStorageObjects: 
+              type: "string"
+              default: ""
+              description: "Maximum storage objects"
+            maxUploadSize: 
+              type: "string"
+              default: ""
+              description: "Maximum upload size"
+            storageTimestampTolerance: 
+              type: "string"
+              default: "1s"
+              description: "Timestamp tolerance size"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars (in case of sensitive data)"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Specify hostAliases for the Pod to use"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the pod (evaluated as a template)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional containers to the pod (evaluated as a template)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "ChartMuseum Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "ChartMuseum Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "ChartMuseum Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "ChartMuseum Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "ChartMuseum Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "ChartMuseum Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "ChartMuseum Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "ChartMuseum Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add additional labels to the pod (evaluated as a template)"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the chartmuseum pod"
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: false
+              description: "Automount service account token"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 10
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 10
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+        clairImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for clair image"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-clair"
+              description: "Repository for clair image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r31"
+              description: "Tag for clair image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor clair image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        clairAdapterImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for clair adapter image"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-adapter-clair"
+              description: "Repository for clair adapter image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r31"
+              description: "Tag for clair adapter image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor clair adapter image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        clair: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Clair scanner. Add it as an additional interrogation service by following https://goharbor.io/docs/latest/administration/vulnerability-scanning/pluggable-scanners"
+            replicas: 
+              type: "number"
+              default: 1
+              description: "The replica count"
+            tls: 
+              type: "object"
+              properties: 
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a secret with the certificates for internal TLS access. Requires internalTLS.enabled to be set to true. If this values is not set it will be automatically generated"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            httpProxy: 
+              type: "string"
+              default: ""
+              description: "The http proxy used to update vulnerabilities database from internet"
+            httpsProxy: 
+              type: "string"
+              default: ""
+              description: "The https proxy used to update vulnerabilities database from internet"
+            updatersInterval: 
+              type: "number"
+              default: 12
+              description: "The interval of clair updaters (hours), set to 0 to disable"
+            adapter: 
+              type: "object"
+              properties: 
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container command (useful when using custom images)"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container args (useful when using custom images)"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array containing extra env vars"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap containing extra env vars"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing extra env vars (in case of sensitive data)"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable livenessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 20
+                      description: "Initial delay seconds for livenessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for livenessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for livenessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for livenessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for livenessProbe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable readinessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 20
+                      description: "Initial delay seconds for readinessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for readinessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for readinessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for readinessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for readinessProbe"
+                lifecycleHooks: 
+                  type: "object"
+                  default: "{}"
+                  description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+                customLivenessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default liveness probe"
+                customReadinessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default readiness probe"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+            server: 
+              type: "object"
+              properties: 
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container command (useful when using custom images)"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container args (useful when using custom images)"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable livenessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 20
+                      description: "Initial delay seconds for livenessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for livenessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for livenessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for livenessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for livenessProbe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable readinessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 20
+                      description: "Initial delay seconds for readinessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for readinessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for readinessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for readinessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for readinessProbe"
+                lifecycleHooks: 
+                  type: "object"
+                  default: "{}"
+                  description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+                customLivenessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default liveness probe"
+                customReadinessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default readiness probe"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array containing extra env vars"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap containing extra env vars"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing extra env vars (in case of sensitive data)"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Specify hostAliases for the Pod to use"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the pod (evaluated as a template)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional containers to the pod (evaluated as a template)"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Harbor Clair Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Harbor Clair Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor Clair Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Harbor Clair Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Harbor Clair Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Harbor Clair Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Harbor Clair Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Harbor Clair Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add additional labels to the pod (evaluated as a template)"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the clair pod"
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: false
+              description: "Automount service account token"
+        notaryServerImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for notary server image"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-notary-server"
+              description: "Repository for notary server image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r31"
+              description: "Tag for notary server image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor notary server image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        notarySignerImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for notary signer images"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-notary-signer"
+              description: "Repository for notary signer image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r31"
+              description: "Tag for notary signer image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor notary signer image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        notary: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Notary"
+            server: 
+              type: "object"
+              properties: 
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container command (useful when using custom images)"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container args (useful when using custom images)"
+                replicas: 
+                  type: "number"
+                  default: 1
+                  description: "The replica count"
+                updateStrategy: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "RollingUpdate"
+                      description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array containing extra env vars"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap containing extra env vars"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing extra env vars (in case of sensitive data)"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+                hostAliases: 
+                  type: "array"
+                  default: "[]"
+                  description: "HostAliases to add to the deployment"
+                lifecycleHooks: 
+                  type: "object"
+                  default: "{}"
+                  description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable livenessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for livenessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for livenessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for livenessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for livenessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for livenessProbe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable readinessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for readinessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for readinessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for readinessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for readinessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for readinessProbe"
+                customLivenessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default liveness probe"
+                customReadinessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default readiness probe"
+                extraVolumes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+                initContainers: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add additional init containers to the pod (evaluated as a template)"
+                sidecars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Attach additional containers to the pod (evaluated as a template)"
+                podAffinityPreset: 
+                  type: "string"
+                  default: ""
+                  description: "Notary server Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                podAntiAffinityPreset: 
+                  type: "string"
+                  default: "soft"
+                  description: "Notary server Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                nodeAffinityPreset: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: ""
+                      description: "Notary server Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Notary server Node label key to match Ignored if `affinity` is set."
+                    values: 
+                      type: "array"
+                      default: "[]"
+                      description: "Notary server Node label values to match. Ignored if `affinity` is set."
+                affinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Notary server Affinity for pod assignment"
+                nodeSelector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Notary server Node labels for pod assignment"
+                tolerations: 
+                  type: "array"
+                  default: "[]"
+                  description: "Notary server Tolerations for pod assignment"
+                podLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Add additional labels to the pod (evaluated as a template)"
+                podAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations to add to the notary pod"
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: false
+                  description: "Automount service account token"
+            signer: 
+              type: "object"
+              properties: 
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container command (useful when using custom images)"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container args (useful when using custom images)"
+                replicas: 
+                  type: "number"
+                  default: 1
+                  description: "The replica count"
+                updateStrategy: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "RollingUpdate"
+                      description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array containing extra env vars"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap containing extra env vars"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing extra env vars (in case of sensitive data)"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+                extraVolumes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+                hostAliases: 
+                  type: "array"
+                  default: "[]"
+                  description: "HostAliases to add to the deployment"
+                initContainers: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add additional init containers to the pod (evaluated as a template)"
+                sidecars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Attach additional containers to the pod (evaluated as a template)"
+                podAffinityPreset: 
+                  type: "string"
+                  default: ""
+                  description: "Notary signer Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                podAntiAffinityPreset: 
+                  type: "string"
+                  default: "soft"
+                  description: "Notary signer Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                nodeAffinityPreset: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: ""
+                      description: "Notary signer Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Notary signer Node label key to match Ignored if `affinity` is set."
+                    values: 
+                      type: "array"
+                      default: "[]"
+                      description: "Notary signer Node label values to match. Ignored if `affinity` is set."
+                affinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Notary signer Affinity for pod assignment"
+                nodeSelector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Notary signer Node labels for pod assignment"
+                tolerations: 
+                  type: "array"
+                  default: "[]"
+                  description: "Notary signer Tolerations for pod assignment"
+                podLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Add additional labels to the pod (evaluated as a template)"
+                podAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations to add to the notary.signer pod"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable livenessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for livenessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for livenessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for livenessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for livenessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for livenessProbe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable readinessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for readinessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for readinessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Timeout seconds for readinessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Failure threshold for readinessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for readinessProbe"
+                lifecycleHooks: 
+                  type: "object"
+                  default: "{}"
+                  description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+                customLivenessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default liveness probe"
+                customReadinessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default readiness probe"
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: false
+                  description: "Automount service account token"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "Fill the name of a kubernetes secret if you want to use your own TLS certificate authority, certificate and private key for notary communications. The secret must contain keys named `notary-signer-ca.crt`, `notary-signer.key` and `notary-signer.crt` that contain the CA, certificate and private key. They will be generated if not set."
+        trivyImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Registry for trivy image"
+            repository: 
+              type: "string"
+              default: "bitnami/harbor-adapter-trivy"
+              description: "Repository for trivy image"
+            tag: 
+              type: "string"
+              default: "2.3.2-debian-10-r30"
+              description: "Tag for trivy image"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Harbor trivy image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        trivy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Trivy"
+            replicas: 
+              type: "number"
+              default: 1
+              description: "The replica count"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            tls: 
+              type: "object"
+              properties: 
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a secret with the certificates for internal TLS access. Requires internalTLS.enabled to be set to true. If this values is not set it will be automatically generated"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy"
+            debugMode: 
+              type: "boolean"
+              default: false
+              description: "The flag to enable Trivy debug mode"
+            vulnType: 
+              type: "string"
+              default: "os,library"
+              description: "Comma-separated list of vulnerability types. Possible values `os` and `library`."
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: false
+              description: "Automount service account token in the Trivy containers"
+            severity: 
+              type: "string"
+              default: "UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL"
+              description: "Comma-separated list of severities to be checked"
+            ignoreUnfixed: 
+              type: "boolean"
+              default: false
+              description: "The flag to display only fixed vulnerabilities"
+            insecure: 
+              type: "boolean"
+              default: false
+              description: "The flag to skip verifying registry certificate"
+            gitHubToken: 
+              type: "string"
+              default: ""
+              description: "The GitHub access token to download Trivy DB"
+            skipUpdate: 
+              type: "boolean"
+              default: false
+              description: "The flag to disable Trivy DB downloads from GitHub"
+            cacheDir: 
+              type: "string"
+              default: "/bitnami/harbor-adapter-trivy/.cache"
+              description: "Directory to store the cache"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "The resources to allocate for container"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars (in case of sensitive data)"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with `extraVolumes`."
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Specify hostAliases for the Pod to use"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the pod (evaluated as a template)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Attach additional containers to the pod (evaluated as a template)"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Trivy Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Trivy Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Trivy Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Trivy Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Trivy Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Trivy Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Trivy Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Trivy Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Add additional labels to the pod (evaluated as a template)"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the trivy pod"
+        postgresql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "If external database is used, set it to `false`"
+            nameOverride: 
+              type: "string"
+              default: ""
+              description: "String to partially override common.names.fullname template with a string (will prepend the release name)"
+            postgresqlUsername: 
+              type: "string"
+              default: "postgres"
+              description: "Postgresql username"
+            postgresqlPassword: 
+              type: "string"
+              default: "not-secure-database-password"
+              description: "Postgresql password"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Set Postgresql password via an existing secret"
+            postgresqlExtendedConf: 
+              type: "object"
+              default: "{}"
+              description: "Extended runtime config parameters (appended to main or default configuration)"
+            replication: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable replicated postgresql"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence for PostgreSQL"
+            initdbScripts: 
+              type: "object"
+              default: "{}"
+              description: "Initdb scripts to create Harbor databases"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Host of the external database"
+            user: 
+              type: "string"
+              default: "bn_harbor"
+              description: "Existing username in the external db"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the above username"
+            port: 
+              type: "number"
+              default: 5432
+              description: "Port of the external database"
+            sslmode: 
+              type: "string"
+              default: "disable"
+              description: "External database ssl mode"
+            coreDatabase: 
+              type: "string"
+              default: ""
+              description: "External database name for core"
+            clairDatabase: 
+              type: "string"
+              default: ""
+              description: "External database name for clair"
+            clairUsername: 
+              type: "string"
+              default: ""
+              description: "External database username for clair"
+            clairPassword: 
+              type: "string"
+              default: ""
+              description: "External database password for clair"
+            notaryServerDatabase: 
+              type: "string"
+              default: ""
+              description: "External database name for notary server"
+            notaryServerUsername: 
+              type: "string"
+              default: ""
+              description: "External database username for notary server"
+            notaryServerPassword: 
+              type: "string"
+              default: ""
+              description: "External database password for notary server"
+            notarySignerDatabase: 
+              type: "string"
+              default: ""
+              description: "External database name for notary signer"
+            notarySignerUsername: 
+              type: "string"
+              default: ""
+              description: "External database username for notary signer"
+            notarySignerPassword: 
+              type: "string"
+              default: ""
+              description: "External database password for notary signer"
+        redis: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "If external redis is used, set it to `false`"
+            nameOverride: 
+              type: "string"
+              default: ""
+              description: "String to partially override common.names.fullname template with a string (will prepend the release name)"
+            auth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Use redis password"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Redis password"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "Cluster settings"
+            master: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable persistence for master Redis"
+            replica: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable persistence for replica Redis"
+        externalRedis: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Host of the external redis"
+            port: 
+              type: "number"
+              default: 6379
+              description: "Port of the external redis"
+            sentinel: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "If external redis with sentinal is used, set it to `true`"
+                masterSet: 
+                  type: "string"
+                  default: "mymaster"
+                  description: "Name of sentinel masterSet if sentinel is used"
+                hosts: 
+                  type: "string"
+                  default: ""
+                  description: "Sentinel hosts and ports in the format"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the external redis"
+            coreDatabaseIndex: 
+              type: "string"
+              default: "0"
+              description: "Index for core database"
+            jobserviceDatabaseIndex: 
+              type: "string"
+              default: "1"
+              description: "Index for jobservice database"
+            registryDatabaseIndex: 
+              type: "string"
+              default: "2"
+              description: "Index for registry database"
+            chartmuseumDatabaseIndex: 
+              type: "string"
+              default: "3"
+              description: "Index for chartmuseum database"
+            clairAdapterDatabaseIndex: 
+              type: "string"
+              default: "4"
+              description: "Index for chartmuseum database"
+            trivyAdapterDatabaseIndex: 
+              type: "string"
+              default: "5"
+              description: "Index for chartmuseum database"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: harbor
+          version: "11.0.2"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: odoo.bitnami.charts
+spec:
+  displayName: "odoo"
+  longDescription: "Bitnami odoo Helm Chart"
+  shortDescription: "odoo Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - odoo
+  - crm
+  - www
+  - http
+  - web

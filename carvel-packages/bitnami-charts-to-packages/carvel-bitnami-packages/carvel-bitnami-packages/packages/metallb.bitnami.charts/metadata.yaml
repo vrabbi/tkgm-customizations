@@ -1,0 +1,18 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: metallb.bitnami.charts
+spec:
+  displayName: "metallb"
+  longDescription: "Bitnami metallb Helm Chart"
+  shortDescription: "metallb Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - load-balancer
+  - balancer
+  - lb
+  - bgp
+  - arp
+  - vrrp
+  - vip

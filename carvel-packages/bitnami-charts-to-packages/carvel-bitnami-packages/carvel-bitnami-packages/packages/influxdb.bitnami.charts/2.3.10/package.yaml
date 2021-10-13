@@ -1,0 +1,1022 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: influxdb.bitnami.charts.2.3.10
+spec:
+  refName: influxdb.bitnami.charts
+  version: 2.3.10
+  releaseNotes: |
+        InfluxDB&trade; is an open source time-series database designed to handle large write and read loads in real-time.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global storage class for dynamic provisioning"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override influxdb.fullname template with a string (will prepend the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override influxdb.fullname template with a string"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Default Kubernetes cluster domain"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "InfluxDB&trade; image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/influxdb"
+              description: "InfluxDB&trade; image repository"
+            tag: 
+              type: "string"
+              default: "2.0.8-debian-10-r41"
+              description: "InfluxDB&trade; image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "InfluxDB&trade; image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        architecture: 
+          type: "string"
+          default: "standalone"
+          description: "InfluxDB&trade; architecture (`standalone` or `high-availability`)"
+        auth: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable authentication (Variable to keep compatibility with InfluxDB&trade; v1, in v2 it will be ignored)"
+            usePasswordFiles: 
+              type: "boolean"
+              default: false
+              description: "Whether to use files to provide secrets instead of env vars."
+            admin: 
+              type: "object"
+              properties: 
+                username: 
+                  type: "string"
+                  default: "admin"
+                  description: "InfluxDB&trade; admin user name"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "InfluxDB&trade; admin user's password"
+                token: 
+                  type: "string"
+                  default: ""
+                  description: "InfluxDB&trade; admin user's token. Only valid with InfluxDB&trade; v2"
+                org: 
+                  type: "string"
+                  default: "primary"
+                  description: "InfluxDB&trade; admin user's org. Only valid with InfluxDB&trade; v2"
+                bucket: 
+                  type: "string"
+                  default: "primary"
+                  description: "InfluxDB&trade; admin user's bucket. Only valid with InfluxDB&trade; v2"
+            createUserToken: 
+              type: "boolean"
+              default: false
+              description: "Whether to create tokens for the different users. Take into account these tokens are going to be created by CLI randomly and they will not be accessible from a secret. See more influxdb 2.0 [auth ref](https://docs.influxdata.com/influxdb/v2.0/security/tokens/)"
+            user: 
+              type: "object"
+              properties: 
+                username: 
+                  type: "string"
+                  default: ""
+                  description: "Name for InfluxDB&trade; user with 'admin' privileges on the bucket specified at `auth.user.bucket` and `auth.user.org` or `auth.admin.org`"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "InfluxDB&trade; password for `user.name` user"
+                org: 
+                  type: "string"
+                  default: ""
+                  description: "Org to be created on first run"
+                bucket: 
+                  type: "string"
+                  default: ""
+                  description: "Bucket to be created on first run"
+            readUser: 
+              type: "object"
+              properties: 
+                username: 
+                  type: "string"
+                  default: ""
+                  description: "Name for InfluxDB&trade; user with 'read' privileges on the bucket specified at `auth.user.bucket`"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "InfluxDB&trade; password for `auth.readUser.username` user"
+            writeUser: 
+              type: "object"
+              properties: 
+                username: 
+                  type: "string"
+                  default: ""
+                  description: "Name for InfluxDB&trade; user with 'read' privileges on the bucket specified at `auth.user.bucket`"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "InfluxDB&trade; password for `auth.writeUser.username` user"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret object with InfluxDB&trade; credentials (`auth.admin.password`, `auth.user.password`, `auth.readUser.password`, and `auth.writeUser.password` will be ignored and picked up from this secret)"
+        influxdb: 
+          type: "object"
+          properties: 
+            configuration: 
+              type: "string"
+              default: ""
+              description: "Specify content for influxdb.conf"
+            existingConfiguration: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap object with the InfluxDB&trade; configuration (`influxdb.configuration` will be ignored)."
+            initdbScripts: 
+              type: "object"
+              default: "{}"
+              description: "Dictionary of initdb scripts"
+            initdbScriptsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap object with the initdb scripts (`influxdb.initdbScripts` will be ignored)."
+            initdbScriptsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with initdb scripts that contain sensitive information (Note: can be used with `initdbScriptsConfigMap` or `initdbScripts`)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars to configure InfluxDB&trade;"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "The number of InfluxDB&trade; replicas to deploy"
+            updateStrategy: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy, can be set to RollingUpdate or OnDelete by default."
+            podManagementPolicy: 
+              type: "string"
+              default: "OrderedReady"
+              description: "Pod Management Policy [`OrderedReady` or `Parallel`]"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "InfluxDB&trade; Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "InfluxDB&trade; Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "InfluxDB&trade; Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "InfluxDB&trade; Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "InfluxDB&trade; Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "InfluxDB&trade; Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "InfluxDB&trade; Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "InfluxDB&trade; Tolerations for pod assignment"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting extraVolumeMounts"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with extraVolumes."
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for InfluxDB&trade;"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the InfluxDB&trade; filesystem"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the InfluxDB&trade; container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 180
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 45
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 60
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 45
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            containerPorts: 
+              type: "object"
+              default: "{}"
+              description: "Container ports"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type (`ClusterIP`, `NodePort` or `LoadBalancer`)"
+                port: 
+                  type: "number"
+                  default: 8086
+                  description: "InfluxDB&trade; HTTP port"
+                rpcPort: 
+                  type: "number"
+                  default: 8088
+                  description: "InfluxDB&trade; RPC port"
+                nodePorts: 
+                  type: "object"
+                  default: "{}"
+                  description: "Specify the nodePort(s) value for the LoadBalancer and NodePort service types."
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Static clusterIP or None for headless services"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for InfluxDB&trade; service"
+                sessionAffinity: 
+                  type: "string"
+                  default: ""
+                  description: "Session affinity for the InfluxDB&trade; service"
+                sessionAffinityConfig: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional settings for the sessionAffinity"
+        relay: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "InfluxDB Relay&trade; image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/influxdb-relay"
+                  description: "InfluxDB Relay&trade; image repository"
+                tag: 
+                  type: "string"
+                  default: "0.20200717.0-scratch-r12"
+                  description: "InfluxDB Relay&trade; image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "InfluxDB Relay&trade; image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            configuration: 
+              type: "string"
+              default: "\"\""
+              description: "InfluxDB Relay&trade; Configuration. Specify content for relay.toml"
+            existingConfiguration: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap object with the InfluxDB Relay&trade; configuration (`relay.configuration` will be ignored)"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "The number of InfluxDB Relay&trade; replicas to deploy"
+            updateStrategy: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy, can be set to RollingUpdate or OnDelete by default."
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "InfluxDB Relay&trade; Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "InfluxDB Relay&trade; Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "InfluxDB Relay&trade; Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "InfluxDB Relay&trade; Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "InfluxDB Relay&trade; Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "InfluxDB Relay&trade; Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "InfluxDB Relay&trade; Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "InfluxDB Relay&trade; Tolerations for pod assignment"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volumes to be added to the deployment (evaluated as template). Requires setting extraVolumeMounts"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the container (evaluated as template). Normally used with extraVolumes."
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for InfluxDB Relay&trade;"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the InfluxDB Relay&trade; filesystem"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the InfluxDB Relay&trade; container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            containerPorts: 
+              type: "object"
+              default: "{}"
+              description: "Container ports"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type (`ClusterIP`, `NodePort` or `LoadBalancer`)"
+                port: 
+                  type: "number"
+                  default: 9096
+                  description: "InfluxDB Relay&trade; HTTP port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTP node port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Static clusterIP or None for headless services"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for InfluxDB Relay&trade; service"
+        collectd: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "InfluxDB Collectd&trade; service enable"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type (`ClusterIP`, `NodePort` or `LoadBalancer`)"
+                port: 
+                  type: "number"
+                  default: 25826
+                  description: "InfluxDB Collectd&trade; UDP port (should match with corresponding port in influxdb.conf)"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTP node port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Static clusterIP or None for headless services"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for InfluxDB Collectd&trade; service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Create TLS Secret"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add annotations for cert-manager"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "influxdb.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Ingress path*' in order to use this"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Additional arbitrary path/backend objects"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable the export of Prometheus metrics"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type (`ClusterIP`, `NodePort` or `LoadBalancer`)"
+                port: 
+                  type: "number"
+                  default: 9122
+                  description: "InfluxDB&trade; Prometheus port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTP node port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Static clusterIP or None for headless services"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the Prometheus metrics service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable NetworkPolicy"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "Don't require client label for connections"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable data persistence"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Use a existing PVC which must be created manually before bound"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Specify the `storageClass` used to provision the volume"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "Access mode of data volume"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "Size of data volume"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume mountpoint to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image name"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r202"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            securityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "User ID for the init container (when facing issues in OpenShift or uid unknown, try value \"auto\")"
+        backup: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable InfluxDB&trade; backup"
+            directory: 
+              type: "string"
+              default: "/backups"
+              description: "Directory where backups are stored"
+            retentionDays: 
+              type: "number"
+              default: 10
+              description: "Retention time in days for backups (older backups are deleted)"
+            cronjob: 
+              type: "object"
+              properties: 
+                schedule: 
+                  type: "string"
+                  default: "0 2 * * *"
+                  description: "Schedule in Cron format to save snapshots"
+                historyLimit: 
+                  type: "number"
+                  default: 1
+                  description: "Number of successful finished jobs to retain"
+                podAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Pod annotations"
+                securityContext: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable security context for InfluxDB&trade;"
+                    fsGroup: 
+                      type: "number"
+                      default: 1001
+                      description: "Group ID for the InfluxDB&trade; filesystem"
+                    runAsUser: 
+                      type: "number"
+                      default: 1001
+                      description: "Group ID for the InfluxDB&trade; filesystem"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Backup &trade; Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Backup&trade; Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Backup&trade; Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Backup&trade; Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Backup&trade; Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Backup&trade; Affinity for backup pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Backup&trade; Node labels for backup pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Backup&trade; Tolerations for backup pod assignment"
+            uploadProviders: 
+              type: "object"
+              properties: 
+                google: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "enable upload to google storage bucket"
+                    secret: 
+                      type: "string"
+                      default: ""
+                      description: "json secret with serviceaccount data to access Google storage bucket"
+                    secretKey: 
+                      type: "string"
+                      default: "key.json"
+                      description: "service account secret key name"
+                    existingSecret: 
+                      type: "string"
+                      default: ""
+                      description: "Name of existing secret object with Google serviceaccount json credentials"
+                    bucketName: 
+                      type: "string"
+                      default: "gs://bucket/influxdb"
+                      description: "google storage bucket name name"
+                    image: 
+                      type: "object"
+                      properties: 
+                        registry: 
+                          type: "string"
+                          default: "docker.io"
+                          description: "Google Cloud SDK image registry"
+                        repository: 
+                          type: "string"
+                          default: "bitnami/google-cloud-sdk"
+                          description: "Google Cloud SDK image name"
+                        tag: 
+                          type: "string"
+                          default: "0.358.0-debian-10-r3"
+                          description: "Google Cloud SDK image tag"
+                        pullPolicy: 
+                          type: "string"
+                          default: "IfNotPresent"
+                          description: "Google Cloud SDK image pull policy"
+                        pullSecrets: 
+                          type: "array"
+                          default: "[]"
+                          description: "Specify docker-registry secret names as an array"
+                azure: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable upload to azure storage container"
+                    secret: 
+                      type: "string"
+                      default: ""
+                      description: "Secret with credentials to access Azure storage"
+                    secretKey: 
+                      type: "string"
+                      default: "connection-string"
+                      description: "Service account secret key name"
+                    existingSecret: 
+                      type: "string"
+                      default: ""
+                      description: "Name of existing secret object"
+                    containerName: 
+                      type: "string"
+                      default: "influxdb-container"
+                      description: "Destination container"
+                    image: 
+                      type: "object"
+                      properties: 
+                        registry: 
+                          type: "string"
+                          default: "docker.io"
+                          description: "Azure CLI image registry"
+                        repository: 
+                          type: "string"
+                          default: "bitnami/azure-cli"
+                          description: "Azure CLI image repository"
+                        tag: 
+                          type: "string"
+                          default: "2.28.1-debian-10-r15"
+                          description: "Azure CLI image tag (immutable tags are recommended)"
+                        pullPolicy: 
+                          type: "string"
+                          default: "IfNotPresent"
+                          description: "Azure CLI image pull policy"
+                        pullSecrets: 
+                          type: "array"
+                          default: "[]"
+                          description: "Specify docker-registry secret names as an array"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: influxdb
+          version: "2.3.10"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

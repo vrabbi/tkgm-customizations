@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: concourse.bitnami.charts
+spec:
+  displayName: "concourse"
+  longDescription: "Bitnami concourse Helm Chart"
+  shortDescription: "concourse Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - concourse
+  - ci
+  - cd
+  - http
+  - web
+  - application

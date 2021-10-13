@@ -1,0 +1,340 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: node-exporter.bitnami.charts.2.3.5
+spec:
+  refName: node-exporter.bitnami.charts
+  version: 2.3.5
+  releaseNotes: |
+        Prometheus exporter for hardware and OS metrics exposed by UNIX kernels, with pluggable metric collectors.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override `common.names.fullname` template with a string"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Whether to create and use RBAC resources or not"
+            apiVersion: 
+              type: "string"
+              default: "v1beta1"
+              description: "Version of the RBAC API"
+            pspEnabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Pod Security Policy"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specify whether to create a ServiceAccount for Node Exporter"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to create"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Node Exporter image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/node-exporter"
+              description: "Node Exporter image repository"
+            tag: 
+              type: "string"
+              default: "1.2.0-debian-10-r14"
+              description: "Node Exporter Image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Node Exporter image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        extraArgs: 
+          type: "object"
+          default: "{}"
+          description: "Additional command line arguments to pass to node-exporter"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Additional volumes to the node-exporter pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Additional volumeMounts to the node-exporter container"
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container filesystem"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes service type"
+            targetPort: 
+              type: "number"
+              default: 9100
+              description: "Node Exporter container target port"
+            port: 
+              type: "number"
+              default: 9100
+              description: "Node Exporter service port"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Specific cluster IP when service type is cluster IP. Use `None` for headless service"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Specify the nodePort value for the LoadBalancer and NodePort service types"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "`loadBalancerIP` if service type is `LoadBalancer`"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Address that are allowed when service is `LoadBalancer`"
+            addPrometheusScrapeAnnotation: 
+              type: "boolean"
+              default: true
+              description: "Add the `prometheus.io/scrape: \"true\"` annotation to the service"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for Node Exporter service"
+            labels: 
+              type: "object"
+              default: "{}"
+              description: "Additional labels for Node Exporter service"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "The update strategy type to apply to the DaemonSet"
+            rollingUpdate: 
+              type: "object"
+              properties: 
+                maxUnavailable: 
+                  type: "number"
+                  default: 1
+                  description: "Maximum number of pods that may be made unavailable"
+        hostNetwork: 
+          type: "boolean"
+          default: true
+          description: "Expose the service to the host network"
+        minReadySeconds: 
+          type: "number"
+          default: 0
+          description: "`minReadySeconds` to avoid killing pods before we are ready"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Priority class assigned to the Pods"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Pod labels"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment. Evaluated as a template."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        livenessProbe: 
+          type: "object"
+          properties: 
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        serviceMonitor: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Creates a ServiceMonitor to monitor Node Exporter"
+            namespace: 
+              type: "string"
+              default: ""
+              description: "Namespace in which Prometheus is running"
+            jobLabel: 
+              type: "string"
+              default: ""
+              description: "The name of the label on the target service to use as the job name in prometheus."
+            interval: 
+              type: "string"
+              default: ""
+              description: "Scrape interval (use by default, falling back to Prometheus' default)"
+            scrapeTimeout: 
+              type: "string"
+              default: ""
+              description: "Timeout after which the scrape is ended"
+            selector: 
+              type: "object"
+              default: "{}"
+              description: "ServiceMonitor selector labels"
+            relabelings: 
+              type: "array"
+              default: "[]"
+              description: "RelabelConfigs to apply to samples before scraping"
+            metricRelabelings: 
+              type: "array"
+              default: "[]"
+              description: "MetricRelabelConfigs to apply to samples before ingestion"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: node-exporter
+          version: "2.3.5"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

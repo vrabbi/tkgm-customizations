@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: thanos.bitnami.charts
+spec:
+  displayName: "thanos"
+  longDescription: "Bitnami thanos Helm Chart"
+  shortDescription: "thanos Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - analytics
+  - monitoring
+  - prometheus
+  - thanos

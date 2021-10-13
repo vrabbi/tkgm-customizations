@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kiam.bitnami.charts
+spec:
+  displayName: "kiam"
+  longDescription: "Bitnami kiam Helm Chart"
+  shortDescription: "kiam Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - aws
+  - iam
+  - security

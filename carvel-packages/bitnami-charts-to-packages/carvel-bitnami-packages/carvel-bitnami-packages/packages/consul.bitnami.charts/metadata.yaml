@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: consul.bitnami.charts
+spec:
+  displayName: "consul"
+  longDescription: "Bitnami consul Helm Chart"
+  shortDescription: "consul Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - discovering
+  - configuring
+  - services

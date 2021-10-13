@@ -1,0 +1,12 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: node.bitnami.charts
+spec:
+  displayName: "node"
+  longDescription: "Bitnami node Helm Chart"
+  shortDescription: "node Helm Chart"
+  categories:
+  - bitnami
+  - helm
+

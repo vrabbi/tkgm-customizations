@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kafka.bitnami.charts
+spec:
+  displayName: "kafka"
+  longDescription: "Bitnami kafka Helm Chart"
+  shortDescription: "kafka Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - kafka
+  - zookeeper
+  - streaming
+  - producer
+  - consumer

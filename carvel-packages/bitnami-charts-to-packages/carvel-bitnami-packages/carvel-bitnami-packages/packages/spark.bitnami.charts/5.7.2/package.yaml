@@ -1,0 +1,691 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: spark.bitnami.charts.5.7.2
+spec:
+  refName: spark.bitnami.charts
+  version: 5.7.2
+  releaseNotes: |
+        Spark is a fast and general-purpose cluster computing system.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Spark image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/spark"
+              description: "Spark image repository"
+            tag: 
+              type: "string"
+              default: "3.1.2-debian-10-r70"
+              description: "Spark image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Spark image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        hostNetwork: 
+          type: "boolean"
+          default: false
+          description: "Enable HOST Network"
+        master: 
+          type: "object"
+          properties: 
+            configurationConfigMap: 
+              type: "string"
+              default: ""
+              description: "Set a custom configuration by using an existing configMap with the configuration file."
+            webPort: 
+              type: "number"
+              default: 8080
+              description: "Specify the port where the web interface will listen on the master"
+            clusterPort: 
+              type: "number"
+              default: 7077
+              description: "Specify the port where the master listens to communicate with workers"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            daemonMemoryLimit: 
+              type: "string"
+              default: ""
+              description: "Set the memory limit for the master daemon"
+            configOptions: 
+              type: "string"
+              default: ""
+              description: "Use a string to set the config options for in the form \"-Dx=y\""
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to pass to the master container"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the container"
+                runAsGroup: 
+                  type: "number"
+                  default: 0
+                  description: "Group ID for the container"
+                seLinuxOptions: 
+                  type: "object"
+                  default: "{}"
+                  description: "SELinux options for the container"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for pods in StatefulSet"
+            extraPodLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for pods in StatefulSet"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Spark master pod affinity preset. Ignored if `master.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Spark master pod anti-affinity preset. Ignored if `master.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Spark master node affinity preset type. Ignored if `master.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Spark master node label key to match Ignored if `master.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Spark master node label values to match. Ignored if `master.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Spark master affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Spark master node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Spark master tolerations for pod assignment"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 180
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add initContainers to the master pods."
+        worker: 
+          type: "object"
+          properties: 
+            configurationConfigMap: 
+              type: "string"
+              default: ""
+              description: "Set a custom configuration by using an existing configMap with the configuration file."
+            webPort: 
+              type: "number"
+              default: 8081
+              description: "Specify the port where the web interface will listen on the worker"
+            clusterPort: 
+              type: "string"
+              default: ""
+              description: "Specify the port where the worker listens to communicate with the master"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Specify the port where the running jobs inside the workers listens"
+            daemonMemoryLimit: 
+              type: "string"
+              default: ""
+              description: "Set the memory limit for the worker daemon"
+            memoryLimit: 
+              type: "string"
+              default: ""
+              description: "Set the maximum memory the worker is allowed to use"
+            coreLimit: 
+              type: "string"
+              default: ""
+              description: "Se the maximum number of cores that the worker can use"
+            dir: 
+              type: "string"
+              default: ""
+              description: "Set a custom working directory for the application"
+            javaOptions: 
+              type: "string"
+              default: ""
+              description: "Set options for the JVM in the form `-Dx=y`"
+            configOptions: 
+              type: "string"
+              default: ""
+              description: "Set extra options to configure the worker in the form `-Dx=y`"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            replicaCount: 
+              type: "number"
+              default: 2
+              description: "Number of spark workers (will be the minimum number when autoscaling is enabled)"
+            podManagementPolicy: 
+              type: "string"
+              default: "OrderedReady"
+              description: "Statefulset Pod Management Policy Type"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the container"
+                runAsGroup: 
+                  type: "number"
+                  default: 0
+                  description: "Group ID for the container"
+                seLinuxOptions: 
+                  type: "object"
+                  default: "{}"
+                  description: "SELinux options for the container"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for pods in StatefulSet"
+            extraPodLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for pods in StatefulSet"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Spark worker pod affinity preset. Ignored if `worker.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Spark worker pod anti-affinity preset. Ignored if `worker.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Spark worker node affinity preset type. Ignored if `worker.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Spark worker node label key to match Ignored if `worker.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Spark worker node label values to match. Ignored if `worker.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Spark worker affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Spark worker node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Spark worker tolerations for pod assignment"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 180
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add initContainers to the master pods."
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable replica autoscaling depending on CPU"
+                CpuTargetPercentage: 
+                  type: "number"
+                  default: 50
+                  description: "Kubernetes HPA CPU target percentage"
+                replicasMax: 
+                  type: "number"
+                  default: 5
+                  description: "Maximum number of workers when using autoscaling"
+        security: 
+          type: "object"
+          properties: 
+            passwordsSecretName: 
+              type: "string"
+              default: ""
+              description: "Name of the secret that contains all the passwords"
+            rpc: 
+              type: "object"
+              properties: 
+                authenticationEnabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable the RPC authentication"
+                encryptionEnabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable the encryption for RPC"
+            storageEncryptionEnabled: 
+              type: "boolean"
+              default: false
+              description: "Enables local storage encryption"
+            certificatesSecretName: 
+              type: "string"
+              default: ""
+              description: "Name of the secret that contains the certificates."
+            ssl: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable the SSL configuration"
+                needClientAuth: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable the client authentication"
+                protocol: 
+                  type: "string"
+                  default: "TLSv1.2"
+                  description: "Set the SSL protocol"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the TLS certificates"
+                autoGenerated: 
+                  type: "boolean"
+                  default: false
+                  description: "Create self-signed TLS certificates. Currently only supports PEM certificates"
+                keystorePassword: 
+                  type: "string"
+                  default: ""
+                  description: "Set the password of the JKS Keystore"
+                truststorePassword: 
+                  type: "string"
+                  default: ""
+                  description: "Truststore password."
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            clusterPort: 
+              type: "number"
+              default: 7077
+              description: "Spark cluster port"
+            webPort: 
+              type: "number"
+              default: 80
+              description: "Spark client port"
+            nodePorts: 
+              type: "object"
+              properties: 
+                cluster: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes cluster node port"
+                web: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes web node port"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Load balancer IP if spark service type is `LoadBalancer`"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for spark service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Set this to true in order to add the corresponding annotations for cert-manager"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "spark.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to Spark. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            masterAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the Prometheus metrics on master nodes"
+            workerAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the Prometheus metrics on worker nodes"
+            podMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "If the operator is installed in your cluster, set to true to create a PodMonitor Resource for scraping metrics using PrometheusOperator"
+                extraMetricsEndpoints: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add metrics endpoints for monitoring the jobs running in the worker nodes"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the namespace in which the podMonitor resource will be created"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "Specify the interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the timeout after which the scrape is ended"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels that can be used so PodMonitors will be discovered by Prometheus"
+            prometheusRule: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Set this to true to create prometheusRules for Prometheus"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace where the prometheusRules resource should be created"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels that can be used so prometheusRules will be discovered by Prometheus"
+                rules: 
+                  type: "array"
+                  default: "[]"
+                  description: "Custom Prometheus [rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: spark
+          version: "5.7.2"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

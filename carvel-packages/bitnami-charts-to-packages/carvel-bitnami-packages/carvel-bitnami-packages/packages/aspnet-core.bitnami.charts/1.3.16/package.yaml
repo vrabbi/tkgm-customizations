@@ -1,0 +1,553 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: aspnet-core.bitnami.charts.1.3.16
+spec:
+  refName: aspnet-core.bitnami.charts
+  version: 1.3.16
+  releaseNotes: |
+        ASP.NET Core is an open-source framework created by Microsoft for building cloud-enabled, modern applications.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override aspnet-core.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override aspnet-core.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "ASP.NET Core image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/aspnet-core"
+              description: "ASP.NET Core image repository"
+            tag: 
+              type: "string"
+              default: "3.1.18-debian-10-r15"
+              description: "ASP.NET Core image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "ASP.NET Core image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "ASP.NET Core image pull secrets"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        bindURLs: 
+          type: "string"
+          default: "http://+:8080"
+          description: "URLs to bind"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on ASP.NET Core container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with extra environment variables"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret with extra environment variables"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of ASP.NET Core replicas to deploy"
+        strategyType: 
+          type: "string"
+          default: "RollingUpdate"
+          description: "ASP.NET Core deployment strategy type. Set it to `RollingUpdate` or `Recreate`"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "ASP.NET Core pod priority class name"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "ASP.NET Core pod host aliases"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for ASP.NET Core pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for ASP.NET Core container(s)"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the ASP.NET Core pods"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the ASP.NET Core pods"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "Add lifecycle hooks to the ASP.NET Core deployment"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for ASP.NET Core pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the ASP.NET Core container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the ASP.NET Core container"
+        containerPort: 
+          type: "number"
+          default: 8080
+          description: "Port to expose at ASP.NET Core container level"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enabled ASP.NET Core pods' Security Context"
+            sysctls: 
+              type: "array"
+              default: "[]"
+              description: "Set namespaced sysctls for the ASP.NET Core pods"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enabled ASP.NET Core containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 0
+              description: "Set ASP.NET Core container's Security Context runAsUser"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 10
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 20
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 10
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 20
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom livenessProbe that overrides the default one"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readinessProbe that overrides the default one"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number/percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number/percentage of pods that may be made unavailable"
+        autoscaling: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable autoscaling for ASP.NET Core"
+            minReplicas: 
+              type: "number"
+              default: 1
+              description: "Minimum number of ASP.NET Core replicas"
+            maxReplicas: 
+              type: "number"
+              default: 11
+              description: "Maximum number of ASP.NET Core replicas"
+            targetCPU: 
+              type: "string"
+              default: ""
+              description: "Target CPU utilization percentage"
+            targetMemory: 
+              type: "string"
+              default: ""
+              description: "Target Memory utilization percentage"
+        appFromExternalRepo: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable to download/build ASP.NET Core app from external git repository"
+            clone: 
+              type: "object"
+              properties: 
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "Git image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/git"
+                      description: "Git image repository"
+                    tag: 
+                      type: "string"
+                      default: "2.33.0-debian-10-r9"
+                      description: "Git image tag (immutable tags are recommended)"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: "Git image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "Git image pull secrets"
+                repository: 
+                  type: "string"
+                  default: "https://github.com/dotnet/AspNetCore.Docs.git"
+                  description: "Git repository to clone"
+                revision: 
+                  type: "string"
+                  default: "main"
+                  description: "Git revision to checkout"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add extra volume mounts for the GIT container"
+            publish: 
+              type: "object"
+              properties: 
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: ".NET SDK image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/dotnet-sdk"
+                      description: ".NET SDK image repository"
+                    tag: 
+                      type: "string"
+                      default: "3.1.412-debian-10-r14"
+                      description: ".NET SDK image tag (immutable tags are recommended)"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: ".NET SDK image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: ".NET SDK image pull secrets"
+                subFolder: 
+                  type: "string"
+                  default: "aspnetcore/fundamentals/servers/kestrel/samples/3.x/KestrelSample"
+                  description: "Sub folder under the Git repository containing the ASP.NET Core app"
+                extraFlags: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra flags to be appended to \"dotnet publish\" command"
+            startCommand: 
+              type: "array"
+              default: "[\"dotnet\",\"KestrelSample.dll\"]"
+              description: "Command used to start ASP.NET Core app"
+        appFromExistingPVC: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable mounting your ASP.NET Core app from an existing PVC"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "A existing Persistent Volume Claim containing your ASP.NET Core app"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "ASP.NET Core service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "ASP.NET Core service HTTP port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Node ports to expose"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "ASP.NET Core service Cluster IP"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "ASP.NET Core service Load Balancer IP"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "ASP.NET Core service Load Balancer sources"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "ASP.NET Core service external traffic policy"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for ASP.NET Core service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress record generation for ASP.NET Core"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "aspnet-core.local"
+              description: "Default host for the ingress resource, a host pointing to this will be created"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Default path for the ingress record"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for the ingress record"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the host defined at `ingress.hostname` parameter"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add the corresponding annotations for cert-manager integration"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional hostname(s) to be covered with the ingress record"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Custom TLS certificates as secrets"
+        healthIngress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable healthIngress record generation for ASP.NET Core"
+            hostname: 
+              type: "string"
+              default: "aspnet-core.local"
+              description: "When the health ingress is enabled, a host pointing to this will be created"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for the ingress record"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the host defined at `ingress.hostname` parameter"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Set this to true in order to add the corresponding annotations for cert-manager"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "n array with additional hostname(s) to be covered with the ingress record"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Custom TLS certificates as secrets"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for the ServiceAccount"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: aspnet-core
+          version: "1.3.16"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

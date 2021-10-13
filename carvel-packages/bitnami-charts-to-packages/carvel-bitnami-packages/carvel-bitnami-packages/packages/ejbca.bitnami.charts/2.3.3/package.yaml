@@ -1,0 +1,519 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: ejbca.bitnami.charts.2.3.3
+spec:
+  refName: ejbca.bitnami.charts
+  version: 2.3.3
+  releaseNotes: |
+        Enterprise class PKI Certificate Authority built on JEE technology.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override ebjca.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override ebjca.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to be added to all deployed resources"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "EJBCA image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/ejbca"
+              description: "EJBCA image name"
+            tag: 
+              type: "string"
+              default: "6.15.2-6-debian-10-r335"
+              description: "EJBCA image tag"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "EJBCA image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of EJBCA replicas to deploy"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Additional volume mounts (used along with `extraVolumes`)"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra volumes to be added deployment. Requires setting `extraVolumeMounts`"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Additional pod annotations"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Additional pod labels"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context for EJBCA container"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the volumes of the pod"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to enable persistence based on Persistent Volume Claims"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "PVC Access Mode (RWO, ROX, RWX)"
+            size: 
+              type: "string"
+              default: "2Gi"
+              description: "Size of the PVC to request"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Name of an existing PVC to reuse"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional sidecar containers to the pod"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Additional init containers to add to the pods"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        ejbcaAdminUsername: 
+          type: "string"
+          default: "bitnami"
+          description: "EJBCA administrator username"
+        ejbcaAdminPassword: 
+          type: "string"
+          default: ""
+          description: "Password for the administrator account"
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Alternatively, you can provide the name of an existing secret containing"
+        ejbcaJavaOpts: 
+          type: "string"
+          default: ""
+          description: "Options used to launch the WildFly server"
+        ejbcaCA: 
+          type: "object"
+          properties: 
+            name: 
+              type: "string"
+              default: "ManagementCA"
+              description: "Name of the CA EJBCA will instantiate by default"
+            baseDN: 
+              type: "string"
+              default: ""
+              description: "Base DomainName of the CA EJBCA will instantiate by default"
+        ejbcaKeystoreExistingSecret: 
+          type: "string"
+          default: ""
+          description: "Name of an existing Secret containing a Keystore object"
+        extraEnv: 
+          type: "array"
+          default: "[]"
+          description: "Additional container environment variables"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Custom command to override image cmd"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Custom args for the custom command"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled EJBCA containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set EJBCA containers' Security Context runAsUser"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 500
+              description: "Delay before liveness probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Minimum consecutive failures for the probe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes for the probe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 500
+              description: "Delay before readiness probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Minimum consecutive failures for the probe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes for the probe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom liveness probe to execute (when the main one is disabled)"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readiness probe to execute (when the main one is disabled)"
+        containerPorts: 
+          type: "object"
+          default: "{}"
+          description: "EJBCA Container ports to open"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 8080
+              description: "Service HTTP port"
+            httpsPort: 
+              type: "number"
+              default: 8443
+              description: "Service HTTPS port"
+            advertisedHttpsPort: 
+              type: "number"
+              default: 443
+              description: "Port used for the administration"
+            httpsTargetPort: 
+              type: "string"
+              default: "https"
+              description: "Service Target HTTPS port"
+            nodePorts: 
+              type: "object"
+              default: "{}"
+              description: "Node Ports to expose"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Service annotations"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Limits which cidr blocks can connect to service's load balancer"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Extra ports to expose in the service (normally used with the `sidecar` value)"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add annotations for cert-manager"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress Path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "ejbca.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to EJBCA. You may need to set this to '/*' in order to use this"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations done as key:value pairs"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        mariadb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to deploy a mariadb server to satisfy the applications database requirements."
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "MariaDB architecture (`standalone` or `replication`)"
+            auth: 
+              type: "object"
+              properties: 
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the MariaDB `root` user"
+                database: 
+                  type: "string"
+                  default: "bitnami_ejbca"
+                  description: "Database name to create"
+                username: 
+                  type: "string"
+                  default: "bn_ejbca"
+                  description: "Database user to create"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the database"
+            primary: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable database persistence using PVC"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "MariaDB primary persistent volume storage Class"
+                    accessMode: 
+                      type: "string"
+                      default: "ReadWriteOnce"
+                      description: "Persistent Volume access mode"
+                    size: 
+                      type: "string"
+                      default: "8Gi"
+                      description: "Database Persistent Volume Size"
+                    hostPath: 
+                      type: "string"
+                      default: ""
+                      description: "Set path in case you want to use local host path volumes (not recommended in production)"
+                    existingClaim: 
+                      type: "string"
+                      default: ""
+                      description: "Name of an existing `PersistentVolumeClaim` for MariaDB primary replicas"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Host of the external database"
+            user: 
+              type: "string"
+              default: "bn_ejbca"
+              description: "non-root Username for EJBCA Database"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the above username"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret resource containing the DB password in a 'mariadb-password' key"
+            database: 
+              type: "string"
+              default: "bitnami_ejbca"
+              description: "Name of the existing database"
+            port: 
+              type: "number"
+              default: 3306
+              description: "Database port number"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: ejbca
+          version: "2.3.3"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

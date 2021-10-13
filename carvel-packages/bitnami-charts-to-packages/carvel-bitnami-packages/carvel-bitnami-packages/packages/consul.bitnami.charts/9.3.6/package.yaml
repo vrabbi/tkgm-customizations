@@ -1,0 +1,603 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: consul.bitnami.charts.9.3.6
+spec:
+  refName: consul.bitnami.charts
+  version: 9.3.6
+  releaseNotes: |
+        Highly available and distributed service discovery and key-value store designed with support for the modern data center to make distributed systems and configuration easy.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects (sub-charts are not considered)"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects (sub-charts are not considered)"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "HashiCorp Consul image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/consul"
+              description: "HashiCorp Consul image repository"
+            tag: 
+              type: "string"
+              default: "1.10.2-debian-10-r28"
+              description: "HashiCorp Consul image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "HashiCorp Consul image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "HashiCorp Consul image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        datacenterName: 
+          type: "string"
+          default: "dc1"
+          description: "Datacenter name for Consul. If not supplied, will use the Consul"
+        domain: 
+          type: "string"
+          default: "consul"
+          description: "Consul domain name"
+        raftMultiplier: 
+          type: "string"
+          default: "1"
+          description: "Multiplier used to scale key Raft timing parameters"
+        gossipKey: 
+          type: "string"
+          default: ""
+          description: "Gossip key for all members. The key must be 16-bytes, can be generated with $(consul keygen)"
+        tlsEncryptionSecretName: 
+          type: "string"
+          default: ""
+          description: "Name of existing secret with TLS encryption data"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        configuration: 
+          type: "string"
+          default: ""
+          description: "HashiCorp Consul configuration to be injected as ConfigMap"
+        existingConfigmap: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with HashiCorp Consul configuration"
+        localConfig: 
+          type: "string"
+          default: ""
+          description: "Extra configuration that will be added to the default one"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Command for running the container (set to default if not set). Use array form"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Args for running the container (set to default if not set). Use array form"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on HashiCorp Consul container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        containerPorts: 
+          type: "object"
+          properties: 
+            http: 
+              type: "number"
+              default: 8500
+              description: "Port to open for HTTP in Consul"
+            dns: 
+              type: "number"
+              default: 8600
+              description: "Port to open for DNS server in Consul"
+            rpc: 
+              type: "number"
+              default: 8400
+              description: "Port to open for RPC in Consul"
+            rpcServer: 
+              type: "number"
+              default: 8300
+              description: "Port to open for RPC Server in Consul"
+            serfLAN: 
+              type: "number"
+              default: 8301
+              description: "Port to open for Serf LAN in Consul"
+        replicaCount: 
+          type: "number"
+          default: 3
+          description: "Number of HashiCorp Consul replicas to deploy"
+        updateStrategy: 
+          type: "string"
+          default: "RollingUpdate"
+          description: "Update strategy type for the HashiCorp Consul statefulset"
+        rollingUpdatePartition: 
+          type: "string"
+          default: ""
+          description: "Partition update strategy"
+        podManagementPolicy: 
+          type: "string"
+          default: "Parallel"
+          description: "StatefulSet pod management policy"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Additional pod annotations"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context for HashiCorp Consul pods"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the volumes of the pod"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "HashiCorp Consul Container securityContext"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the HashiCorp Consul container"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for HashiCorp Consul containers"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for HashiCorp Consul containers"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for Hashicorp Consul container"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for Hashicorp Consul container"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the Hashicorp Consul pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the Hashicorp Consul pods"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number of pods that must still be available after the eviction"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Max number of pods that can be unavailable after the eviction"
+        service: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Use a service to access HashiCorp Consul Ui"
+            port: 
+              type: "number"
+              default: 80
+              description: "HashiCorp Consul UI svc port"
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "HashiCorp Consul UI Service Type"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Node port for HashiCorp Consul UI"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "HashiCorp Consul UI service Load Balancer IP"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for HashiCorp Consul UI service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress resource for Management console"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Path for the default host"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add annotations for cert-manager"
+            hostname: 
+              type: "string"
+              default: "consul-ui.local"
+              description: "Default host for the ingress resource, a host pointing to this will be created"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations done as key:value pairs"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional hostname(s) to be covered with the ingress record"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable HashiCorp Consul data persistence using PVC, use a Persistent Volume Claim, If false, use emptyDir"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume storage class"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Persistent Volume Claim annotations"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "Persistent Volume Access Mode"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for HashiCorp Consul data volume"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami Shell image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Bitnami Shell image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r203"
+                  description: "Bitnami Shell image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Bitnami Shell image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami Shell image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "HashiCorp Consul Prometheus Exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/consul-exporter"
+                  description: "HashiCorp Consul Prometheus Exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.7.1-debian-10-r403"
+                  description: "HashiCorp Consul Prometheus Exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "HashiCorp Consul Prometheus Exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "HashiCorp Consul Prometheus Exporter image pull secrets"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes Service type"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Service Load Balancer IP"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Provide any additional annotations which may be required."
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter pod Annotation and Labels"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator, set to true to create a Service Monitor Entry"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "The namespace in which the ServiceMonitor will be created"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "Interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "The timeout after which the scrape is ended"
+                relabellings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metrics relabellings to add to the scrape endpoint"
+                honorLabels: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify honorLabels parameter to add the scrape endpoint"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Used to pass Labels that are used by the Prometheus installed in your cluster to select Service Monitors to work with"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: consul
+          version: "9.3.6"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

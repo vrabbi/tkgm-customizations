@@ -1,0 +1,18 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: drupal.bitnami.charts
+spec:
+  displayName: "drupal"
+  longDescription: "Bitnami drupal Helm Chart"
+  shortDescription: "drupal Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - drupal
+  - cms
+  - blog
+  - http
+  - web
+  - application
+  - php

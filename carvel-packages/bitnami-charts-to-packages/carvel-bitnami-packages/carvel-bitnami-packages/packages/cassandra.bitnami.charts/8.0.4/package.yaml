@@ -1,0 +1,695 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: cassandra.bitnami.charts.8.0.4
+spec:
+  refName: cassandra.bitnami.charts
+  version: 8.0.4
+  releaseNotes: |
+        Apache Cassandra is a free and open-source distributed database management system designed to handle large amounts of data across many commodity servers, providing high availability with no single point of failure. Cassandra offers robust support for clusters spanning multiple datacenters, with asynchronous masterless replication allowing low latency operations for all clients.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects (sub-charts are not considered)"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Cassandra image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/cassandra"
+              description: "Cassandra image repository"
+            tag: 
+              type: "string"
+              default: "4.0.1-debian-10-r0"
+              description: "Cassandra image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Cassandra image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        dbUser: 
+          type: "object"
+          properties: 
+            user: 
+              type: "string"
+              default: "cassandra"
+              description: "Cassandra admin user"
+            forcePassword: 
+              type: "boolean"
+              default: false
+              description: "Force the user to provide a non"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for `dbUser.user`. Randomly generated if empty"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Use an existing secret object for `dbUser.user` password (will ignore `dbUser.password`)"
+        initDBConfigMap: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with cql scripts. Useful for creating a keyspace and pre-populating data"
+        initDBSecret: 
+          type: "string"
+          default: ""
+          description: "Secret with cql script (with sensitive data). Useful for creating a keyspace and pre-populating data"
+        existingConfiguration: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with custom cassandra configuration files. This overrides any other Cassandra configuration set in the chart"
+        cluster: 
+          type: "object"
+          properties: 
+            name: 
+              type: "string"
+              default: "cassandra"
+              description: "Cassandra cluster name"
+            seedCount: 
+              type: "number"
+              default: 1
+              description: "Number of seed nodes"
+            numTokens: 
+              type: "number"
+              default: 256
+              description: "Number of tokens for each node"
+            datacenter: 
+              type: "string"
+              default: "dc1"
+              description: "Datacenter name"
+            rack: 
+              type: "string"
+              default: "rack1"
+              description: "Rack name"
+            endpointSnitch: 
+              type: "string"
+              default: "SimpleSnitch"
+              description: "Endpoint Snitch"
+            internodeEncryption: 
+              type: "string"
+              default: "none"
+              description: "DEPRECATED: use tls.internode and tls.client instead. Encryption values."
+            clientEncryption: 
+              type: "boolean"
+              default: false
+              description: "Client Encryption"
+            extraSeeds: 
+              type: "array"
+              default: "[]"
+              description: "For an external/second cassandra ring."
+        jvm: 
+          type: "object"
+          properties: 
+            extraOpts: 
+              type: "string"
+              default: ""
+              description: "Set the value for Java Virtual Machine extra options"
+            maxHeapSize: 
+              type: "string"
+              default: ""
+              description: "Set Java Virtual Machine maximum heap size (MAX_HEAP_SIZE). Calculated automatically if `nil`"
+            newHeapSize: 
+              type: "string"
+              default: ""
+              description: "Set Java Virtual Machine new heap size (HEAP_NEWSIZE). Calculated automatically if `nil`"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Command for running the container (set to default if not set). Use array form"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Args for running the container (set to default if not set). Use array form"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on cassandra container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Cassandra replicas"
+        updateStrategy: 
+          type: "string"
+          default: "RollingUpdate"
+          description: "updateStrategy for Cassandra statefulset"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        rollingUpdatePartition: 
+          type: "string"
+          default: ""
+          description: "Partition update strategy"
+        podManagementPolicy: 
+          type: "string"
+          default: "OrderedReady"
+          description: "StatefulSet pod management policy"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Cassandra pods' priority."
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Additional pod annotations"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Additional pod labels"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        topologySpreadConstraints: 
+          type: "array"
+          default: "[]"
+          description: "Topology Spread Constraints for pod assignment"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Cassandra pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set Cassandra pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Cassandra containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "et Cassandra container's Security Context runAsUser"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for Cassandra containers"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for Cassandra containers"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 60
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 30
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 60
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom livenessProbe that overrides the default one"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readinessProbe that overrides the default one"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for cassandra container"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for cassandra container"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the cassandra pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the cassandra pods"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Mininimum number of pods that must still be available after the eviction"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Max number of pods that can be unavailable after the eviction"
+        hostNetwork: 
+          type: "boolean"
+          default: false
+          description: "Enable HOST Network"
+        containerPorts: 
+          type: "object"
+          properties: 
+            intra: 
+              type: "number"
+              default: 7000
+              description: "Intra Port on the Host and Container"
+            tls: 
+              type: "number"
+              default: 7001
+              description: "TLS Port on the Host and Container"
+            jmx: 
+              type: "number"
+              default: 7199
+              description: "JMX Port on the Host and Container"
+            cql: 
+              type: "number"
+              default: 9042
+              description: "CQL Port on the Host and Container"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable the creation of a ServiceAccount for Cassandra pods"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Cassandra Service Account"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Cassandra service type"
+            port: 
+              type: "number"
+              default: 9042
+              description: "Cassandra service CQL Port"
+            metricsPort: 
+              type: "number"
+              default: 8080
+              description: "Cassandra service metrics port"
+            nodePorts: 
+              type: "object"
+              properties: 
+                cql: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for CQL"
+                metrics: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for metrics"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "LoadBalancerIP if service type is `LoadBalancer`"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Provide any additional annotations which may be required."
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether a NetworkPolicy should be created"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "Don't require client label for connections"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Cassandra data persistence using PVC, use a Persistent Volume Claim, If false, use emptyDir"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for Cassandra data volume"
+            commitStorageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for Cassandra Commit Log volume"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Persistent Volume Claim annotations"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "Persistent Volume Access Mode"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for Cassandra data volume"
+            mountPath: 
+              type: "string"
+              default: "/bitnami/cassandra"
+              description: "The path the data volume will be mounted at"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r185"
+                  description: "Init container volume"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            securityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "User ID for the init container"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Cassandra exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/cassandra-exporter"
+                  description: "Cassandra exporter image name"
+                tag: 
+                  type: "string"
+                  default: "2.3.4-debian-10-r510"
+                  description: "Cassandra exporter image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter pod Annotation and Labels"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "If `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: "monitoring"
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+            containerPorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "number"
+                  default: 8080
+                  description: "HTTP Port on the Host and Container"
+                jmx: 
+                  type: "number"
+                  default: 5555
+                  description: "JMX Port on the Host and Container"
+        tls: 
+          type: "object"
+          properties: 
+            internodeEncryption: 
+              type: "string"
+              default: "none"
+              description: "Set internode encryption"
+            clientEncryption: 
+              type: "boolean"
+              default: false
+              description: "Set client-server encryption"
+            autoGenerated: 
+              type: "boolean"
+              default: false
+              description: "Generate automatically self-signed TLS certificates. Currently only supports PEM certificates"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Existing secret that contains Cassandra Keystore and truststore"
+            passwordsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing the Keystore and Truststore passwords if needed"
+            keystorePassword: 
+              type: "string"
+              default: ""
+              description: "Password for the keystore, if needed."
+            truststorePassword: 
+              type: "string"
+              default: ""
+              description: "Password for the truststore, if needed."
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the TLS init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the TLS init container"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: cassandra
+          version: "8.0.4"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

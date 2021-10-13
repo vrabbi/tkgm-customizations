@@ -1,0 +1,1167 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: kafka.bitnami.charts.14.2.0
+spec:
+  refName: kafka.bitnami.charts
+  version: 14.2.0
+  releaseNotes: |
+        Apache Kafka is a distributed streaming platform.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override kafka.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override kafka.fullname"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Default Kubernetes cluster domain"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Kafka image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/kafka"
+              description: "Kafka image repository"
+            tag: 
+              type: "string"
+              default: "2.8.1-debian-10-r0"
+              description: "Kafka image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Kafka image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Set to true if you would like to see extra information on logs"
+        config: 
+          type: "string"
+          default: ""
+          description: "Configuration file for Kafka. Auto-generated based on other parameters when not specified (see [below]("
+        existingConfigmap: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with Kafka Configuration"
+        log4j: 
+          type: "string"
+          default: ""
+          description: "An optional log4j.properties file to overwrite the default of the Kafka brokers."
+        existingLog4jConfigMap: 
+          type: "string"
+          default: ""
+          description: "The name of an existing ConfigMap containing a log4j.properties file."
+        heapOpts: 
+          type: "string"
+          default: "-Xmx1024m -Xms1024m"
+          description: "Kafka's Java Heap size"
+        deleteTopicEnable: 
+          type: "boolean"
+          default: false
+          description: "Switch to enable topic deletion or not"
+        autoCreateTopicsEnable: 
+          type: "boolean"
+          default: true
+          description: "Switch to enable auto creation of topics. Enabling auto creation of topics not recommended for production or similar environments"
+        logFlushIntervalMessages: 
+          type: "string"
+          default: "_10000"
+          description: "The number of messages to accept before forcing a flush of data to disk"
+        logFlushIntervalMs: 
+          type: "number"
+          default: 1000
+          description: "The maximum amount of time a message can sit in a log before we force a flush"
+        logRetentionBytes: 
+          type: "string"
+          default: "_1073741824"
+          description: "A size-based retention policy for logs"
+        logRetentionCheckIntervalMs: 
+          type: "number"
+          default: 300000
+          description: "The interval at which log segments are checked to see if they can be deleted"
+        logRetentionHours: 
+          type: "number"
+          default: 168
+          description: "The minimum age of a log file to be eligible for deletion due to age"
+        logSegmentBytes: 
+          type: "string"
+          default: "_1073741824"
+          description: "The maximum size of a log segment file. When this size is reached a new log segment will be created"
+        logsDirs: 
+          type: "string"
+          default: "/bitnami/kafka/data"
+          description: "A comma separated list of directories under which to store log files"
+        maxMessageBytes: 
+          type: "string"
+          default: "_1000012"
+          description: "The largest record batch size allowed by Kafka"
+        defaultReplicationFactor: 
+          type: "number"
+          default: 1
+          description: "Default replication factors for automatically created topics"
+        offsetsTopicReplicationFactor: 
+          type: "number"
+          default: 1
+          description: "The replication factor for the offsets topic"
+        transactionStateLogReplicationFactor: 
+          type: "number"
+          default: 1
+          description: "The replication factor for the transaction topic"
+        transactionStateLogMinIsr: 
+          type: "number"
+          default: 1
+          description: "Overridden min.insync.replicas config for the transaction topic"
+        numIoThreads: 
+          type: "number"
+          default: 8
+          description: "The number of threads doing disk I/O"
+        numNetworkThreads: 
+          type: "number"
+          default: 3
+          description: "The number of threads handling network requests"
+        numPartitions: 
+          type: "number"
+          default: 1
+          description: "The default number of log partitions per topic"
+        numRecoveryThreadsPerDataDir: 
+          type: "number"
+          default: 1
+          description: "The number of threads per data directory to be used for log recovery at startup and flushing at shutdown"
+        socketReceiveBufferBytes: 
+          type: "number"
+          default: 102400
+          description: "The receive buffer (SO_RCVBUF) used by the socket server"
+        socketRequestMaxBytes: 
+          type: "string"
+          default: "_104857600"
+          description: "The maximum size of a request that the socket server will accept (protection against OOM)"
+        socketSendBufferBytes: 
+          type: "number"
+          default: 102400
+          description: "The send buffer (SO_SNDBUF) used by the socket server"
+        zookeeperConnectionTimeoutMs: 
+          type: "number"
+          default: 6000
+          description: "Timeout in ms for connecting to Zookeeper"
+        authorizerClassName: 
+          type: "string"
+          default: ""
+          description: "The Authorizer is configured by setting authorizer.class.name=kafka.security.authorizer.AclAuthorizer in server.properties."
+        allowEveryoneIfNoAclFound: 
+          type: "boolean"
+          default: true
+          description: "By default, if a resource has no associated ACLs, then no one is allowed to access that resource except super users."
+        superUsers: 
+          type: "string"
+          default: "User:admin"
+          description: "You can add super users in server.properties"
+        command: 
+          type: "array"
+          default: "[\"/scripts/setup.sh\"]"
+          description: "Override kafka container command"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override kafka container arguments"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to add to kafka pods (see [below]({KEY}"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Extra volume(s) to add to Kafka statefulset"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Extra volumeMount(s) to add to Kafka containers"
+        auth: 
+          type: "object"
+          properties: 
+            clientProtocol: 
+              type: "string"
+              default: "plaintext"
+              description: "Authentication protocol for communications with clients. Allowed protocols: `plaintext`, `tls`, `mtls`, `sasl` and `sasl_tls`"
+            interBrokerProtocol: 
+              type: "string"
+              default: "plaintext"
+              description: "Authentication protocol for inter-broker communications. Allowed protocols: `plaintext`, `tls`, `mtls`, `sasl` and `sasl_tls`"
+            sasl: 
+              type: "object"
+              properties: 
+                mechanisms: 
+                  type: "string"
+                  default: "plain,scram-sha-256,scram-sha-512"
+                  description: "SASL mechanisms when either `auth.interBrokerProtocol` or `auth.clientProtocol` are `sasl`. Allowed types: `plain`, `scram-sha-256`, `scram-sha-512`"
+                interBrokerMechanism: 
+                  type: "string"
+                  default: "plain"
+                  description: "SASL mechanism for inter broker communication."
+                jaas: 
+                  type: "object"
+                  properties: 
+                    clientUsers: 
+                      type: "array"
+                      default: "[\"user\"]"
+                      description: "Kafka client user list"
+                    clientPasswords: 
+                      type: "array"
+                      default: "[]"
+                      description: "Kafka client passwords. This is mandatory if more than one user is specified in clientUsers"
+                    interBrokerUser: 
+                      type: "string"
+                      default: "admin"
+                      description: "Kafka inter broker communication user for SASL authentication"
+                    interBrokerPassword: 
+                      type: "string"
+                      default: ""
+                      description: "Kafka inter broker communication password for SASL authentication"
+                    zookeeperUser: 
+                      type: "string"
+                      default: ""
+                      description: "Kafka Zookeeper user for SASL authentication"
+                    zookeeperPassword: 
+                      type: "string"
+                      default: ""
+                      description: "Kafka Zookeeper password for SASL authentication"
+                    existingSecret: 
+                      type: "string"
+                      default: ""
+                      description: "Name of the existing secret containing credentials for clientUsers, interBrokerUser and zookeeperUser"
+            saslMechanisms: 
+              type: "string"
+              default: "plain,scram-sha-256,scram-sha-512"
+              description: "DEPRECATED: use `auth.sasl.mechanisms` instead."
+            saslInterBrokerMechanism: 
+              type: "string"
+              default: "plain"
+              description: "DEPRECATED: use `auth.sasl.interBrokerMechanism` instead."
+            jaas: 
+              type: "object"
+              default: "{}"
+              description: "DEPRECATED: use `auth.sasl.jaas` instead."
+            tls: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "jks"
+                  description: "Format to use for TLS certificates. Allowed types: `jks` and `pem`"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the TLS certificates for the Kafka brokers"
+                autoGenerated: 
+                  type: "boolean"
+                  default: false
+                  description: "Generate automatically self-signed TLS certificates for Kafka brokers. Currently only supported if `auth.tls.type` is `pem`"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Password to access the JKS files or PEM key when they are password-protected."
+                jksTruststoreSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing your truststore if truststore not existing or different from the one in the `auth.tls.existingSecret`"
+                jksKeystoreSAN: 
+                  type: "string"
+                  default: ""
+                  description: "The secret key from the `auth.tls.existingSecret` containing the keystore with a SAN certificate"
+                jksTruststore: 
+                  type: "string"
+                  default: ""
+                  description: "The secret key from the `auth.tls.existingSecret` or `auth.tls.jksTruststoreSecret` containing the truststore"
+                endpointIdentificationAlgorithm: 
+                  type: "string"
+                  default: "https"
+                  description: "The endpoint identification algorithm to validate server hostname using server certificate"
+            jksSecret: 
+              type: "string"
+              default: ""
+              description: "DEPRECATED: use `auth.tls.existingSecret` instead."
+            jksTruststoreSecret: 
+              type: "string"
+              default: ""
+              description: "DEPRECATED: use `auth.tls.jksTruststoreSecret` instead."
+            jksKeystoreSAN: 
+              type: "string"
+              default: ""
+              description: "DEPRECATED: use `auth.tls.jksKeystoreSAN` instead."
+            jksTruststore: 
+              type: "string"
+              default: ""
+              description: "DEPRECATED: use `auth.tls.jksTruststore` instead."
+            jksPassword: 
+              type: "string"
+              default: ""
+              description: "DEPRECATED: use `auth.tls.password` instead."
+            tlsEndpointIdentificationAlgorithm: 
+              type: "string"
+              default: "https"
+              description: "DEPRECATED: use `auth.tls.endpointIdentificationAlgorithm` instead."
+        listeners: 
+          type: "array"
+          default: "[]"
+          description: "The address(es) the socket server listens on. Auto-calculated it's set to an empty array"
+        advertisedListeners: 
+          type: "array"
+          default: "[]"
+          description: "The address(es) (hostname:port) the broker will advertise to producers and consumers. Auto-calculated it's set to an empty array"
+        listenerSecurityProtocolMap: 
+          type: "string"
+          default: ""
+          description: "The protocol->listener mapping. Auto-calculated it's set to nil"
+        allowPlaintextListener: 
+          type: "boolean"
+          default: true
+          description: "Allow to use the PLAINTEXT listener"
+        interBrokerListenerName: 
+          type: "string"
+          default: "INTERNAL"
+          description: "The listener that the brokers should communicate on"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Kafka nodes"
+        minBrokerId: 
+          type: "number"
+          default: 0
+          description: "Minimal broker.id value, nodes increment their `broker.id` respectively"
+        updateStrategy: 
+          type: "string"
+          default: "RollingUpdate"
+          description: "Update strategy for the stateful set"
+        rollingUpdatePartition: 
+          type: "string"
+          default: ""
+          description: "Partition update strategy"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        podManagementPolicy: 
+          type: "string"
+          default: "Parallel"
+          description: "StatefulSet controller supports relax its ordering guarantees while preserving its uniqueness and identity guarantees. There are two valid pod management policies: OrderedReady and Parallel"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Name of the k8s scheduler (other than default)"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Kafka pod labels"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Kafka Pod annotations"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Name of the existing priority class to be used by kafka pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        topologySpreadConstraints: 
+          type: "object"
+          default: "{}"
+          description: "Topology Spread Constraints for pod assignment spread across your cluster among failure-domains. Evaluated as a template"
+        terminationGracePeriodSeconds: 
+          type: "string"
+          default: ""
+          description: "Seconds the pod needs to gracefully terminate"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context for the pods"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the filesystem used by the containers"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the service user running the pod"
+        containerSecurityContext: 
+          type: "object"
+          default: "{}"
+          description: "Kafka containers' Security Context"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for Kafka containers"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for Kafka containers"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 10
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 3
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom Liveness probe configuration for Kafka"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom Readiness probe configuration for Kafka"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "string"
+              default: ""
+              description: "Minimum number/percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "number"
+              default: 1
+              description: "Maximum number/percentage of pods that may be made unavailable"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional sidecar containers to the Kafka pod"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add extra init containers"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 9092
+              description: "Kafka port for client connections"
+            internalPort: 
+              type: "number"
+              default: 9093
+              description: "Kafka port for inter-broker connections"
+            externalPort: 
+              type: "number"
+              default: 9094
+              description: "Kafka port for external connections"
+            nodePorts: 
+              type: "object"
+              default: "{}"
+              description: "Specify the nodePort value for the LoadBalancer and NodePort service types."
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "loadBalancerIP for Kafka Service"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Address(es) that are allowed when service is LoadBalancer"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Service annotations"
+        externalAccess: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Kubernetes external cluster access to Kafka brokers"
+            autoDiscovery: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable using an init container to auto-detect external IPs/ports by querying the K8s API"
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "Init container auto-discovery image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/kubectl"
+                      description: "Init container auto-discovery image repository"
+                    tag: 
+                      type: "string"
+                      default: "1.19.15-debian-10-r3"
+                      description: "Init container auto-discovery image tag (immutable tags are recommended)"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: "Init container auto-discovery image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "Init container auto-discovery image pull secrets"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "Init container auto-discovery resource limits"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "Init container auto-discovery resource requests"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "LoadBalancer"
+                  description: "Kubernetes Service type for external access. It can be NodePort or LoadBalancer"
+                port: 
+                  type: "number"
+                  default: 9094
+                  description: "Kafka port used for external access when service type is LoadBalancer"
+                loadBalancerIPs: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of load balancer IPs for each Kafka broker. Length must be the same as replicaCount"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address(es) that are allowed when service is LoadBalancer"
+                nodePorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array of node ports used for each Kafka broker. Length must be the same as replicaCount"
+                useHostIPs: 
+                  type: "boolean"
+                  default: false
+                  description: "Use service host IPs to configure Kafka external listener when service type is NodePort"
+                domain: 
+                  type: "string"
+                  default: ""
+                  description: "Domain or external ip used to configure Kafka external listener when service type is NodePort"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Service annotations for external access"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Kafka data persistence using PVC, note that Zookeeper persistence is unaffected"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Provide an existing `PersistentVolumeClaim`, the value is evaluated as a template"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for Kafka data volume"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "PV Access Mode"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for Kafka data volume"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the PVC"
+            selector: 
+              type: "object"
+              default: "{}"
+              description: "Selector to match an existing Persistent Volume for Kafka's data PVC. If set, the PVC can't have a PV dynamically provisioned for it"
+            mountPath: 
+              type: "string"
+              default: "/bitnami/kafka"
+              description: "Mount path of the Kafka data volume"
+        logPersistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Kafka logs persistence using PVC, note that Zookeeper persistence is unaffected"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "A manually managed Persistent Volume and Claim"
+            existingLogClaim: 
+              type: "string"
+              default: ""
+              description: "PV Storage Class"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "PV Access Mode"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for Kafka logs volume"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the PVC"
+            selector: 
+              type: "object"
+              default: "{}"
+              description: "Selector to match an existing Persistent Volume for Kafka's log data PVC. If set, the PVC can't have a PV dynamically provisioned for it"
+            mountPath: 
+              type: "string"
+              default: "/opt/bitnami/kafka/logs"
+              description: "Mount path of the Kafka logs volume"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable creation of ServiceAccount for Kafka pods"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the service account to use. If not set and `create` is `true`, a name is generated"
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: true
+              description: "Allows auto mount of ServiceAccountToken on the serviceAccount created"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Whether to create & use RBAC resources or not"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`"
+            securityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "User ID for the container"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image name"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r199"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource  limits"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource  requests"
+        metrics: 
+          type: "object"
+          properties: 
+            kafka: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Whether or not to create a standalone Kafka exporter to expose Kafka metrics"
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "Kafka exporter image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/kafka-exporter"
+                      description: "Kafka exporter image repository"
+                    tag: 
+                      type: "string"
+                      default: "1.4.2-debian-10-r5"
+                      description: "Kafka exporter image tag (immutable tags are recommended)"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: "Kafka exporter image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify docker-registry secret names as an array"
+                schedulerName: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the k8s scheduler (other than default) for Kafka Exporter"
+                extraFlags: 
+                  type: "object"
+                  default: "{}"
+                  description: "Extra flags to be passed to Kafka exporter"
+                certificatesSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the optional certificate and key files"
+                tlsCert: 
+                  type: "string"
+                  default: "cert-file"
+                  description: "The secret key from the certificatesSecret if 'client-cert' key different from the default (cert-file)"
+                tlsKey: 
+                  type: "string"
+                  default: "key-file"
+                  description: "The secret key from the certificatesSecret if 'client-key' key different from the default (key-file)"
+                tlsCaSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the optional ca certificate for Kafka Exporter client authentication"
+                tlsCaCert: 
+                  type: "string"
+                  default: "ca-file"
+                  description: "The secret key from the certificatesSecret or tlsCaSecret if 'ca-cert' key different from the default (ca-file)"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "Kafka Exporter container resource limits"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "Kafka Exporter container resource requests"
+                affinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Affinity for Kafka Exporter pod assignment"
+                nodeSelector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Node labels for Kafka Exporter pod assignment"
+                tolerations: 
+                  type: "array"
+                  default: "[]"
+                  description: "Tolerations for Kafka Exporter pod assignment"
+                initContainers: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add init containers to the Kafka exporter pods"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "Kubernetes service type (`ClusterIP`, `NodePort` or `LoadBalancer`) for Kafka Exporter"
+                    port: 
+                      type: "number"
+                      default: 9308
+                      description: "Kafka Exporter Prometheus port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Kubernetes HTTP node port"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "loadBalancerIP if service type is `LoadBalancer`"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "Load Balancer sources"
+                    clusterIP: 
+                      type: "string"
+                      default: ""
+                      description: "Static clusterIP or None for headless services"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Annotations for the Kafka Exporter Prometheus metrics service"
+            jmx: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Whether or not to expose JMX metrics to Prometheus"
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "JMX exporter image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/jmx-exporter"
+                      description: "JMX exporter image repository"
+                    tag: 
+                      type: "string"
+                      default: "0.16.1-debian-10-r66"
+                      description: "JMX exporter image tag (immutable tags are recommended)"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: "JMX exporter image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify docker-registry secret names as an array"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "JMX Exporter container resource limits"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "JMX Exporter container resource requests"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "Kubernetes service type (`ClusterIP`, `NodePort` or `LoadBalancer`) for JMX Exporter"
+                    port: 
+                      type: "number"
+                      default: 5556
+                      description: "JMX Exporter Prometheus port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Kubernetes HTTP node port"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "loadBalancerIP if service type is `LoadBalancer`"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "Load Balancer sources"
+                    clusterIP: 
+                      type: "string"
+                      default: ""
+                      description: "Static clusterIP or None for headless services"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Annotations for the JMX Exporter Prometheus metrics service"
+                whitelistObjectNames: 
+                  type: "array"
+                  default: "[\"kafka.controller:*\",\"kafka.server:*\",\"java.lang:*\",\"kafka.network:*\",\"kafka.log:*\"]"
+                  description: "Allows setting which JMX objects you want to expose to via JMX stats to JMX Exporter"
+                config: 
+                  type: "string"
+                  default: "\"\""
+                  description: "Configuration file for JMX exporter"
+                existingConfigmap: 
+                  type: "string"
+                  default: ""
+                  description: "Name of existing ConfigMap with JMX exporter configuration"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (requires `metrics.kafka.enabled` or `metrics.jmx.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "ServiceMonitor selector labels"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configuration for the metrics"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "MetricRelabelConfigs to apply to samples before ingestion"
+        provisioning: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable kafka provisioning Job"
+            numPartitions: 
+              type: "number"
+              default: 1
+              description: "Default number of partitions for topics when unspecified."
+            replicationFactor: 
+              type: "number"
+              default: 1
+              description: "Default replication factor for topics when unspecified."
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Name of the k8s scheduler (other than default) for kafka provisioning"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Provisioning Pod annotations."
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override provisioning container command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override provisioning container arguments"
+            topics: 
+              type: "array"
+              default: "[]"
+              description: "Kafka provisioning topics"
+        zookeeper: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Zookeeper helm chart"
+            auth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Zookeeper auth"
+                clientUser: 
+                  type: "string"
+                  default: ""
+                  description: "User that will use Zookeeper clients to auth"
+                clientPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password that will use Zookeeper clients to auth"
+                serverUsers: 
+                  type: "string"
+                  default: ""
+                  description: "Comma, semicolon or whitespace separated list of user to be created. Specify them as a string, for example: \"user1,user2,admin\""
+                serverPasswords: 
+                  type: "string"
+                  default: ""
+                  description: "Comma, semicolon or whitespace separated list of passwords to assign to users when created. Specify them as a string, for example: \"pass4user1, pass4user2, pass4admin\""
+        externalZookeeper: 
+          type: "object"
+          properties: 
+            servers: 
+              type: "array"
+              default: "[]"
+              description: "Server or list of external Zookeeper servers to use"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: kafka
+          version: "14.2.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

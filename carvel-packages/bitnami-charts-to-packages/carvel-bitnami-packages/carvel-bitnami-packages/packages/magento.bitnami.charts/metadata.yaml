@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: magento.bitnami.charts
+spec:
+  displayName: "magento"
+  longDescription: "Bitnami magento Helm Chart"
+  shortDescription: "magento Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - magento
+  - e-commerce
+  - http
+  - web
+  - php

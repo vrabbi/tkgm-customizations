@@ -1,0 +1,690 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: wavefront.bitnami.charts.3.1.8
+spec:
+  refName: wavefront.bitnami.charts
+  version: 3.1.8
+  releaseNotes: |
+        Chart for Wavefront Collector for Kubernetes
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Extra objects to deploy (value evaluated as a template)"
+        clusterName: 
+          type: "string"
+          default: "KUBERNETES_CLUSTER_NAME"
+          description: "This is a unique name for the cluster (required)"
+        wavefront: 
+          type: "object"
+          properties: 
+            url: 
+              type: "string"
+              default: "https://YOUR_CLUSTER.wavefront.com"
+              description: "Wavefront URL for your cluster (required)"
+            token: 
+              type: "string"
+              default: "YOUR_API_TOKEN"
+              description: "Wavefront API Token (required)"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret containing the token"
+        podSecurityPolicy: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether PodSecurityPolicy resources should be created"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether RBAC resources should be created"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Create Wavefront service account"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of Wavefront service account"
+        projectPacific: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable and create role binding for Tanzu Kubernetes cluster"
+        tkgi: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Properties for TKGI environments. If enabled, a role binding to handle pod security policy will be installed within the TKGI cluster"
+        collector: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Setup and enable the Wavefront collector to gather metrics"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Wavefront collector Image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/wavefront-kubernetes-collector"
+                  description: "Wavefront collector Image repository"
+                tag: 
+                  type: "string"
+                  default: "1.5.0-scratch-r0"
+                  description: "Wavefront collector Image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            useDaemonset: 
+              type: "boolean"
+              default: true
+              description: "Use Wavefront collector in Daemonset mode"
+            usePKSPrefix: 
+              type: "boolean"
+              default: false
+              description: "If installing into a TKGi/PKS environment, set this to true. Prefixes metrics with 'pks.kubernetes.'"
+            maxProcs: 
+              type: "string"
+              default: ""
+              description: "Maximum number of CPUs that can be used simultaneously"
+            logLevel: 
+              type: "string"
+              default: ""
+              description: "Log level. Allowed values: `info`, `debug` or `trace`"
+            interval: 
+              type: "string"
+              default: ""
+              description: "Default metrics collection interval"
+            flushInterval: 
+              type: "string"
+              default: ""
+              description: "How often to force a metrics flush"
+            sinkDelay: 
+              type: "string"
+              default: ""
+              description: "Timeout for exporting data"
+            useReadOnlyPort: 
+              type: "boolean"
+              default: false
+              description: "Use un-authenticated port for kubelet"
+            useProxy: 
+              type: "boolean"
+              default: true
+              description: "Use a Wavefront Proxy to send metrics through"
+            proxyAddress: 
+              type: "string"
+              default: ""
+              description: "Can be used to specify a specific address for the Wavefront Proxy"
+            kubernetesState: 
+              type: "boolean"
+              default: true
+              description: "Collect metrics about Kubernetes resource states"
+            apiServerMetrics: 
+              type: "boolean"
+              default: false
+              description: "Collect metrics about Kubernetes API server"
+            tags: 
+              type: "object"
+              default: "{}"
+              description: "Map of tags to apply to all metrics collected by the collector"
+            hostOSMetrics: 
+              type: "boolean"
+              default: false
+              description: "If set to true, host OS metrics will be collected"
+            filters: 
+              type: "object"
+              properties: 
+                metricDenyList: 
+                  type: "array"
+                  default: "[]"
+                  description: "Optimized metrics collection to omit peripheral metrics."
+                tagExclude: 
+                  type: "array"
+                  default: "[]"
+                  description: "Filter out generated labels"
+            events: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Events can also be collected and sent to Wavefront"
+            discovery: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Rules based and Prometheus endpoints auto-discovery"
+                annotationPrefix: 
+                  type: "string"
+                  default: ""
+                  description: "When specified, this replaces `prometheus.io` as the prefix for annotations used to auto-discover Prometheus endpoints"
+                enableRuntimeConfigs: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to enable runtime discovery configurations"
+                config: 
+                  type: "array"
+                  default: "[]"
+                  description: "Configuration for rules based auto-discovery"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with collector configuration"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the collector container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the collector container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable Container Security Context configuration"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Container's Security Context runAsNonRoot"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable Pod Security Context configuration"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the volumes of the pod"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Wavefront collector pod affinity preset. Ignored if `collector.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Wavefront collector pod anti-affinity preset. Ignored if `collector.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Wavefront collector node affinity preset type. Ignored if `collector.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Wavefront collector node label key to match Ignored if `collector.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Wavefront collector node label values to match. Ignored if `collector.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Wavefront collector affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Wavefront collector node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Wavefront collector tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Wavefront collector pod extra labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Wavefront collector pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Wavefront Collector pods' priority"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "Lifecycle hooks for the Wavefront Collector container to automate configuration before or after startup"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to be set on collector container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra environment variables"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for collector container"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for collector container"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add init containers to the Wavefront proxy pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the Wavefront proxy pods"
+        proxy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Setup and enable Wavefront proxy to send metrics through"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Wavefront proxy image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/wavefront-proxy"
+                  description: "Wavefront proxy image repository"
+                tag: 
+                  type: "string"
+                  default: "9.7.0-debian-10-r73"
+                  description: "Wavefront proxy image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Wavefront proxy image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the proxy container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the proxy container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable Container Security Context configuration"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Container's Security Context runAsNonRoot"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable Pod Security Context configuration"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the volumes of the pod"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Wavefront proxy pod affinity preset. Ignored if `proxy.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Wavefront proxy pod anti-affinity preset. Ignored if `proxy.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Wavefront proxy node affinity preset type. Ignored if `proxy.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Wavefront proxy node label key to match Ignored if `proxy.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Wavefront proxy node label values to match. Ignored if `proxy.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Wavefront proxy affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Wavefront proxy node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Wavefront proxy tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Wavefront proxy pod extra labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Wavefront proxy pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Wavefront proxy pods' priority class name"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "Lifecycle hooks for the Wavefront proxy container to automate configuration before or after startup"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to be set on proxy container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra environment variables"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for proxy container"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for proxy container"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add init containers to the Wavefront proxy pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the Wavefront proxy pods"
+            replicas: 
+              type: "number"
+              default: 1
+              description: "Replicas to deploy for Wavefront proxy (usually 1)"
+            port: 
+              type: "number"
+              default: 2878
+              description: "The port number the proxy will listen on for metrics in Wavefront data format"
+            tracePort: 
+              type: "string"
+              default: ""
+              description: "The port number the proxy will listen on for tracing spans in Wavefront trace data format (usually 30000)"
+            jaegerPort: 
+              type: "string"
+              default: ""
+              description: "The port number the proxy will listen on for tracing spans in Jaeger data format (usually 30001)"
+            traceJaegerHttpListenerPort: 
+              type: "string"
+              default: ""
+              description: "TCP ports to receive Jaeger Thrift formatted data via HTTP. The data is then sent to Wavefront in Wavefront span format (usually 30080)"
+            traceJaegerGrpcListenerPort: 
+              type: "string"
+              default: ""
+              description: "TCP ports to receive Jaeger GRPC formatted data via HTTP (usually 14250)"
+            zipkinPort: 
+              type: "string"
+              default: ""
+              description: "The port number the proxy will listen on for tracing spans in Zipkin data format (usually 9411)"
+            traceSamplingRate: 
+              type: "string"
+              default: ""
+              description: "Sampling rate to apply to tracing spans sent to the proxy"
+            traceSamplingDuration: 
+              type: "string"
+              default: ""
+              description: "When set to greater than 0, spans that exceed this duration will force trace to be sampled (ms)"
+            traceJaegerApplicationName: 
+              type: "string"
+              default: ""
+              description: "Custom application name for traces received on Jaeger's traceJaegerListenerPorts or traceJaegerHttpListenerPorts."
+            traceZipkinApplicationName: 
+              type: "string"
+              default: ""
+              description: "Custom application name for traces received on Zipkin's traceZipkinListenerPorts."
+            histogramPort: 
+              type: "string"
+              default: ""
+              description: "Port for histogram distribution format data (usually 40000)"
+            histogramMinutePort: 
+              type: "string"
+              default: ""
+              description: "Port to accumulate 1-minute based histograms on Wavefront data format (usually 40001)"
+            histogramHourPort: 
+              type: "string"
+              default: ""
+              description: "Port to accumulate 1-hour based histograms on Wavefront data format (usually 40002)"
+            histogramDayPort: 
+              type: "string"
+              default: ""
+              description: "Port to accumulate 1-day based histograms on Wavefront data format (usually 40003)"
+            deltaCounterPort: 
+              type: "string"
+              default: ""
+              description: "Port to accumulate 1-minute delta counters on Wavefront data format (usually 50000)"
+            args: 
+              type: "string"
+              default: ""
+              description: "Any configuration property can be passed to the proxy via command line args in the format: `--<property_name> <value>`"
+            heap: 
+              type: "string"
+              default: ""
+              description: "Wavefront proxy Java heap maximum usage (java -Xmx command line option)"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with Proxy preprocessor configuration"
+            preprocessor: 
+              type: "object"
+              default: "{}"
+              description: "Preprocessor rules is a powerful way to apply filtering or to enhance metrics as they flow"
+        kube-state-metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "If enabled the kube-state-metrics chart will be installed as a subchart and the collector will be configured to capture metrics."
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: wavefront
+          version: "3.1.8"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

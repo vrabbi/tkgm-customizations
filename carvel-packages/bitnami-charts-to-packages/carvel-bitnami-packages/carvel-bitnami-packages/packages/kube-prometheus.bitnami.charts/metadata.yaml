@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kube-prometheus.bitnami.charts
+spec:
+  displayName: "kube-prometheus"
+  longDescription: "Bitnami kube-prometheus Helm Chart"
+  shortDescription: "kube-prometheus Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - prometheus
+  - alertmanager
+  - operator
+  - monitoring

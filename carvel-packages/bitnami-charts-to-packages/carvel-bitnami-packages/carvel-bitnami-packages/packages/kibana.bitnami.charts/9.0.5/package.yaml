@@ -1,0 +1,574 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: kibana.bitnami.charts.9.0.5
+spec:
+  refName: kibana.bitnami.charts
+  version: 9.0.5
+  releaseNotes: |
+        Kibana is an open source, browser based analytics and search dashboard for Elasticsearch.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template with a string (will prepend the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template with a string"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Kibana image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/kibana"
+              description: "Kibana image repository"
+            tag: 
+              type: "string"
+              default: "7.14.2-debian-10-r0"
+              description: "Kibana image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Kibana image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of replicas of the Kibana Pod"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Set up update strategy for Kibana installation."
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Alternative scheduler"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        plugins: 
+          type: "array"
+          default: "[]"
+          description: "Array containing the Kibana plugins to be installed in deployment"
+        savedObjects: 
+          type: "object"
+          properties: 
+            urls: 
+              type: "array"
+              default: "[]"
+              description: "Array containing links to NDJSON files to be imported during Kibana initialization"
+            configmap: 
+              type: "string"
+              default: ""
+              description: "Configmap containing NDJSON files to be imported during Kibana initialization (evaluated as a template)"
+        extraConfiguration: 
+          type: "object"
+          default: "{}"
+          description: "Extra settings to be added to the default kibana.yml configmap that the chart creates (unless replaced using `configurationCM`). Evaluated as a template"
+        configurationCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap containing a kibana.yml file that will replace the default one specified in configuration.yaml"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array containing extra env vars to configure Kibana"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap containing extra env vars to configure Kibana"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret containing extra env vars to configure Kibana (in case of sensitive data)"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra volumes. Requires setting `extraVolumeMounts`"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra mounts. Normally used with `extraVolumes`"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image name"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r199"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Init container volume-permissions image pull secrets"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Volume Permissions resources"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Kibana data Persistent Volume Storage Class"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Provide an existing `PersistentVolumeClaim`"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "Access mode to the PV"
+            size: 
+              type: "string"
+              default: "10Gi"
+              description: "Size for the PV"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable the Liveness probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Delay before liveness probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Minimum consecutive failures for the probe to be considered failed after having succeeded."
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes for the probe to be considered successful after having failed."
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable the Readiness probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Delay before readiness probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Minimum consecutive failures for the probe to be considered failed after having succeeded."
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes for the probe to be considered successful after having failed."
+        forceInitScripts: 
+          type: "boolean"
+          default: false
+          description: "Force execution of init scripts"
+        initScriptsCM: 
+          type: "string"
+          default: ""
+          description: "Configmap with init scripts to execute"
+        initScriptsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret with init scripts to execute (for sensitive data)"
+        service: 
+          type: "object"
+          properties: 
+            port: 
+              type: "number"
+              default: 5601
+              description: "Kubernetes Service port"
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Specify the nodePort value for the LoadBalancer and NodePort service types"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Kibana service (evaluated as a template)"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "loadBalancerIP if Kibana service type is `LoadBalancer`"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Extra ports to expose in the service (normally used with the `sidecar` value)"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress Path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "kibana.local"
+              description: "Default host for the ingress resource. If specified as \"*\" no host rule is configured"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to Kibana. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Additional arbitrary path/backend objects"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable creation of ServiceAccount for Kibana"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of serviceAccount"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for the ServiceAccount"
+        containerPort: 
+          type: "number"
+          default: 5601
+          description: "Port to expose at container level"
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable securityContext on for Kibana deployment"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group to configure permissions for volumes"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User for the security context"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set container's Security Context runAsNonRoot"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels to add to Pod"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional containers to the pod"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the pod"
+        configuration: 
+          type: "object"
+          default: "{}"
+          description: "Kibana configuration"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            service: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus annotations for the Kibana service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "If `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+        tls: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable SSL/TLS encryption for Kibana server (HTTPS)"
+            autoGenerated: 
+              type: "boolean"
+              default: false
+              description: "Create self-signed TLS certificates. Currently only supports PEM certificates."
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the existing secret containing Kibana server certificates"
+            usePemCerts: 
+              type: "boolean"
+              default: false
+              description: "Use this variable if your secrets contain PEM certificates instead of PKCS12"
+            keyPassword: 
+              type: "string"
+              default: ""
+              description: "Password to access the PEM key when it is password-protected."
+            keystorePassword: 
+              type: "string"
+              default: ""
+              description: "Password to access the PKCS12 keystore when it is password-protected."
+            passwordsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of a existing secret containing the Keystore or PEM key password"
+        elasticsearch: 
+          type: "object"
+          properties: 
+            hosts: 
+              type: "array"
+              default: "[]"
+              description: "List of elasticsearch hosts to connect to."
+            port: 
+              type: "string"
+              default: ""
+              description: "Elasticsearch port"
+            security: 
+              type: "object"
+              properties: 
+                auth: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Set to 'true' if Elasticsearch has authentication enabled"
+                    kibanaUsername: 
+                      type: "string"
+                      default: "elastic"
+                      description: "Kibana server user to authenticate with Elasticsearch"
+                    kibanaPassword: 
+                      type: "string"
+                      default: ""
+                      description: "Kibana server password to authenticate with Elasticsearch"
+                    existingSecret: 
+                      type: "string"
+                      default: ""
+                      description: "Name of the existing secret containing the Password for the Kibana user"
+                tls: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Set to 'true' if Elasticsearch API uses TLS/SSL (HTTPS)"
+                    verificationMode: 
+                      type: "string"
+                      default: "full"
+                      description: "Verification mode for SSL communications."
+                    existingSecret: 
+                      type: "string"
+                      default: ""
+                      description: "Name of the existing secret containing Elasticsearch Truststore or CA certificate. Required unless verificationMode=none"
+                    usePemCerts: 
+                      type: "boolean"
+                      default: false
+                      description: "Set to 'true' to use PEM certificates instead of PKCS12."
+                    truststorePassword: 
+                      type: "string"
+                      default: ""
+                      description: "Password to access the PKCS12 trustore in case it is password-protected."
+                    passwordsSecret: 
+                      type: "string"
+                      default: ""
+                      description: "Name of a existing secret containing the Truststore password"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: kibana
+          version: "9.0.5"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

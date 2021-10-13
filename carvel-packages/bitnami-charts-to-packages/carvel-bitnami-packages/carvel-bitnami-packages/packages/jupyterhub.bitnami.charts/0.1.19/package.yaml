@@ -1,0 +1,1278 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: jupyterhub.bitnami.charts.0.1.19
+spec:
+  refName: jupyterhub.bitnami.charts
+  version: 0.1.19
+  releaseNotes: |
+        JupyterHub brings the power of notebooks to groups of users. It gives users access to computational environments and resources without burdening the users with installation and maintenance tasks
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        hub: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Hub image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/jupyterhub"
+                  description: "Hub image repository"
+                tag: 
+                  type: "string"
+                  default: "1.4.2-debian-10-r65"
+                  description: "Hub image tag (immutabe tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Hub image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Hub image pull secrets"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 30
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 30
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 30
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            baseUrl: 
+              type: "string"
+              default: "/"
+              description: "Hub base URL"
+            adminUser: 
+              type: "string"
+              default: "user"
+              description: "Hub Dummy authenticator admin user"
+            password: 
+              type: "string"
+              default: ""
+              description: "Hub Dummy authenticator password"
+            configuration: 
+              type: "string"
+              default: "\"\""
+              description: "Hub configuration file (to be used by jupyterhub_config.py)"
+            containerPort: 
+              type: "number"
+              default: 8081
+              description: "Hub container port"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "Configmap with Hub init scripts (replaces the scripts in templates/hub/configmap.yml)"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with hub configuration (replaces the hub.configuration value) and proxy token"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override Hub default command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override Hub default args"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Deploy Hub PodDisruptionBudget"
+                minAvailable: 
+                  type: "string"
+                  default: ""
+                  description: "Set minimum available hub instances"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Set maximum available hub instances"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Hub pod priority class name"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Hub containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1000
+                  description: "Set Hub container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Hub container's Security Context runAsNonRoot"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Hub pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Hub pod's Security Context fsGroup"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for pod assignment."
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment."
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment."
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Pod extra labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for server pods."
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHooks for the hub container to automate configuration before or after startup"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default startup probe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Add extra environment variables to the Hub container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for Hub pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for Hub container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Hub pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Hub pod"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Override Hub service account name"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether RBAC resources should be created"
+            networkPolicy: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Deploy Hub network policies"
+                allowInterspaceAccess: 
+                  type: "boolean"
+                  default: true
+                  description: "Allow communication between pods in different namespaces"
+                extraIngress: 
+                  type: "string"
+                  default: ""
+                  description: "Add extra ingress rules to the NetworkPolicy"
+                extraEgress: 
+                  type: "string"
+                  default: "\"\""
+                  description: "Add extra ingress rules to the NetworkPolicy"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Hub service type"
+                port: 
+                  type: "number"
+                  default: 8081
+                  description: "Hub service HTTP port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Hub service LoadBalancer IP (optional, cloud specific)"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "loadBalancerIP source ranges for the Service"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "NodePort for the HTTP endpoint"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "External traffic policy for the service"
+        proxy: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Proxy image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/configurable-http-proxy"
+                  description: "Proxy image repository"
+                tag: 
+                  type: "string"
+                  default: "4.5.0-debian-10-r65"
+                  description: "Proxy image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Proxy image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Proxy image pull secrets"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Activate verbose output"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 30
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 30
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 30
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override Proxy default command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override Proxy default args"
+            secretToken: 
+              type: "string"
+              default: ""
+              description: "Proxy secret token (used for communication with the Hub)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Deploy Proxy PodDisruptionBudget"
+                minAvailable: 
+                  type: "string"
+                  default: ""
+                  description: "Set minimum available proxy instances"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Set maximum available proxy instances"
+            containerPort: 
+              type: "object"
+              properties: 
+                api: 
+                  type: "number"
+                  default: 8001
+                  description: "Proxy api container port"
+                http: 
+                  type: "number"
+                  default: 8000
+                  description: "Proxy http container port"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Proxy pod priority class name"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Proxy containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Proxy container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Proxy container's Security Context runAsNonRoot"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Proxy pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Proxy pod's Security Context fsGroup"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for pod assignment. Evaluated as a template."
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment. Evaluated as a template."
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment. Evaluated as a template."
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Proxy pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Proxy pods"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "Add lifecycle hooks to the Proxy deployment"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default startup probe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Add extra environment variables to the Proxy container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for Proxy pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for Proxy container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Proxy pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Proxy pod"
+            networkPolicy: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Deploy Proxy network policies"
+                allowInterspaceAccess: 
+                  type: "boolean"
+                  default: true
+                  description: "Allow communication between pods in different namespaces"
+                extraIngress: 
+                  type: "string"
+                  default: "\"\""
+                  description: "Add extra ingress rules to the NetworkPolicy"
+                extraEgress: 
+                  type: "string"
+                  default: ""
+                  description: "Add extra egress rules to the NetworkPolicy"
+            service: 
+              type: "object"
+              properties: 
+                api: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "API service type"
+                    port: 
+                      type: "number"
+                      default: 8001
+                      description: "API service port"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "API service LoadBalancer IP (optional, cloud specific)"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "loadBalancerIP source ranges for the Service"
+                    nodePorts: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "string"
+                          default: ""
+                          description: "NodePort for the HTTP endpoint"
+                    externalTrafficPolicy: 
+                      type: "string"
+                      default: "Cluster"
+                      description: "External traffic policy for the service"
+                public: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "LoadBalancer"
+                      description: "Public service type"
+                    port: 
+                      type: "number"
+                      default: 80
+                      description: "Public service port"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "Public service LoadBalancer IP (optional, cloud specific)"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "loadBalancerIP source ranges for the Service"
+                    nodePorts: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "string"
+                          default: ""
+                          description: "NodePort for the HTTP endpoint"
+                    externalTrafficPolicy: 
+                      type: "string"
+                      default: "Cluster"
+                      description: "External traffic policy for the service"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Set to true to enable ingress record generation"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Path to the Proxy pod."
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Add cert-manager annotations to the Ingress object"
+                hostname: 
+                  type: "string"
+                  default: "jupyterhub.local"
+                  description: "Set ingress rule hostname"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Add annotations to the Ingress object"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress tls configuration for the hostname defined at proxy.ingress.hostname"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                extraPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add extra secrets for the tls configuration"
+        imagePuller: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy ImagePuller daemonset"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override ImagePuller default command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override ImagePuller default args"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled ImagePuller containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set ImagePuller container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set ImagePuller container's Security Context runAsNonRoot"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled ImagePuller pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set ImagePuller pod's Security Context fsGroup"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for pod assignment. Evaluated as a template."
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment. Evaluated as a template."
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment. Evaluated as a template."
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Pod extra labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for ImagePuller pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "ImagePuller pod priority class name"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "Add lifecycle hooks to the ImagePuller deployment"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default startup probe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Add extra environment variables to the ImagePuller container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for ImagePuller pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for ImagePuller container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the ImagePuller pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the ImagePuller pod"
+        singleuser: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Single User image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/jupyter-base-notebook"
+                  description: "Single User image repository"
+                tag: 
+                  type: "string"
+                  default: "1.4.2-debian-10-r33"
+                  description: "Single User image tag (immutabe tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Single User image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Single User image pull secrets"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override Single User default command"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment. Evaluated as a template."
+            containerPort: 
+              type: "number"
+              default: 8888
+              description: "Single User container port"
+            notebookDir: 
+              type: "string"
+              default: "/opt/bitnami/jupyterhub-singleuser"
+              description: "Notebook directory (it will be the same as the PVC volume mount)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Single User containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Single User container's Security Context runAsUser"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Single User pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Single User pod's Security Context fsGroup"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment. Evaluated as a template."
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Single User pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Single User pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Single User pod priority class name"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "Add lifecycle hooks to the Single User deployment to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Add extra environment variables to the Single User container"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for Single User pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for Single User container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Single User pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Single User pod"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Override Single User service account name"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistent volume creation on Single User instances"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Persistent Volumes storage class"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "Persistent Volumes access modes"
+                size: 
+                  type: "string"
+                  default: "10Gi"
+                  description: "Persistent Volumes size"
+            networkPolicy: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Deploy Single User network policies"
+                allowInterspaceAccess: 
+                  type: "boolean"
+                  default: true
+                  description: "Allow communication between pods in different namespaces"
+                allowCloudMetadataAccess: 
+                  type: "boolean"
+                  default: false
+                  description: "Allow Single User pods to access Cloud Metada endpoints"
+                extraIngress: 
+                  type: "string"
+                  default: ""
+                  description: "Add extra ingress rules to the NetworkPolicy"
+                extraEgress: 
+                  type: "string"
+                  default: ""
+                  description: "Add extra egress rules to the NetworkPolicy"
+        auxiliaryImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Auxiliary image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/bitnami-shell"
+              description: "Auxiliary image repository"
+            tag: 
+              type: "string"
+              default: "10-debian-10-r202"
+              description: "Auxiliary image tag (immutabe tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "Always"
+              description: "Auxiliary image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Auxiliary image pull secrets"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "Host of an external PostgreSQL instance to connect (only if postgresql.enabled=false)"
+            user: 
+              type: "string"
+              default: "postgres"
+              description: "User of an external PostgreSQL instance to connect (only if postgresql.enabled=false)"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password of an external PostgreSQL instance to connect (only if postgresql.enabled=false)"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing the password of an external PostgreSQL instance to connect (only if postgresql.enabled=false)"
+            database: 
+              type: "string"
+              default: "jupyterhub"
+              description: "Database inside an external PostgreSQL to connect (only if postgresql.enabled=false)"
+            port: 
+              type: "number"
+              default: 5432
+              description: "Port of an external PostgreSQL to connect (only if postgresql.enabled=false)"
+        postgresql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy PostgreSQL subchart"
+            nameOverride: 
+              type: "string"
+              default: ""
+              description: "Override name of the PostgreSQL chart"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Existing secret containing the password of the PostgreSQL chart"
+            postgresqlPassword: 
+              type: "string"
+              default: ""
+              description: "Password for the postgres user of the PostgreSQL chart (auto-generated if not set)"
+            postgresqlUsername: 
+              type: "string"
+              default: "bn_jupyterhub"
+              description: "Username to create when deploying the PostgreSQL chart"
+            postgresqlDatabase: 
+              type: "string"
+              default: "bitnami_jupyterhub"
+              description: "Database to create when deploying the PostgreSQL chart"
+            service: 
+              type: "object"
+              properties: 
+                port: 
+                  type: "number"
+                  default: 5432
+                  description: "PostgreSQL service port"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Use PVCs when deploying the PostgreSQL chart"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Use an existing PVC when deploying the PostgreSQL chart"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "storageClass of the created PVCs"
+                accessMode: 
+                  type: "string"
+                  default: "ReadWriteOnce"
+                  description: "Access mode of the created PVCs"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Size of the created PVCs"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: jupyterhub
+          version: "0.1.19"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

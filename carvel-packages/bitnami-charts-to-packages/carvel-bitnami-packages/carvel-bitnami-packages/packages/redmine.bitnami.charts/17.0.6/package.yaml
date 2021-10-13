@@ -1,0 +1,999 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: redmine.bitnami.charts.17.0.6
+spec:
+  refName: redmine.bitnami.charts
+  version: 17.0.6
+  releaseNotes: |
+        A flexible project management web application.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Redmine image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/redmine"
+              description: "Redmine image repository"
+            tag: 
+              type: "string"
+              default: "4.2.2-debian-10-r13"
+              description: "Redmine image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Redmine image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Redmine image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        redmineUsername: 
+          type: "string"
+          default: "user"
+          description: "Redmine username"
+        redminePassword: 
+          type: "string"
+          default: ""
+          description: "Redmine user password"
+        redmineEmail: 
+          type: "string"
+          default: "user@example.com"
+          description: "Redmine user email"
+        redmineLanguage: 
+          type: "string"
+          default: "en"
+          description: "Redmine default data language"
+        customPostInitScripts: 
+          type: "object"
+          default: "{}"
+          description: "Custom post-init.d user scripts"
+        smtpHost: 
+          type: "string"
+          default: ""
+          description: "SMTP server host"
+        smtpPort: 
+          type: "string"
+          default: ""
+          description: "SMTP server port"
+        smtpUser: 
+          type: "string"
+          default: ""
+          description: "SMTP username"
+        smtpPassword: 
+          type: "string"
+          default: ""
+          description: "SMTP user password"
+        smtpProtocol: 
+          type: "string"
+          default: ""
+          description: "SMTP protocol"
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing secret containing Redmine credentials"
+        smtpExistingSecret: 
+          type: "string"
+          default: ""
+          description: "The name of an existing secret with SMTP credentials"
+        allowEmptyPassword: 
+          type: "boolean"
+          default: false
+          description: "Allow the container to be started with blank passwords"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array with extra environment variables to add to the Redmine container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Redmine replicas to deploy"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Redmine deployment strategy type"
+            rollingUpdate: 
+              type: "object"
+              default: "{}"
+              description: "Redmine deployment rolling update configuration parameters"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Alternate scheduler"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to create. Defaults to the `redmine.fullname` macro"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Redmine pod host aliases"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for Redmine pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for Redmine container(s)"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the Redmine pod"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the Redmine pods"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Redmine pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for Redmine pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Redmine container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Redmine container"
+        containerPort: 
+          type: "number"
+          default: 3000
+          description: "Redmine HTTP container port"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enabled Redmine pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set Redmine pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enabled Redmine containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set Redmine container's Security Context runAsUser"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Path for to check for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 300
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Path to check for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        startupProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable startupProbe"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Path to check for startupProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 300
+              description: "Initial delay seconds for startupProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for startupProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for startupProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for startupProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for startupProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom livenessProbe that overrides the default one"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readinessProbe that overrides the default one"
+        customStartupProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom startupProbe that overrides the default one"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Redmine service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Redmine service HTTP port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Node port for HTTP"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Redmine service Cluster IP"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Redmine service Load Balancer IP"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Redmine service Load Balancer sources"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Redmine service external traffic policy"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for Redmine service"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Extra port to expose on Redmine service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress record generation for Redmine"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add the corresponding annotations for cert-manager integration"
+            selfSigned: 
+              type: "boolean"
+              default: false
+              description: "Create a TLS secret for this ingress record using self-signed certificates generated by Helm"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "redmine.local"
+              description: "Default host for the ingress record"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Default path for the ingress record"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for the ingress record"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the host defined at `ingress.hostname` parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional hostname(s) to be covered with the ingress record"
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional arbitrary paths that may need to be added to the ingress under the main host"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Custom TLS certificates as secrets"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using Persistent Volume Claims"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume storage class"
+            accessModes: 
+              type: "array"
+              default: "[]"
+              description: "Persistent Volume access modes"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "Persistent Volume size"
+            dataSource: 
+              type: "object"
+              default: "{}"
+              description: "Custom PVC data source"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "The name of an existing PVC to use for persistence"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+            securityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "Set init container's Security Context runAsUser"
+        podDisruptionBudget: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "string"
+              default: ""
+              description: "Minimum number/percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number/percentage of pods that may be made unavailable"
+        autoscaling: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Horizontal POD autoscaling for Redmine"
+            minReplicas: 
+              type: "number"
+              default: 1
+              description: "Minimum number of Redmine replicas"
+            maxReplicas: 
+              type: "number"
+              default: 11
+              description: "Maximum number of Redmine replicas"
+            targetCPU: 
+              type: "number"
+              default: 50
+              description: "Target CPU utilization percentage"
+            targetMemory: 
+              type: "number"
+              default: 50
+              description: "Target Memory utilization percentage"
+        databaseType: 
+          type: "string"
+          default: "mariadb"
+          description: "Redmine database type. Allowed values: `mariadb` and `postgresql`"
+        mariadb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to deploy a MariaDB server to satisfy the database requirements"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "MariaDB architecture. Allowed values: `standalone` or `replication`"
+            auth: 
+              type: "object"
+              properties: 
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB root password"
+                username: 
+                  type: "string"
+                  default: "bn_redmine"
+                  description: "MariaDB username"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB password"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of existing secret object"
+            primary: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable MariaDB persistence using PVC"
+                    existingClaim: 
+                      type: "string"
+                      default: ""
+                      description: "Provide an existing `PersistentVolumeClaim`, the value is evaluated as a template"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "PVC Storage Class for MariaDB volume"
+                    accessModes: 
+                      type: "array"
+                      default: "[]"
+                      description: "PVC Access Mode for MariaDB volume"
+                    size: 
+                      type: "string"
+                      default: "8Gi"
+                      description: "PVC Storage Request for MariaDB volume"
+                    hostPath: 
+                      type: "string"
+                      default: ""
+                      description: "Set path in case you want to use local host path volumes (not recommended in production)"
+        postgresql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to deploy a PostgreSQL server to satisfy the database requirements"
+            postgresqlUsername: 
+              type: "string"
+              default: "bn_redmine"
+              description: "PostgreSQL username"
+            postgresqlPassword: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL password"
+            postgresqlDatabase: 
+              type: "string"
+              default: "bitnami_redmine"
+              description: "PostgreSQL database"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing secret object"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable PostgreSQL persistence using PVC"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Provide an existing `PersistentVolumeClaim`, the value is evaluated as a template"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "PVC Storage Class for PostgreSQL volume"
+                accessMode: 
+                  type: "string"
+                  default: "ReadWriteOnce"
+                  description: "PVC Access Mode for PostgreSQL volume"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "PVC Storage Request for PostgreSQL volume"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "External Database server host"
+            port: 
+              type: "number"
+              default: 5432
+              description: "External Database server port"
+            user: 
+              type: "string"
+              default: "bn_redmine"
+              description: "External Database username"
+            password: 
+              type: "string"
+              default: ""
+              description: "External Database user password"
+            database: 
+              type: "string"
+              default: "bitnami_redmine"
+              description: "External Database database name"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Use an existing secret for external db password. Must contain the keys `redmine-password` or `mariadb-password` depending on the DB type"
+        mailReceiver: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Whether to enable scheduled mail-to-task CronJob"
+            schedule: 
+              type: "string"
+              default: "*/5 * * * *"
+              description: "Kubernetes CronJob schedule"
+            suspend: 
+              type: "boolean"
+              default: true
+              description: "Whether to create suspended CronJob"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod labels"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Redmine pods' priority."
+            mailProtocol: 
+              type: "string"
+              default: "IMAP"
+              description: "Mail protocol to use for reading emails. Allowed values: `IMAP` and `POP3`"
+            host: 
+              type: "string"
+              default: ""
+              description: "Server to receive emails from"
+            port: 
+              type: "number"
+              default: 993
+              description: "TCP port on the `host`"
+            username: 
+              type: "string"
+              default: ""
+              description: "Login to authenticate on the `host`"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password to authenticate on the `host`"
+            ssl: 
+              type: "boolean"
+              default: true
+              description: "Whether use SSL/TLS to connect to the `host`"
+            startTLS: 
+              type: "boolean"
+              default: false
+              description: "Whether use StartTLS to connect to the `host`"
+            imapFolder: 
+              type: "string"
+              default: "INBOX"
+              description: "IMAP only. Folder to read emails from"
+            moveOnSuccess: 
+              type: "string"
+              default: ""
+              description: "IMAP only. Folder to move processed emails to"
+            moveOnFailure: 
+              type: "string"
+              default: ""
+              description: "IMAP only. Folder to move emails with processing errors to"
+            unknownUserAction: 
+              type: "string"
+              default: "ignore"
+              description: "Action to perform is an email received from unregistered user"
+            noPermissionCheck: 
+              type: "number"
+              default: 0
+              description: "Whether skip permission check during creating a new task"
+            noAccountNotice: 
+              type: "number"
+              default: 1
+              description: "Whether send an email to an unregistered user created during a new task creation"
+            defaultGroup: 
+              type: "string"
+              default: ""
+              description: "Defines a group list to add created user to"
+            project: 
+              type: "string"
+              default: ""
+              description: "Defines identifier of the target project for a new task"
+            projectFromSubaddress: 
+              type: "string"
+              default: ""
+              description: "Defines email address to select project from subaddress"
+            status: 
+              type: "string"
+              default: ""
+              description: "Defines a new task status"
+            tracker: 
+              type: "string"
+              default: ""
+              description: "Defines a new task tracker"
+            category: 
+              type: "string"
+              default: ""
+              description: "Defines a new task category"
+            priority: 
+              type: "string"
+              default: ""
+              description: "Defines a new task priority"
+            assignedTo: 
+              type: "string"
+              default: ""
+              description: "Defines a new task assignee"
+            allowOverride: 
+              type: "string"
+              default: ""
+              description: "Defines if email content is allowed to set attributes values. Values is a comma separated list of attributes or `all` to allow all attributes"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to be set on mailReceiver container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for mailReceiver container"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for mailReceiver container"
+            command: 
+              type: "array"
+              default: "[\"bash\"]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[\"-c\",\"/cj/receive.sh\"]"
+              description: "Override default container args (useful when using custom images)"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Redmine pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Redmine pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "mailReceiver Container securityContext"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the mailReceiver container"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to run the mailReceiver container as a non-root user"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the mailReceiver pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the mailReceiver pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment"
+        certificates: 
+          type: "object"
+          properties: 
+            customCertificate: 
+              type: "object"
+              properties: 
+                certificateSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret containing the certificate and key to add"
+                certificateLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+                  description: "Location in the container to store the certificate"
+                keyLocation: 
+                  type: "string"
+                  default: "/etc/ssl/private/ssl-cert-snakeoil.key"
+                  description: "Location in the container to store the private key"
+                chainLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/mychain.pem"
+                  description: "Location in the container to store the certificate chain"
+                chainSecret: 
+                  type: "object"
+                  properties: 
+                    name: 
+                      type: "string"
+                      default: ""
+                      description: "Name of the secret containing the certificate chain"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Key of the certificate chain file inside the secret"
+            customCA: 
+              type: "array"
+              default: "[]"
+              description: "Defines a list of secrets to import into the container trust store"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Redmine image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Redmine image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r173"
+                  description: "Redmine image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Redmine image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Redmine image pull secrets"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Container sidecar extra environment variables (e.g. proxy)"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: redmine
+          version: "17.0.6"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

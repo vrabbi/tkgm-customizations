@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: haproxy.bitnami.charts
+spec:
+  displayName: "haproxy"
+  longDescription: "Bitnami haproxy Helm Chart"
+  shortDescription: "haproxy Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - haproxy
+  - proxy
+  - infrastructure

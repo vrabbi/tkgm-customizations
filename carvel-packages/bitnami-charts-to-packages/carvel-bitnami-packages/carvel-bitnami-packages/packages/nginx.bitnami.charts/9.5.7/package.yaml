@@ -1,0 +1,791 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: nginx.bitnami.charts.9.5.7
+spec:
+  refName: nginx.bitnami.charts
+  version: 9.5.7
+  releaseNotes: |
+        Chart for the nginx server
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override nginx.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override nginx.fullname template"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes Cluster Domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Extra objects to deploy (value evaluated as a template)"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "NGINX image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/nginx"
+              description: "NGINX image repository"
+            tag: 
+              type: "string"
+              default: "1.21.3-debian-10-r29"
+              description: "NGINX image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "NGINX image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Set to true if you would like to see extra information on logs"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on NGINX containers"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with extra environment variables"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret with extra environment variables"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of NGINX replicas to deploy"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Additional labels for NGINX pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for NGINX pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "object"
+          default: "{}"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Priority class name"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enabled NGINX pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set NGINX pod's Security Context fsGroup"
+            sysctls: 
+              type: "array"
+              default: "[]"
+              description: "sysctl settings of the NGINX pods"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enabled NGINX Core containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set NGINX Core container's Security Context runAsUser"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set NGINX Core container's Security Context runAsNonRoot"
+        containerPorts: 
+          type: "object"
+          properties: 
+            http: 
+              type: "number"
+              default: 8080
+              description: "Sets http port inside NGINX container"
+            https: 
+              type: "string"
+              default: ""
+              description: "Sets https port inside NGINX container"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the NGINX container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the NGINX container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 3
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 3
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        autoscaling: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable autoscaling for NGINX deployment"
+            minReplicas: 
+              type: "string"
+              default: ""
+              description: "Minimum number of replicas to scale back"
+            maxReplicas: 
+              type: "string"
+              default: ""
+              description: "Maximum number of replicas to scale out"
+            targetCPU: 
+              type: "string"
+              default: ""
+              description: "Target CPU utilization percentage"
+            targetMemory: 
+              type: "string"
+              default: ""
+              description: "Target Memory utilization percentage"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra volumes"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra mount"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable creation of ServiceAccount for nginx pod"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for service account. Evaluated as a template."
+            autoMount: 
+              type: "boolean"
+              default: false
+              description: "Auto-mount the service account token in the pod"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Sidecar parameters"
+        sidecarSingleProcessNamespace: 
+          type: "boolean"
+          default: false
+          description: "Enable sharing the process namespace with sidecars"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Extra init containers"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Created a PodDisruptionBudget"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Min number of pods that must still be available after the eviction"
+            maxUnavailable: 
+              type: "number"
+              default: 0
+              description: "Max number of pods that can be unavailable after the eviction"
+        cloneStaticSiteFromGit: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Get the server static content from a Git repository"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Git image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/git"
+                  description: "Git image repository"
+                tag: 
+                  type: "string"
+                  default: "2.33.0-debian-10-r53"
+                  description: "Git image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Git image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            repository: 
+              type: "string"
+              default: ""
+              description: "Git Repository to clone static content from"
+            branch: 
+              type: "string"
+              default: ""
+              description: "Git branch to checkout"
+            interval: 
+              type: "number"
+              default: 60
+              description: "Interval for sidecar container pull from the Git repository"
+            gitClone: 
+              type: "object"
+              properties: 
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container command for git-clone-repository"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container args for git-clone-repository"
+            gitSync: 
+              type: "object"
+              properties: 
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container command for git-repo-syncer"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container args for git-repo-syncer"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Additional environment variables to set for the in the containers that clone static site from git"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volume mounts for the Git containers"
+        serverBlock: 
+          type: "string"
+          default: ""
+          description: "Custom server block to be added to NGINX configuration"
+        existingServerBlockConfigmap: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with custom server block to be added to NGINX configuration"
+        staticSiteConfigmap: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap with the server static site content"
+        staticSitePVC: 
+          type: "string"
+          default: ""
+          description: "Name of existing PVC with the server static site content"
+        ldapDaemon: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable LDAP Auth Daemon proxy"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "LDAP AUth Daemon Image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/nginx-ldap-auth-daemon"
+                  description: "LDAP Auth Daemon Image repository"
+                tag: 
+                  type: "string"
+                  default: "0.20200116.0-debian-10-r475"
+                  description: "LDAP Auth Daemon Image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "LDAP Auth Daemon Image pull policy"
+            port: 
+              type: "number"
+              default: 8888
+              description: "LDAP Auth Daemon port"
+            ldapConfig: 
+              type: "object"
+              properties: 
+                uri: 
+                  type: "string"
+                  default: ""
+                  description: "LDAP Server URI, `ldap[s]:/<hostname>:<port>`"
+                baseDN: 
+                  type: "string"
+                  default: ""
+                  description: "LDAP root DN to begin the search for the user"
+                bindDN: 
+                  type: "string"
+                  default: ""
+                  description: "DN of user to bind to LDAP"
+                bindPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the user to bind to LDAP"
+                filter: 
+                  type: "string"
+                  default: ""
+                  description: "LDAP search filter for search"
+                httpRealm: 
+                  type: "string"
+                  default: ""
+                  description: "LDAP HTTP auth realm"
+                httpCookieName: 
+                  type: "string"
+                  default: ""
+                  description: "HTTP cookie name to be used in LDAP Auth"
+            nginxServerBlock: 
+              type: "string"
+              default: "\"\""
+              description: "NGINX server block that configures LDAP communication. Overrides `ldapDaemon.ldapConfig`"
+            existingNginxServerBlockSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret with a NGINX server block to use for LDAP communication"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom Liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom Rediness probe"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Service HTTP port"
+            httpsPort: 
+              type: "number"
+              default: 443
+              description: "Service HTTPS port"
+            nodePorts: 
+              type: "object"
+              default: "{}"
+              description: "Specify the nodePort(s) value(s) for the LoadBalancer and NodePort service types."
+            targetPort: 
+              type: "object"
+              default: "{}"
+              description: "Target port reference value for the Loadbalancer service types can be specified explicitly."
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "LoadBalancer service IP address"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Service annotations"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "nginx.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to Nginx. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Create TLS Secret"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        healthIngress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable health ingress record generation"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            hostname: 
+              type: "string"
+              default: "example.local"
+              description: "When the health ingress is enabled, a host pointing to this will be created"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at `healthIngress.hostname` parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this health ingress record"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostnames to be covered"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "TLS Secret configuration"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a Prometheus exporter sidecar container"
+            port: 
+              type: "string"
+              default: ""
+              description: "NGINX Container Status Port scraped by Prometheus Exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "NGINX Prometheus exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/nginx-exporter"
+                  description: "NGINX Prometheus exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.9.0-debian-10-r182"
+                  description: "NGINX Prometheus exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "NGINX Prometheus exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for NGINX Prometheus exporter pod(s)"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enabled NGINX Exporter containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set NGINX Exporter container's Security Context runAsUser"
+            service: 
+              type: "object"
+              properties: 
+                port: 
+                  type: "number"
+                  default: 9113
+                  description: "NGINX Prometheus exporter service port"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the Prometheus exporter service"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the NGINX Prometheus exporter container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the NGINX Prometheus exporter container"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: nginx
+          version: "9.5.7"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

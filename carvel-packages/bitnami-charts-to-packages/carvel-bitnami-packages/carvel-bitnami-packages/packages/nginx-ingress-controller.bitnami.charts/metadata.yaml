@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: nginx-ingress-controller.bitnami.charts
+spec:
+  displayName: "nginx-ingress-controller"
+  longDescription: "Bitnami nginx-ingress-controller Helm Chart"
+  shortDescription: "nginx-ingress-controller Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - ingress
+  - nginx
+  - http
+  - web
+  - www
+  - reverse proxy

@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: harbor.bitnami.charts
+spec:
+  displayName: "harbor"
+  longDescription: "Bitnami harbor Helm Chart"
+  shortDescription: "harbor Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - docker
+  - registry
+  - vulnerability
+  - scan

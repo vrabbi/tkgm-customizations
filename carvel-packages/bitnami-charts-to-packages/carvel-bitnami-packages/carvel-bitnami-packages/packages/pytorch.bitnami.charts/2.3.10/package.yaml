@@ -1,0 +1,366 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: pytorch.bitnami.charts.2.3.10
+spec:
+  refName: pytorch.bitnami.charts
+  version: 2.3.10
+  releaseNotes: |
+        Deep learning platform that accelerates the transition from research prototyping to production deployment
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "PyTorch image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/pytorch"
+              description: "PyTorch image repository"
+            tag: 
+              type: "string"
+              default: "1.9.0-debian-10-r3"
+              description: "PyTorch image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        git: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Git image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/git"
+              description: "Git image repository"
+            tag: 
+              type: "string"
+              default: "2.32.0-debian-10-r14"
+              description: "Git image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Git image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r115"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes service type"
+            port: 
+              type: "number"
+              default: 49875
+              description: "Scheduler Service port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Specify the nodePort value for the LoadBalancer and NodePort service types."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Provide any additional annotations which may be required. This can be used to"
+        entrypoint: 
+          type: "object"
+          properties: 
+            file: 
+              type: "string"
+              default: ""
+              description: "Main entrypoint to your application"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Args required by your entrypoint"
+        mode: 
+          type: "string"
+          default: "standalone"
+          description: "Run PyTorch in standalone or distributed mode. Possible values: `standalone`, `distributed`"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        worldSize: 
+          type: "string"
+          default: ""
+          description: "Number of nodes that will run the code"
+        port: 
+          type: "number"
+          default: 49875
+          description: "PyTorch master port. `MASTER_PORT` will be set to this value"
+        configMap: 
+          type: "string"
+          default: ""
+          description: "Config map that contains the files you want to load in PyTorch"
+        cloneFilesFromGit: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable in order to download files from git repository"
+            repository: 
+              type: "string"
+              default: ""
+              description: "Repository that holds the files"
+            revision: 
+              type: "string"
+              default: ""
+              description: "Revision from the repository to checkout"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volume mounts for the Git container"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Additional environment variables"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment. Evaluated as a template."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Use a Persistent Volume Claim to persist data"
+            mountPath: 
+              type: "string"
+              default: "/bitnami/pytorch"
+              description: "Data volume mount path"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "Persistent Volume Access Mode"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "Size of data volume"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume Storage Class"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Persistent Volume Claim annotations"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra volumes (evaluated as a template)"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra mounts (normally used with extraVolumes, evaluated as a template)"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: pytorch
+          version: "2.3.10"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

@@ -1,0 +1,545 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: node.bitnami.charts.15.2.24
+spec:
+  refName: node.bitnami.charts
+  version: 15.2.24
+  releaseNotes: |
+        Event-driven I/O server-side JavaScript environment based on V8
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override node.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override node.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        command: 
+          type: "array"
+          default: "[\"/bin/bash\",\"-ec\",\"npm start\"]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on Node container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra environment variables"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra environment variables"
+        mongodb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to install or not the MongoDB&reg; chart"
+            auth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to enable auth or not for the MongoDB&reg; chart"
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "MongoDB&reg; admin password"
+                username: 
+                  type: "string"
+                  default: "user"
+                  description: "MongoDB&reg; custom user"
+                database: 
+                  type: "string"
+                  default: "test_db"
+                  description: "MongoDB&reg; custom database"
+                password: 
+                  type: "string"
+                  default: "secret_password"
+                  description: "MongoDB&reg; custom password"
+        externaldb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enables or disables external database (ignored if `mongodb.enabled=true`)"
+            ssl: 
+              type: "boolean"
+              default: false
+              description: "Set to true if your external database has ssl enabled"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "Secret containing existing database credentials"
+            type: 
+              type: "string"
+              default: "osba"
+              description: "Only if using Kubernetes Service Catalog you can specify the kind of broker used. Available options are osba|gce|aws"
+            broker: 
+              type: "object"
+              properties: 
+                serviceInstanceName: 
+                  type: "string"
+                  default: ""
+                  description: "If you provide the serviceInstanceName, the chart will create a ServiceBinding for that ServiceInstance"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "NodeJS image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/node"
+              description: "NodeJS image repository"
+            tag: 
+              type: "string"
+              default: "14.17.5-debian-10-r0"
+              description: "NodeJS image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "NodeJS image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Specify the number of replicas for the application"
+        applicationPort: 
+          type: "number"
+          default: 3000
+          description: "Specify the port where your application will be running"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment. Evaluated as a template."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "object"
+          default: "{}"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Additional pod annotations"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Additional labels for Node pods"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Request path for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 60
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Request path for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 10
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 3
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 3
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Node priorityClassName"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "lifecycleHooks for the Node container to automate configuration before or after startup."
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add sidecars to the Node pods"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add init containers to the Node pods"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Extra volumes to add to the deployment"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Extra volume mounts to add to the container"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Node Container securityContext"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the Node container"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set container's Security Context runAsNonRoot"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context for Node pods"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the volumes of the pod"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Node container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Node container"
+        git: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Git image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/git"
+                  description: "Git image repository"
+                tag: 
+                  type: "string"
+                  default: "2.32.0-debian-10-r58"
+                  description: "Git image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Git image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Add extra volume mounts for the Git container"
+        getAppFromExternalRepository: 
+          type: "boolean"
+          default: true
+          description: "Enable to download app from external git repository"
+        repository: 
+          type: "string"
+          default: "https://github.com/bitnami/sample-mean.git"
+          description: "Git repository http/https url"
+        revision: 
+          type: "string"
+          default: "master"
+          description: "Git repository revision to checkout"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r158"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable persistence using PVC"
+            path: 
+              type: "string"
+              default: "/app/data"
+              description: "Path to persisted directory"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume Storage Class"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "PVC Access Mode"
+            size: 
+              type: "string"
+              default: "1Gi"
+              description: "PVC Storage Request"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Kubernetes Service port"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Service Cluster IP"
+            sessionAffinity: 
+              type: "string"
+              default: "None"
+              description: "Control where client requests go, to the same pod or round-robin"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "NodePort if Service type is `LoadBalancer` or `NodePort`"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "LoadBalancer IP if Service type is `LoadBalancer`"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "In order to limit which client IP's can access the Network Load Balancer, specify loadBalancerSourceRanges"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the Service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Set this to true in order to add the corresponding annotations for cert-manager"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "node.local"
+              description: "When the ingress is enabled, a host pointing to this will be created"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to Node.js. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: node
+          version: "15.2.24"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

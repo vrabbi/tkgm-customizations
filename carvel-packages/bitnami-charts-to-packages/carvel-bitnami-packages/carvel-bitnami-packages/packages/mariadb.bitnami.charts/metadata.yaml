@@ -1,0 +1,12 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: mariadb.bitnami.charts
+spec:
+  displayName: "mariadb"
+  longDescription: "Bitnami mariadb Helm Chart"
+  shortDescription: "mariadb Helm Chart"
+  categories:
+  - bitnami
+  - helm
+

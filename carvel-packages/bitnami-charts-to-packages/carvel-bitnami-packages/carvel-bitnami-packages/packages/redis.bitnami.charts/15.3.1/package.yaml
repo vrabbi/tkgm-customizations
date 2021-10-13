@@ -1,0 +1,1403 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: redis.bitnami.charts.15.3.1
+spec:
+  refName: redis.bitnami.charts
+  version: 15.3.1
+  releaseNotes: |
+        Open source, advanced key-value store. It is often referred to as a data structure server since keys can contain strings, hashes, lists, sets and sorted sets.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+            redis: 
+              type: "object"
+              properties: 
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Global Redis&trade; password (overrides `auth.password`)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Redis&trade; image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/redis"
+              description: "Redis&trade; image repository"
+            tag: 
+              type: "string"
+              default: "6.2.5-debian-10-r34"
+              description: "Redis&trade; image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Redis&trade; image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Redis&trade; image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        architecture: 
+          type: "string"
+          default: "replication"
+          description: "Redis&trade; architecture. Allowed values: `standalone` or `replication`"
+        auth: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable password authentication"
+            sentinel: 
+              type: "boolean"
+              default: true
+              description: "Enable password authentication on sentinels too"
+            password: 
+              type: "string"
+              default: ""
+              description: "Redis&trade; password"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "The name of an existing secret with Redis&trade; credentials"
+            existingSecretPasswordKey: 
+              type: "string"
+              default: ""
+              description: "Password key to be retrieved from existing secret"
+            usePasswordFiles: 
+              type: "boolean"
+              default: false
+              description: "Mount credentials as files instead of using an environment variable"
+        commonConfiguration: 
+          type: "string"
+          default: "\"\""
+          description: "Common configuration to be added into the ConfigMap"
+        existingConfigmap: 
+          type: "string"
+          default: ""
+          description: "The name of an existing ConfigMap with your custom configuration for Redis&trade; nodes"
+        master: 
+          type: "object"
+          properties: 
+            configuration: 
+              type: "string"
+              default: ""
+              description: "Configuration for Redis&trade; master nodes"
+            disableCommands: 
+              type: "array"
+              default: "[]"
+              description: "Array with Redis&trade; commands to disable on master nodes"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            preExecCmds: 
+              type: "array"
+              default: "[]"
+              description: "Additional commands to run prior to starting Redis&trade; master"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "Array with additional command line flags for Redis&trade; master"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to Redis&trade; master nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for Redis&trade; master nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for Redis&trade; master nodes"
+            containerPort: 
+              type: "number"
+              default: 6379
+              description: "Container port to open on Redis&trade; master nodes"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Redis&trade; master nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Redis&trade; master nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Redis&trade; master containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Redis&trade; master containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Redis&trade; master pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Redis&trade; master pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Redis&trade; master containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Redis&trade; master containers' Security Context runAsUser"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Alternate scheduler for Redis&trade; master pods"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Redis&trade; master statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Redis&trade; master pods' priorityClassName"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Redis&trade; master pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Redis&trade; master pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Redis&trade; master pods"
+            shareProcessNamespace: 
+              type: "boolean"
+              default: false
+              description: "Share a single process namespace between all of the containers in Redis&trade; master pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `master.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `master.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `master.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `master.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `master.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Redis&trade; master pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Redis&trade; master pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Redis&trade; master pods assignment"
+            spreadConstraints: 
+              type: "object"
+              default: "{}"
+              description: "Spread Constraints for Redis&trade; master pod assignment"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the Redis&trade; master container(s) to automate configuration before or after startup"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Redis&trade; master pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Redis&trade; master container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Redis&trade; master pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Redis&trade; master pod(s)"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence on Redis&trade; master nodes using Persistent Volume Claims"
+                path: 
+                  type: "string"
+                  default: "/data"
+                  description: "The path the volume will be mounted at on Redis&trade; master containers"
+                subPath: 
+                  type: "string"
+                  default: ""
+                  description: "The subdirectory of the volume to mount on Redis&trade; master containers"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Persistent Volume storage class"
+                accessModes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Persistent Volume access modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Persistent Volume size"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for the PVC"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels to match for the PVC"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Use a existing PVC which must be created manually before bound"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Redis&trade; master service type"
+                port: 
+                  type: "number"
+                  default: 6379
+                  description: "Redis&trade; master service port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for Redis&trade; master"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Redis&trade; master service external traffic policy"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Redis&trade; master service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Redis&trade; master service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Redis&trade; master service Load Balancer sources"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Redis&trade; master service"
+            terminationGracePeriodSeconds: 
+              type: "number"
+              default: 30
+              description: "Integer setting the termination grace period for the redis-master pods"
+        replica: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 3
+              description: "Number of Redis&trade; replicas to deploy"
+            configuration: 
+              type: "string"
+              default: ""
+              description: "Configuration for Redis&trade; replicas nodes"
+            disableCommands: 
+              type: "array"
+              default: "[]"
+              description: "Array with Redis&trade; commands to disable on replicas nodes"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            preExecCmds: 
+              type: "array"
+              default: "[]"
+              description: "Additional commands to run prior to starting Redis&trade; replicas"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "Array with additional command line flags for Redis&trade; replicas"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to Redis&trade; replicas nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for Redis&trade; replicas nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for Redis&trade; replicas nodes"
+            containerPort: 
+              type: "number"
+              default: 6379
+              description: "Container port to open on Redis&trade; replicas nodes"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Redis&trade; replicas nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Redis&trade; replicas nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Redis&trade; replicas containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Redis&trade; replicas containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Redis&trade; replicas pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Redis&trade; replicas pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Redis&trade; replicas containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Redis&trade; replicas containers' Security Context runAsUser"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Alternate scheduler for Redis&trade; replicas pods"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Redis&trade; replicas statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Redis&trade; replicas pods' priorityClassName"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Redis&trade; replicas pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Redis&trade; replicas pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Redis&trade; replicas pods"
+            shareProcessNamespace: 
+              type: "boolean"
+              default: false
+              description: "Share a single process namespace between all of the containers in Redis&trade; replicas pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `replica.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `replica.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `replica.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `replica.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `replica.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Redis&trade; replicas pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Redis&trade; replicas pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Redis&trade; replicas pods assignment"
+            spreadConstraints: 
+              type: "object"
+              default: "{}"
+              description: "Spread Constraints for Redis&trade; replicas pod assignment"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the Redis&trade; replica container(s) to automate configuration before or after startup"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Redis&trade; replicas pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Redis&trade; replicas container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Redis&trade; replicas pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Redis&trade; replicas pod(s)"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence on Redis&trade; replicas nodes using Persistent Volume Claims"
+                path: 
+                  type: "string"
+                  default: "/data"
+                  description: "The path the volume will be mounted at on Redis&trade; replicas containers"
+                subPath: 
+                  type: "string"
+                  default: ""
+                  description: "The subdirectory of the volume to mount on Redis&trade; replicas containers"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Persistent Volume storage class"
+                accessModes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Persistent Volume access modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Persistent Volume size"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for the PVC"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels to match for the PVC"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Redis&trade; replicas service type"
+                port: 
+                  type: "number"
+                  default: 6379
+                  description: "Redis&trade; replicas service port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for Redis&trade; replicas"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Redis&trade; replicas service external traffic policy"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Redis&trade; replicas service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Redis&trade; replicas service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Redis&trade; replicas service Load Balancer sources"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Redis&trade; replicas service"
+            terminationGracePeriodSeconds: 
+              type: "number"
+              default: 30
+              description: "Integer setting the termination grace period for the redis-replicas pods"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable replica autoscaling settings"
+                minReplicas: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum replicas for the pod autoscaling"
+                maxReplicas: 
+                  type: "number"
+                  default: 11
+                  description: "Maximum replicas for the pod autoscaling"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Percentage of CPU to consider when autoscaling"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Percentage of Memory to consider when autoscaling"
+        sentinel: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Use Redis&trade; Sentinel on Redis&trade; pods."
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Redis&trade; Sentinel image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/redis-sentinel"
+                  description: "Redis&trade; Sentinel image repository"
+                tag: 
+                  type: "string"
+                  default: "6.2.5-debian-10-r34"
+                  description: "Redis&trade; Sentinel image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Redis&trade; Sentinel image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Redis&trade; Sentinel image pull secrets"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable image debug mode"
+            masterSet: 
+              type: "string"
+              default: "mymaster"
+              description: "Master set name"
+            quorum: 
+              type: "number"
+              default: 2
+              description: "Sentinel Quorum"
+            downAfterMilliseconds: 
+              type: "number"
+              default: 60000
+              description: "Timeout for detecting a Redis&trade; node is down"
+            failoverTimeout: 
+              type: "number"
+              default: 18000
+              description: "Timeout for performing a election failover"
+            parallelSyncs: 
+              type: "number"
+              default: 1
+              description: "Number of replicas that can be reconfigured in parallel to use the new master after a failover"
+            configuration: 
+              type: "string"
+              default: ""
+              description: "Configuration for Redis&trade; Sentinel nodes"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            preExecCmds: 
+              type: "array"
+              default: "[]"
+              description: "Additional commands to run prior to starting Redis&trade; Sentinel"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to Redis&trade; Sentinel nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for Redis&trade; Sentinel nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for Redis&trade; Sentinel nodes"
+            containerPort: 
+              type: "number"
+              default: 26379
+              description: "Container port to open on Redis&trade; Sentinel nodes"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Redis&trade; Sentinel nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Redis&trade; Sentinel nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Redis&trade; Sentinel containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Redis&trade; Sentinel containers"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Redis&trade; Sentinel containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Redis&trade; Sentinel containers' Security Context runAsUser"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the Redis&trade; sentinel container(s) to automate configuration before or after startup"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Redis&trade; Sentinel"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Redis&trade; Sentinel container(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Redis&trade; Sentinel service type"
+                port: 
+                  type: "number"
+                  default: 6379
+                  description: "Redis&trade; service port for Redis&trade;"
+                sentinelPort: 
+                  type: "number"
+                  default: 26379
+                  description: "Redis&trade; service port for Sentinel"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    redis: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for Redis&trade;"
+                    sentinel: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for Sentinel"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Redis&trade; Sentinel service external traffic policy"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Redis&trade; Sentinel service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Redis&trade; Sentinel service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Redis&trade; Sentinel service Load Balancer sources"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Redis&trade; Sentinel service"
+            terminationGracePeriodSeconds: 
+              type: "number"
+              default: 30
+              description: "Integer setting the termination grace period for the redis-node pods"
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable creation of NetworkPolicy resources"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "Don't require client label for connections"
+            extraIngress: 
+              type: "array"
+              default: "[]"
+              description: "Add extra ingress rules to the NetworkPolicy"
+            extraEgress: 
+              type: "array"
+              default: "[]"
+              description: "Add extra ingress rules to the NetworkPolicy"
+            ingressNSMatchLabels: 
+              type: "object"
+              default: "{}"
+              description: "Labels to match to allow traffic from other namespaces"
+            ingressNSPodMatchLabels: 
+              type: "object"
+              default: "{}"
+              description: "Pod labels to match to allow traffic from other namespaces"
+        podSecurityPolicy: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether a PodSecurityPolicy should be created (set `podSecurityPolicy.enabled` to `true` to enable it)"
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable PodSecurityPolicy"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether RBAC resources should be created"
+            rules: 
+              type: "array"
+              default: "[]"
+              description: "Custom RBAC rules to set"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use."
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: true
+              description: "Whether to auto mount the service account token"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for the ServiceAccount"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether a PodDisruptionBudget should be created"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Min number of pods that must still be available after the eviction"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Max number of pods that can be unavailable after the eviction"
+        tls: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS traffic"
+            authClients: 
+              type: "boolean"
+              default: true
+              description: "Require clients to authenticate"
+            autoGenerated: 
+              type: "boolean"
+              default: false
+              description: "Enable autogenerated certificates"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "The name of the existing secret that contains the TLS certificates"
+            certificatesSecret: 
+              type: "string"
+              default: ""
+              description: "DEPRECATED. Use existingSecret instead."
+            certFilename: 
+              type: "string"
+              default: ""
+              description: "Certificate filename"
+            certKeyFilename: 
+              type: "string"
+              default: ""
+              description: "Certificate Key filename"
+            certCAFilename: 
+              type: "string"
+              default: ""
+              description: "CA Certificate filename"
+            dhParamsFilename: 
+              type: "string"
+              default: ""
+              description: "File containing DH params (in order to support DH based ciphers)"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a sidecar prometheus exporter to expose Redis&trade; metrics"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Redis&trade; Exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/redis-exporter"
+                  description: "Redis&trade; Exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "1.26.0-debian-10-r5"
+                  description: "Redis&trade; Redis&trade; Exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Redis&trade; Exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Redis&trade; Exporter image pull secrets"
+            redisTargetHost: 
+              type: "string"
+              default: "localhost"
+              description: "A way to specify an alternative Redis&trade; hostname"
+            extraArgs: 
+              type: "object"
+              default: "{}"
+              description: "Extra arguments for Redis&trade; exporter, for example:"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Redis&trade; exporter containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Redis&trade; exporter containers' Security Context runAsUser"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Redis&trade; metrics sidecar"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Redis&trade; metrics sidecar"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Redis&trade; exporter container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Redis&trade; exporter container"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Redis&trade; exporter pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Redis&trade; exporter pods"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Redis&trade; exporter service type"
+                port: 
+                  type: "number"
+                  default: 9121
+                  description: "Redis&trade; exporter service port"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Redis&trade; exporter service external traffic policy"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Redis&trade; exporter service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Redis&trade; exporter service Load Balancer sources"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Redis&trade; exporter service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor resource(s) for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "The namespace in which the ServiceMonitor will be created"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "The interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "The timeout after which the scrape is ended"
+                relabellings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metrics RelabelConfigs to apply to samples before scraping."
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metrics RelabelConfigs to apply to samples before ingestion."
+                honorLabels: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify honorLabels parameter to add the scrape endpoint"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels that can be used so ServiceMonitor resource(s) can be discovered by Prometheus"
+            prometheusRule: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create a custom prometheusRule Resource for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "The namespace in which the prometheusRule will be created"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels for the prometheusRule"
+                rules: 
+                  type: "array"
+                  default: "[]"
+                  description: "Custom Prometheus rules"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami Shell image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Bitnami Shell image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r174"
+                  description: "Bitnami Shell image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Bitnami Shell image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami Shell image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "Set init container's Security Context runAsUser"
+        sysctl: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container to modify Kernel settings"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami Shell image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Bitnami Shell image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r174"
+                  description: "Bitnami Shell image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Bitnami Shell image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami Shell image pull secrets"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default init-sysctl container command (useful when using custom images)"
+            mountHostSys: 
+              type: "boolean"
+              default: false
+              description: "Mount the host `/sys` folder to `/host-sys`"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: redis
+          version: "15.3.1"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

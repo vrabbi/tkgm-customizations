@@ -1,0 +1,13 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: keycloak.bitnami.charts
+spec:
+  displayName: "keycloak"
+  longDescription: "Bitnami keycloak Helm Chart"
+  shortDescription: "keycloak Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - keycloak
+  - access-management

@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: suitecrm.bitnami.charts
+spec:
+  displayName: "suitecrm"
+  longDescription: "Bitnami suitecrm Helm Chart"
+  shortDescription: "suitecrm Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - suitecrm
+  - crm
+  - http
+  - web
+  - php

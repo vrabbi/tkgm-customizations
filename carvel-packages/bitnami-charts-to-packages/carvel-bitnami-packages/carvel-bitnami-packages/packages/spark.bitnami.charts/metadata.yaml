@@ -1,0 +1,13 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: spark.bitnami.charts
+spec:
+  displayName: "spark"
+  longDescription: "Bitnami spark Helm Chart"
+  shortDescription: "spark Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - apache
+  - spark

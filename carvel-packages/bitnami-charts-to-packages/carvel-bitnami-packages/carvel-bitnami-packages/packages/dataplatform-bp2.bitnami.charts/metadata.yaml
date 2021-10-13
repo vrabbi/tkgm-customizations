@@ -1,0 +1,21 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: dataplatform-bp2.bitnami.charts
+spec:
+  displayName: "dataplatform-bp2"
+  longDescription: "Bitnami dataplatform-bp2 Helm Chart"
+  shortDescription: "dataplatform-bp2 Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - dataplatform
+  - kafka
+  - spark
+  - elasticsearch
+  - logstash
+  - kibana
+  - zookeeper
+  - apache
+  - tanzuobservability
+  - wavefront

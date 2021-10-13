@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: osclass.bitnami.charts
+spec:
+  displayName: "osclass"
+  longDescription: "Bitnami osclass Helm Chart"
+  shortDescription: "osclass Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - osclass
+  - classifieds
+  - http
+  - web
+  - php

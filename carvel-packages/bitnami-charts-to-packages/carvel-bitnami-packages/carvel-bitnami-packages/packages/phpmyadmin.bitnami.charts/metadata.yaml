@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: phpmyadmin.bitnami.charts
+spec:
+  displayName: "phpmyadmin"
+  longDescription: "Bitnami phpmyadmin Helm Chart"
+  shortDescription: "phpmyadmin Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - mariadb
+  - mysql
+  - phpmyadmin

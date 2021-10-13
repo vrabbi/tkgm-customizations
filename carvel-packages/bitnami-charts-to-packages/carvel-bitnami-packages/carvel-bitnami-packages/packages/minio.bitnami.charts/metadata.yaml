@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: minio.bitnami.charts
+spec:
+  displayName: "minio"
+  longDescription: "Bitnami minio Helm Chart"
+  shortDescription: "minio Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - minio
+  - storage
+  - object-storage
+  - s3
+  - cluster

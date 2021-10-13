@@ -1,0 +1,590 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: oauth2-proxy.bitnami.charts.0.1.8
+spec:
+  refName: oauth2-proxy.bitnami.charts
+  version: 0.1.8
+  releaseNotes: |
+        A reverse proxy and static file server that provides authentication using different providers
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "OAuth2 Proxy service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "OAuth2 Proxy service HTTP port"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for HTTP"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "OAuth2 Proxy service Cluster IP"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "OAuth2 Proxy service Load Balancer IP"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "OAuth2 Proxy service Load Balancer sources"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "OAuth2 Proxy service external traffic policy"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for OAuth2 Proxy service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress record generation for WordPress"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add the corresponding annotations for cert-manager integration"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "oaut2-proxy.local"
+              description: "Default host for the ingress record"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Default path for the ingress record"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for the ingress record"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the host defined at `ingress.hostname` parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional hostname(s) to be covered with the ingress record"
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional arbitrary paths that may need to be added to the ingress under the main host"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "OAuth2 Proxy image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/oauth2-proxy"
+              description: "OAuth2 Proxy image repository"
+            tag: 
+              type: "string"
+              default: "7.1.3-debian-10-r100"
+              description: "OAuth2 Proxy image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "OAuth2 Proxy image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "OAuth2 Proxy image pull secrets"
+        configuration: 
+          type: "object"
+          properties: 
+            clientID: 
+              type: "string"
+              default: "XXXXXXX"
+              description: "OAuth client ID"
+            clientSecret: 
+              type: "string"
+              default: "XXXXXXXX"
+              description: "OAuth client secret"
+            cookieSecret: 
+              type: "string"
+              default: "XXXXXXXXXXXXXXXX"
+              description: "OAuth cookie secret"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with the client ID, secret and cookie secret"
+            google: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Google service account"
+                adminEmail: 
+                  type: "string"
+                  default: ""
+                  description: "Google admin email"
+                serviceAccountJson: 
+                  type: "string"
+                  default: ""
+                  description: "Google Service account JSON"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Existing secret containing Google Service Account"
+            content: 
+              type: "string"
+              default: "\"\""
+              description: "Default configuration"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "Configmap with the OAuth2 Proxy configuration"
+            authenticatedEmailsFile: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable authenticated emails file"
+                content: 
+                  type: "string"
+                  default: ""
+                  description: "Restricted access list (one email per line)"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret with the authenticated emails file"
+            htpasswdFile: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable htpasswd file"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Existing secret for htpasswd file"
+                content: 
+                  type: "string"
+                  default: ""
+                  description: "htpasswd file entries (one row per user)"
+        containerPort: 
+          type: "number"
+          default: 4180
+          description: "OAuth2 Proxy port number"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of OAuth2 Proxy replicas to deploy"
+        extraArgs: 
+          type: "array"
+          default: "[]"
+          description: "add extra args to the default command"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe on OAuth2 Proxy nodes"
+            initialDelaySeconds: 
+              type: "number"
+              default: 0
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe on OAuth2 Proxy nodes"
+            initialDelaySeconds: 
+              type: "number"
+              default: 0
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom livenessProbe that overrides the default one"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readinessProbe that overrides the default one"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the OAuth2 Proxy containers"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the OAuth2 Proxy containers"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number/percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "number"
+              default: 1
+              description: "Maximum number/percentage of pods that may be made unavailable"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled OAuth2 Proxy pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set OAuth2 Proxy pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled OAuth2 Proxy containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set OAuth2 Proxy containers' Security Context runAsUser"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "OAuth2 Proxy pods host aliases"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for OAuth2 Proxy pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for OAuth2 Proxy pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for OAuth2 Proxy pods assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for OAuth2 Proxy pods assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for OAuth2 Proxy pods assignment"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "OAuth2 Proxy statefulset strategy type"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "OAuth2 Proxy pods' priorityClassName"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "for the OAuth2 Proxy container(s) to automate configuration before or after startup"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array with extra environment variables to add to OAuth2 Proxy nodes"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars for OAuth2 Proxy nodes"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars for OAuth2 Proxy nodes"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for the OAuth2 Proxy pod(s)"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for the OAuth2 Proxy container(s)"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the OAuth2 Proxy pod(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the OAuth2 Proxy pod(s)"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use"
+        externalRedis: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "External Redis&trade; server host"
+            password: 
+              type: "string"
+              default: ""
+              description: "External Redis&trade; user password"
+            port: 
+              type: "number"
+              default: 6379
+              description: "External Redis&trade; server port"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "The name of an existing secret with Redis&trade; credentials"
+        redis: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy Redis&trade; sub-chart"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "Redis&trade; architecture"
+            master: 
+              type: "object"
+              properties: 
+                service: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 6379
+                      description: "Redis&trade; (without Sentinel) service port"
+            replica: 
+              type: "object"
+              properties: 
+                replicaCount: 
+                  type: "number"
+                  default: 3
+                  description: "Number of Redis&trade; replicas"
+            auth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable Redis&trade; authentication"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret with Redis&trade; credentials"
+                existingSecretPasswordKey: 
+                  type: "string"
+                  default: ""
+                  description: "Key inside the existing secret with Redis&trade; credentials"
+                sentinel: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable authentication in the Sentinel nodes"
+            sentinel: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Redis&trade; sentinel in the deployment"
+                masterSet: 
+                  type: "string"
+                  default: "mymaster"
+                  description: "Name of the Redis&trade; Sentinel master set"
+                service: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 6379
+                      description: "Redis&trade; (with Sentinel) service port"
+                    sentinelPort: 
+                      type: "number"
+                      default: 26379
+                      description: "Redis&trade; (with Sentinel) sentinel service port"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: oauth2-proxy
+          version: "0.1.8"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

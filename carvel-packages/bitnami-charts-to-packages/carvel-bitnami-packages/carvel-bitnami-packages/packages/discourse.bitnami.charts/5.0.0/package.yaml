@@ -1,0 +1,718 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: discourse.bitnami.charts.5.0.0
+spec:
+  refName: discourse.bitnami.charts
+  version: 5.0.0
+  releaseNotes: |
+        A Helm chart for deploying Discourse to Kubernetes
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override discourse.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override discourse.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to be added to all deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to be added to all deployed resources"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Service HTTP port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Node Ports to expose"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Use loadBalancerIP to request a specific static IP"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Service annotations"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Limits which cidr blocks can connect to service's load balancer"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Extra ports to expose (normally used with the `sidecar` value)"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes http node port"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Discourse image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/discourse"
+              description: "Discourse image repository"
+            tag: 
+              type: "string"
+              default: "2.7.8-debian-10-r0"
+              description: "Discourse image tag"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Discourse image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Discourse image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        imagePullSecrets: 
+          type: "array"
+          default: "[]"
+          description: "Specify docker-registry secret names as an array"
+        discourse: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "Discourse host to create application URLs (include the port if =/= 80)"
+            siteName: 
+              type: "string"
+              default: "My Site!"
+              description: "Discourse site name"
+            username: 
+              type: "string"
+              default: "user"
+              description: "Admin user of the application"
+            password: 
+              type: "string"
+              default: ""
+              description: "password. WARNING: Minimum length of 10 characters"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing secret containing the password (ignores previous password)"
+            email: 
+              type: "string"
+              default: "user@example.com"
+              description: "Admin user email of the application"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Custom command to override image cmd"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Custom args for the custom command"
+            containerSecurityContext: 
+              type: "object"
+              default: "{}"
+              description: "Container security context specification"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable/disable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 500
+                  description: "Delay before liveness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable/disable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Delay before readiness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom liveness probe to execute (when the main one is disabled)"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readiness probe to execute (when the main one is disabled)"
+            smtp: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable SMTP"
+                host: 
+                  type: "string"
+                  default: ""
+                  description: "SMTP host name"
+                port: 
+                  type: "string"
+                  default: ""
+                  description: "SMTP port number"
+                user: 
+                  type: "string"
+                  default: ""
+                  description: "SMTP account user name"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "SMTP account password"
+                protocol: 
+                  type: "string"
+                  default: ""
+                  description: "SMTP protocol (Allowed values: tls, ssl)"
+                auth: 
+                  type: "string"
+                  default: ""
+                  description: "SMTP authentication method"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of an existing Kubernetes secret. The secret must have the following key configured: `smtp-password`"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            extraEnvVarsCM: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra configmaps"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Array to add extra environment variables from a secret"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Additional volume mounts (used along with `extraVolumes`)"
+            skipInstall: 
+              type: "boolean"
+              default: false
+              description: "Do not run the Discourse installation wizard"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Discourse & Sidekiq replicas"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra volumes to be added deployment. Requires setting `extraVolumeMounts`"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional sidecar containers to the pod"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Additional init containers to add to the pods"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Whether the service account should be created"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the service account"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name to be used for the service account"
+        podSecurityContext: 
+          type: "object"
+          default: "{}"
+          description: "Pod security context specification"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to enable persistence based on Persistent Volume Claims"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "discourse & sidekiq data Persistent Volume Storage Class"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Use a existing PVC which must be created manually before bound"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "PVC Access Mode (RWO, ROX, RWX)"
+            size: 
+              type: "string"
+              default: "10Gi"
+              description: "Size of the PVC to request"
+            selector: 
+              type: "object"
+              default: "{}"
+              description: "Selector to match an existing Persistent Volume (this value is evaluated as a template)"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy type. Only really applicable for deployments with RWO PVs attached"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Additional pod annotations"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Additional pod labels"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Allowed values: soft, hard"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment."
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment."
+        sidekiq: 
+          type: "object"
+          properties: 
+            containerSecurityContext: 
+              type: "object"
+              default: "{}"
+              description: "Container security context specification"
+            command: 
+              type: "array"
+              default: "[\"/opt/bitnami/scripts/discourse/entrypoint.sh\"]"
+              description: "Custom command to override image cmd (evaluated as a template)"
+            args: 
+              type: "array"
+              default: "[\"/opt/bitnami/scripts/discourse-sidekiq/run.sh\"]"
+              description: "Custom args for the custom command (evaluated as a template)"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Sidekiq container resource requests and limits"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable/disable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 500
+                  description: "Delay before liveness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable/disable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Delay before readiness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom liveness probe to execute (when the main one is disabled)"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readiness probe to execute (when the main one is disabled)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            extraEnvVarsCM: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra configmaps"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the secret that holds extra env vars"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Additional volume mounts"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add annotations for cert-manager"
+            hostname: 
+              type: "string"
+              default: "discourse.local"
+              description: "Default host for the ingress resource"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Ingress path"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations done as key:value pairs"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        postgresql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy PostgreSQL container(s)"
+            postgresqlUsername: 
+              type: "string"
+              default: "bn_discourse"
+              description: "PostgreSQL user to create (used by Discourse). Has superuser privileges if username is `postgres`."
+            postgresqlPassword: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL password"
+            postgresqlPostgresPassword: 
+              type: "string"
+              default: "bitnami"
+              description: "PostgreSQL admin password (used when `postgresqlUsername` is not `postgres`)"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing secret object"
+            postgresqlDatabase: 
+              type: "string"
+              default: "bitnami_application"
+              description: "Name of the database to create"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable database persistence using PVC"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "Host of the external database"
+            port: 
+              type: "number"
+              default: 5432
+              description: "Database port number (when using an external db)"
+            user: 
+              type: "string"
+              default: "bn_discourse"
+              description: "Non-root PostgreSQL username (when using an external db)"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the above username (when using an external db)"
+            create: 
+              type: "boolean"
+              default: true
+              description: "PostgreSQL create user/database"
+            postgresqlPostgresUser: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL admin user, used during the installation stage (when using an external db)"
+            postgresqlPostgresPassword: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL admin password used in the installation stage (when using an external db)"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing secret object"
+            database: 
+              type: "string"
+              default: "bitnami_application"
+              description: "Name of the existing database (when using an external db)"
+        redis: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to deploy a redis server to satisfy the applications requirements. To use an external redis instance set this to false and configure the externalRedis parameters"
+            auth: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Use password authentication"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Redis&trade; password (both master and replica)"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of an existing Kubernetes secret object containing the password"
+                existingSecretPasswordKey: 
+                  type: "string"
+                  default: "redis-password"
+                  description: "Name of the key pointing to the password in your Kubernetes secret"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "Cluster settings"
+            master: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable database persistence using PVC"
+        externalRedis: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "Host of the external database"
+            port: 
+              type: "number"
+              default: 6379
+              description: "Database port number"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the external Redis. Ignored if existingSecret is set"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of an existing Kubernetes secret object containing the password"
+            existingSecretPasswordKey: 
+              type: "string"
+              default: "redis-password"
+              description: "Name of the key pointing to the password in your Kubernetes secret"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: discourse
+          version: "5.0.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

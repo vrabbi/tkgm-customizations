@@ -1,0 +1,2009 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: grafana-tempo.bitnami.charts.0.2.6
+spec:
+  refName: grafana-tempo.bitnami.charts
+  version: 0.2.6
+  releaseNotes: |
+        Grafana Tempo is an open source, easy-to-use and high-scale distributed tracing backend.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        tempo: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Grafana Tempo image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/grafana-tempo"
+                  description: "Grafana Tempo image repository"
+                tag: 
+                  type: "string"
+                  default: "1.1.0-debian-10-r14"
+                  description: "Grafana Tempo image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Grafana Tempo image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Grafana Tempo image pull secrets"
+            containerPort: 
+              type: "number"
+              default: 3100
+              description: "Tempo components web port"
+            grpcContainerPort: 
+              type: "number"
+              default: 9095
+              description: "Tempo components GRPC port"
+            memBallastSizeMbs: 
+              type: "number"
+              default: 1024
+              description: "Tempo components memory ballast size in MB"
+            dataDir: 
+              type: "string"
+              default: "/bitnami/tempo-grafana/data"
+              description: "Tempo components data directory"
+            traces: 
+              type: "object"
+              properties: 
+                jaeger: 
+                  type: "object"
+                  properties: 
+                    grpc: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable Tempo to ingest Jaeger GRPC traces"
+                    thriftBinary: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable Tempo to ingest Jaeger Thrift Binary traces"
+                    thriftCompact: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable Tempo to ingest Jaeger Thrift Compact traces"
+                    thriftHttp: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable Tempo to ingest Jaeger Thrift HTTP traces"
+                zipkin: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Tempo to ingest Zipkin traces"
+                otlp: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable Tempo to ingest Open Telementry HTTP traces"
+                    grpc: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable Tempo to ingest Open Telementry GRPC traces"
+                opencensus: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Tempo to ingest Open Census traces"
+            gossipRing: 
+              type: "object"
+              properties: 
+                containerPort: 
+                  type: "number"
+                  default: 7946
+                  description: "gossip service HTTP port"
+                service: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 7946
+                      description: "gossip headless service HTTP port"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional custom annotations for gossip headless service"
+            configuration: 
+              type: "string"
+              default: "\"\""
+              description: "Tempo components configuration"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "Name of a ConfigMap with the tempo configuration"
+            overridesConfiguration: 
+              type: "string"
+              default: "\"\""
+              description: "Tempo components overrides configuration settings"
+            existingOverridesConfigmap: 
+              type: "string"
+              default: ""
+              description: "Name of a ConfigMap with the tempo overrides configuration"
+        compactor: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable compactor deployment"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of compactor replicas to deploy"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on compactor nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on compactor nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the compactor containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the compactor containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled compactor pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set compactor pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled compactor containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set compactor containers' Security Context runAsUser"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "compactor pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for compactor pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for compactor pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `compactor.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `compactor.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `compactor.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `compactor.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `compactor.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for compactor pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for compactor pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for compactor pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "compactor statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "compactor pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the compactor container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to compactor nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for compactor nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for compactor nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the compactor pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the compactor container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the compactor pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the compactor pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "compactor service type"
+                port: 
+                  type: "number"
+                  default: 3100
+                  description: "compactor service HTTP port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "compactor service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "compactor service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "compactor service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "compactor service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for compactor service"
+        distributor: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of distributor replicas to deploy"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on distributor nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on distributor nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the distributor containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the distributor containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled distributor pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set distributor pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled distributor containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set distributor containers' Security Context runAsUser"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "distributor pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for distributor pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for distributor pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `distributor.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `distributor.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `distributor.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `distributor.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `distributor.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for distributor pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for distributor pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for distributor pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "distributor statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "distributor pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the distributor container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to distributor nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for distributor nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for distributor nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the distributor pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the distributor container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the distributor pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the distributor pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "distributor service type"
+                port: 
+                  type: "number"
+                  default: 3100
+                  description: "distributor service HTTP port"
+                grpcPort: 
+                  type: "number"
+                  default: 9095
+                  description: "distributor service HTTP port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                    grpc: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for GRPC"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "distributor service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "distributor service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "distributor service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "distributor service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for distributor service"
+        ingester: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of ingester replicas to deploy"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on ingester nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on ingester nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the ingester containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the ingester containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled ingester pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set ingester pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled ingester containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set ingester containers' Security Context runAsUser"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "ingester pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for ingester pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for ingester pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `ingester.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `ingester.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `ingester.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `ingester.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `ingester.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for ingester pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for ingester pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for ingester pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "ingester statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "ingester pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the ingester container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to ingester nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for ingester nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for ingester nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the ingester pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the ingester container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the ingester pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the ingester pod(s)"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence in ingester instances"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Persistent Volumes storage class"
+                subPath: 
+                  type: "string"
+                  default: ""
+                  description: "The subdirectory of the volume to mount to"
+                accessModes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Persistent Volumes access modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Persistent Volumes size"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Persistent Volumes annotations"
+                volumeClaimTemplates: 
+                  type: "object"
+                  properties: 
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "Persistent Volumes selector"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "Persistent Volumes requests"
+                    dataSource: 
+                      type: "object"
+                      default: "{}"
+                      description: "Persistent Volumes data source"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "ingester service type"
+                port: 
+                  type: "number"
+                  default: 3100
+                  description: "ingester service HTTP port"
+                grpcPort: 
+                  type: "number"
+                  default: 9095
+                  description: "ingester service HTTP port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                    grpc: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for GRPC"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "ingester service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "ingester service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "ingester service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "ingester service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for ingester service"
+        querier: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of querier replicas to deploy"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on querier nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on querier nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the querier containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the querier containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled querier pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set querier pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled querier containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set querier containers' Security Context runAsUser"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "querier pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for querier pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for querier pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `querier.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `querier.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `querier.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `querier.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `querier.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for querier pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for querier pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for querier pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "querier statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "querier pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the querier container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to querier nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for querier nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for querier nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the querier pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the querier container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the querier pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the querier pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "querier service type"
+                port: 
+                  type: "number"
+                  default: 3100
+                  description: "querier service HTTP port"
+                grpcPort: 
+                  type: "number"
+                  default: 9095
+                  description: "querier service HTTP port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                    grpc: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for GRPC"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "querier service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "querier service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "querier service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "querier service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for querier service"
+        queryFrontend: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of queryFrontend replicas to deploy"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on queryFrontend nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on queryFrontend nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the queryFrontend containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the queryFrontend containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled queryFrontend pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set queryFrontend pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled queryFrontend containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set queryFrontend containers' Security Context runAsUser"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "queryFrontend pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for queryFrontend pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for queryFrontend pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `queryFrontend.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `queryFrontend.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `queryFrontend.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `queryFrontend.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `queryFrontend.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for queryFrontend pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for queryFrontend pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for queryFrontend pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "queryFrontend statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "queryFrontend pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the queryFrontend container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to queryFrontend nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for queryFrontend nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for queryFrontend nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the queryFrontend pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the queryFrontend container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the queryFrontend pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the queryFrontend pod(s)"
+            query: 
+              type: "object"
+              properties: 
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "Grafana Tempo Query image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/grafana-tempo-query"
+                      description: "Grafana Tempo Query image repository"
+                    tag: 
+                      type: "string"
+                      default: "1.1.0-debian-10-r17"
+                      description: "Grafana Tempo Query image tag (immutable tags are recommended)"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: "Grafana Tempo Query image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "Grafana Tempo Query image pull secrets"
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container command (useful when using custom images)"
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override default container args (useful when using custom images)"
+                configuration: 
+                  type: "string"
+                  default: "\"\""
+                  description: "Query sidecar configuration"
+                jaegerMetricsContainerPort: 
+                  type: "number"
+                  default: 16687
+                  description: "Jaeger metrics container port"
+                jaegerUIContainerPort: 
+                  type: "number"
+                  default: 16686
+                  description: "Jaeger UI container port"
+                existingConfigmap: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a configmap with the query configuration"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable livenessProbe on query sidecar nodes"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for livenessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for livenessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 1
+                      description: "Timeout seconds for livenessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 3
+                      description: "Failure threshold for livenessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for livenessProbe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable readinessProbe on query sidecar nodes"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for readinessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Period seconds for readinessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 1
+                      description: "Timeout seconds for readinessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 3
+                      description: "Failure threshold for readinessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for readinessProbe"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the query sidecar containers"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the query sidecar containers"
+                lifecycleHooks: 
+                  type: "object"
+                  default: "{}"
+                  description: "for the query sidecar container(s) to automate configuration before or after startup"
+                customLivenessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Custom livenessProbe that overrides the default one"
+                customReadinessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Custom readinessProbe that overrides the default one"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array with extra environment variables to add to queryFrontend nodes"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "Name of existing ConfigMap containing extra env vars for queryFrontend nodes"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of existing Secret containing extra env vars for queryFrontend nodes"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Optionally specify extra list of additional volumeMounts for the queryFrontend container(s)"
+                containerSecurityContext: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enabled query-frontend query sidecar containers' Security Context"
+                    runAsUser: 
+                      type: "number"
+                      default: 1001
+                      description: "Set query-frontend query sidecar containers' Security Context runAsUser"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "queryFrontend service type"
+                port: 
+                  type: "number"
+                  default: 3100
+                  description: "queryFrontend service HTTP port"
+                grpcPort: 
+                  type: "number"
+                  default: 9095
+                  description: "queryFrontend service HTTP port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                    grpc: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for GRPC"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "queryFrontend service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "queryFrontend service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "queryFrontend service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "queryFrontend service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for queryFrontend service"
+        vulture: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable vulture deployment"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Grafana Vulture image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/grafana-tempo-vulture"
+                  description: "Grafana Vulture image repository"
+                tag: 
+                  type: "string"
+                  default: "1.1.0-debian-10-r14"
+                  description: "Grafana Vulture image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Grafana Vulture image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Grafana Vulture image pull secrets"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of vulture replicas to deploy"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on vulture nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on vulture nodes"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the vulture containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the vulture containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled vulture pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set vulture pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled vulture containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set vulture containers' Security Context runAsUser"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "vulture pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for vulture pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for vulture pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `vulture.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `vulture.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `vulture.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `vulture.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `vulture.affinity` is set"
+            containerPort: 
+              type: "number"
+              default: 8080
+              description: "Vulture container port"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for vulture pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for vulture pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for vulture pods assignment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "vulture statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "vulture pods' priorityClassName"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the vulture container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to vulture nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for vulture nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for vulture nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the vulture pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the vulture container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the vulture pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the vulture pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "vulture service type"
+                port: 
+                  type: "number"
+                  default: 3100
+                  description: "vulture service HTTP port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "vulture service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "vulture service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "vulture service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "vulture service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for vulture service"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami Shell image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Bitnami Shell image repository"
+                tag: 
+                  type: "string"
+                  default: "10"
+                  description: "Bitnami Shell image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Bitnami Shell image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami Shell image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "Set init container's Security Context runAsUser"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use."
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable metrics"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor resource(s) for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "The namespace in which the ServiceMonitor will be created"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "The interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "The timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Scrape selector"
+        externalMemcached: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "Host of a running external memcached instance"
+            port: 
+              type: "number"
+              default: 11211
+              description: "Port of a running external memcached instance"
+        memcached: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy memcached sub-chart"
+            service: 
+              type: "object"
+              properties: 
+                port: 
+                  type: "number"
+                  default: 11211
+                  description: "Memcached service port"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: grafana-tempo
+          version: "0.2.6"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

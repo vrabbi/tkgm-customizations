@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: wavefront-hpa-adapter.bitnami.charts
+spec:
+  displayName: "wavefront-hpa-adapter"
+  longDescription: "Bitnami wavefront-hpa-adapter Helm Chart"
+  shortDescription: "wavefront-hpa-adapter Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - alerting
+  - adapter
+  - metrics
+  - monitoring
+  - observability
+  - wavefront

@@ -1,0 +1,453 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: kube-state-metrics.bitnami.charts.2.1.8
+spec:
+  refName: kube-state-metrics.bitnami.charts
+  version: 2.1.8
+  releaseNotes: |
+        kube-state-metrics is a simple service that listens to the Kubernetes API server and generates metrics about the state of the objects.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override `kube-state-metrics.name` template with a string (will prepend the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override `kube-state-metrics.fullname` template with a string"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Whether to create & use RBAC resources or not"
+            apiVersion: 
+              type: "string"
+              default: "v1beta1"
+              description: "Version of the RBAC API"
+            pspEnabled: 
+              type: "boolean"
+              default: true
+              description: "PodSecurityPolicy"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specify whether to create a ServiceAccount for kube-state-metrics"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to create"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "kube-state-metrics image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/kube-state-metrics"
+              description: "kube-state-metrics image repository"
+            tag: 
+              type: "string"
+              default: "2.2.0-debian-10-r2"
+              description: "kube-state-metrics Image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "kube-state-metrics image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        extraArgs: 
+          type: "object"
+          default: "{}"
+          description: "Additional command line arguments to pass to kube-state-metrics"
+        namespaces: 
+          type: "string"
+          default: ""
+          description: "Comma-separated list of namespaces to be enabled. Defaults to all namespaces"
+        kubeResources: 
+          type: "object"
+          properties: 
+            certificatesigningrequests: 
+              type: "boolean"
+              default: true
+              description: "Enable the `certificatesigningrequests` resource"
+            configmaps: 
+              type: "boolean"
+              default: true
+              description: "Enable the `configmaps` resource"
+            cronjobs: 
+              type: "boolean"
+              default: true
+              description: "Enable the `cronjobs` resource"
+            daemonsets: 
+              type: "boolean"
+              default: true
+              description: "Enable the `daemonsets` resource"
+            deployments: 
+              type: "boolean"
+              default: true
+              description: "Enable the `deployments` resource"
+            endpoints: 
+              type: "boolean"
+              default: true
+              description: "Enable the `endpoints` resource"
+            horizontalpodautoscalers: 
+              type: "boolean"
+              default: true
+              description: "Enable the `horizontalpodautoscalers` resource"
+            ingresses: 
+              type: "boolean"
+              default: true
+              description: "Enable the `ingresses` resource"
+            jobs: 
+              type: "boolean"
+              default: true
+              description: "Enable the `jobs` resource"
+            limitranges: 
+              type: "boolean"
+              default: true
+              description: "Enable the `limitranges` resource"
+            mutatingwebhookconfigurations: 
+              type: "boolean"
+              default: true
+              description: "Enable the `mutatingwebhookconfigurations` resource"
+            namespaces: 
+              type: "boolean"
+              default: true
+              description: "Enable the `namespaces` resource"
+            networkpolicies: 
+              type: "boolean"
+              default: true
+              description: "Enable the `networkpolicies` resource"
+            nodes: 
+              type: "boolean"
+              default: true
+              description: "Enable the `nodes` resource"
+            persistentvolumeclaims: 
+              type: "boolean"
+              default: true
+              description: "Enable the `persistentvolumeclaims` resource"
+            persistentvolumes: 
+              type: "boolean"
+              default: true
+              description: "Enable the `persistentvolumes` resource"
+            poddisruptionbudgets: 
+              type: "boolean"
+              default: true
+              description: "Enable the `poddisruptionbudgets` resource"
+            pods: 
+              type: "boolean"
+              default: true
+              description: "Enable the `pods` resource"
+            replicasets: 
+              type: "boolean"
+              default: true
+              description: "Enable the `replicasets` resource"
+            replicationcontrollers: 
+              type: "boolean"
+              default: true
+              description: "Enable the `replicationcontrollers` resource"
+            resourcequotas: 
+              type: "boolean"
+              default: true
+              description: "Enable the `resourcequotas` resource"
+            secrets: 
+              type: "boolean"
+              default: true
+              description: "Enable the `secrets` resource"
+            services: 
+              type: "boolean"
+              default: true
+              description: "Enable the `services` resource"
+            statefulsets: 
+              type: "boolean"
+              default: true
+              description: "Enable the `statefulsets` resource"
+            storageclasses: 
+              type: "boolean"
+              default: true
+              description: "Enable the `storageclasses` resource"
+            verticalpodautoscalers: 
+              type: "boolean"
+              default: false
+              description: "Enable the `verticalpodautoscalers` resource"
+            validatingwebhookconfigurations: 
+              type: "boolean"
+              default: false
+              description: "Enable the `validatingwebhookconfigurations` resource"
+            volumeattachments: 
+              type: "boolean"
+              default: true
+              description: "Enable the `volumeattachments` resource"
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container filesystem"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes service type"
+            port: 
+              type: "number"
+              default: 8080
+              description: "kube-state-metrics service port"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Specific cluster IP when service type is cluster IP. Use `None` for headless service"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Specify the nodePort value for the LoadBalancer and NodePort service types."
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "`loadBalancerIP` if service type is `LoadBalancer`"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Address that are allowed when svc is `LoadBalancer`"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for kube-state-metrics service"
+            labels: 
+              type: "object"
+              default: "{}"
+              description: "Additional labels for kube-state-metrics service"
+        hostNetwork: 
+          type: "boolean"
+          default: false
+          description: "Enable hostNetwork mode"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Priority class assigned to the Pods"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Desired number of controller pods"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Pod labels"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        updateStrategy: 
+          type: "object"
+          default: "{}"
+          description: "Allows setting of `RollingUpdate` strategy"
+        minReadySeconds: 
+          type: "number"
+          default: 0
+          description: "How many seconds a pod needs to be ready before killing the next, during update"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Turn on and off liveness probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Delay before liveness probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Minimum consecutive failures for the probe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes for the probe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Turn on and off readiness probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Delay before readiness probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Minimum consecutive failures for the probe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes for the probe"
+        serviceMonitor: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Creates a ServiceMonitor to monitor kube-state-metrics"
+            namespace: 
+              type: "string"
+              default: ""
+              description: "Namespace in which Prometheus is running"
+            jobLabel: 
+              type: "string"
+              default: ""
+              description: "The name of the label on the target service to use as the job name in prometheus."
+            interval: 
+              type: "string"
+              default: ""
+              description: "Scrape interval (use by default, falling back to Prometheus' default)"
+            scrapeTimeout: 
+              type: "string"
+              default: ""
+              description: "Timeout after which the scrape is ended"
+            selector: 
+              type: "object"
+              default: "{}"
+              description: "ServiceMonitor selector labels"
+            honorLabels: 
+              type: "boolean"
+              default: false
+              description: "Honor metrics labels"
+            relabelings: 
+              type: "array"
+              default: "[]"
+              description: "ServiceMonitor relabelings"
+            metricRelabelings: 
+              type: "array"
+              default: "[]"
+              description: "ServiceMonitor metricRelabelings"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: kube-state-metrics
+          version: "2.1.8"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

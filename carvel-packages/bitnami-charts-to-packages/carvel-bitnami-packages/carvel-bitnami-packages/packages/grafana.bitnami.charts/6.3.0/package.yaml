@@ -1,0 +1,645 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: grafana.bitnami.charts.6.3.0
+spec:
+  refName: grafana.bitnami.charts
+  version: 6.3.0
+  releaseNotes: |
+        Grafana is an open source, feature rich metrics dashboard and graph editor for Graphite, Elasticsearch, OpenTSDB, Prometheus and InfluxDB&trade;.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override grafana.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override grafana.fullname template"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Default Kubernetes cluster domain"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Grafana image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/grafana"
+              description: "Grafana image repository"
+            tag: 
+              type: "string"
+              default: "8.1.5-debian-10-r0"
+              description: "Grafana image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Grafana image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Grafana image pull secrets"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        admin: 
+          type: "object"
+          properties: 
+            user: 
+              type: "string"
+              default: "admin"
+              description: "Grafana admin username"
+            password: 
+              type: "string"
+              default: ""
+              description: "Admin password. If a password is not provided a random password will be generated"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the existing secret containing admin password"
+            existingSecretPasswordKey: 
+              type: "string"
+              default: "password"
+              description: "Password key on the existing secret"
+        smtp: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable SMTP configuration"
+            user: 
+              type: "string"
+              default: "user"
+              description: "SMTP user"
+            password: 
+              type: "string"
+              default: "password"
+              description: "SMTP password"
+            host: 
+              type: "string"
+              default: ""
+              description: "Custom host for the smtp server"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing secret containing SMTP credentials (user and password)"
+            existingSecretUserKey: 
+              type: "string"
+              default: "user"
+              description: "User key on the existing secret"
+            existingSecretPasswordKey: 
+              type: "string"
+              default: "password"
+              description: "Password key on the existing secret"
+        plugins: 
+          type: "string"
+          default: ""
+          description: "Grafana plugins to be installed in deployment time separated by commas"
+        ldap: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable LDAP for Grafana"
+            allowSignUp: 
+              type: "boolean"
+              default: false
+              description: "Allows LDAP sign up for Grafana"
+            configuration: 
+              type: "string"
+              default: ""
+              description: "Specify content for ldap.toml configuration file"
+            configMapName: 
+              type: "string"
+              default: ""
+              description: "Name of the ConfigMap with the ldap.toml configuration file for Grafana"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "Name of the Secret with the ldap.toml configuration file for Grafana"
+        extraEnvVars: 
+          type: "object"
+          default: "{}"
+          description: "Array containing extra env vars to configure Grafana"
+        extraConfigmaps: 
+          type: "object"
+          default: "{}"
+          description: "Array to mount extra ConfigMaps to configure Grafana"
+        config: 
+          type: "object"
+          properties: 
+            useGrafanaIniFile: 
+              type: "boolean"
+              default: false
+              description: "Allows to load a `grafana.ini` file"
+            grafanaIniConfigMap: 
+              type: "string"
+              default: ""
+              description: "Name of the ConfigMap containing the `grafana.ini` file"
+            grafanaIniSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the Secret containing the `grafana.ini` file"
+        dashboardsProvider: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable the use of a Grafana dashboard provider"
+            configMapName: 
+              type: "string"
+              default: ""
+              description: "Name of a ConfigMap containing a custom dashboard provider"
+        dashboardsConfigMaps: 
+          type: "array"
+          default: "[]"
+          description: "Array with the names of a series of ConfigMaps containing dashboards files"
+        datasources: 
+          type: "object"
+          properties: 
+            secretName: 
+              type: "string"
+              default: ""
+              description: "Secret name containing custom datasource files"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Grafana nodes"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Set up update strategy for Grafana installation."
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Alternative scheduler"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Priority class name"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Grafana pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Grafana Pod annotations"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable securityContext on for Grafana deployment"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group to configure permissions for volumes"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User for the security context"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Run containers as non-root users"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for Grafana containers"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for Grafana containers"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            scheme: 
+              type: "string"
+              default: "HTTP"
+              description: "Scheme for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            scheme: 
+              type: "string"
+              default: "HTTP"
+              description: "Scheme for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional sidecar containers to the Grafana pod"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Additional volumes for the Grafana pod"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Additional volume mounts for the Grafana container"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "Access mode to the PV"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Storage class to use with the PVC"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "If you want to reuse an existing claim, you can pass the name of the PVC using the existingClaim variable"
+            size: 
+              type: "string"
+              default: "10Gi"
+              description: "Size for the PV"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use. If not set and create is true, a name is generated using the fullname template"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to the ServiceAccount Metadata"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 3000
+              description: "Grafana service port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Specify the nodePort value for the LoadBalancer and NodePort service types"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "loadBalancerIP if Grafana service type is `LoadBalancer` (optional, cloud specific)"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "loadBalancerSourceRanges if Grafana service type is `LoadBalancer` (optional, cloud specific)"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Provide any additional annotations which may be required."
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress Path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "grafana.local"
+              description: "When the ingress is enabled, a host pointing to this will be created"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Default path for the ingress resource"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "It is also possible to create and manage the certificates outside of this helm chart"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable the export of Prometheus metrics"
+            service: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Prometheus metrics service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+        imageRenderer: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable using a remote rendering service to render PNG images"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Grafana Image Renderer image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/grafana-image-renderer"
+                  description: "Grafana Image Renderer image repository"
+                tag: 
+                  type: "string"
+                  default: "3.2.0-debian-10-r4"
+                  description: "Grafana Image Renderer image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Grafana Image Renderer image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Grafana image Renderer pull secrets"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Grafana Image Renderer Pod replicas"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Grafana Image Renderer Pod annotations"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for pod assignment"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for Grafana containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for Grafana containers"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable securityContext on for Grafana Image Renderer deployment"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group to configure permissions for volumes"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User for the security context"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Run containers as non-root users"
+            service: 
+              type: "object"
+              properties: 
+                port: 
+                  type: "number"
+                  default: 8080
+                  description: "Grafana Image Renderer metrics port"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable the export of Prometheus metrics"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus annotations"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                    namespace: 
+                      type: "string"
+                      default: ""
+                      description: "Namespace in which Prometheus is running"
+                    interval: 
+                      type: "string"
+                      default: ""
+                      description: "Interval at which metrics should be scraped."
+                    scrapeTimeout: 
+                      type: "string"
+                      default: ""
+                      description: "Timeout after which the scrape is ended"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: grafana
+          version: "6.3.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

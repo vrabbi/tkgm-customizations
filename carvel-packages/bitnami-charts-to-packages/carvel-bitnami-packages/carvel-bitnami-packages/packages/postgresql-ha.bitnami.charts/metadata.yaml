@@ -1,0 +1,20 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: postgresql-ha.bitnami.charts
+spec:
+  displayName: "postgresql-ha"
+  longDescription: "Bitnami postgresql-ha Helm Chart"
+  shortDescription: "postgresql-ha Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - postgresql
+  - repmgr
+  - pgpool
+  - postgres
+  - database
+  - sql
+  - replication
+  - cluster
+  - high availability

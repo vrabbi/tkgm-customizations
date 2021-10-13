@@ -1,0 +1,812 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: osclass.bitnami.charts.11.0.13
+spec:
+  refName: osclass.bitnami.charts
+  version: 11.0.13
+  releaseNotes: |
+        Osclass is a php script that allows you to quickly create and manage your own free classifieds site.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Osclass image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/osclass"
+              description: "Osclass image repository"
+            tag: 
+              type: "string"
+              default: "4.4.0-debian-10-r121"
+              description: "Osclass image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Osclass image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Osclass image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable Bitnami debug mode in Osclass image"
+        osclassSkipInstall: 
+          type: "boolean"
+          default: false
+          description: "Skip wizard installation"
+        osclassUsername: 
+          type: "string"
+          default: "user"
+          description: "Osclass username"
+        osclassSiteTitle: 
+          type: "string"
+          default: "user"
+          description: "Osclass site title"
+        osclassPassword: 
+          type: "string"
+          default: ""
+          description: "Osclass user password"
+        osclassEmail: 
+          type: "string"
+          default: "user@example.com"
+          description: "Osclass user email"
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing secret containing Osclass credentials"
+        allowEmptyPassword: 
+          type: "boolean"
+          default: true
+          description: "Allow the container to be started with blank passwords"
+        smtpHost: 
+          type: "string"
+          default: ""
+          description: "SMTP server host"
+        smtpPort: 
+          type: "string"
+          default: ""
+          description: "SMTP server port"
+        smtpUser: 
+          type: "string"
+          default: ""
+          description: "SMTP username"
+        smtpPassword: 
+          type: "string"
+          default: ""
+          description: "SMTP user password"
+        smtpProtocol: 
+          type: "string"
+          default: ""
+          description: "SMTP protocol"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Osclass pod host aliases"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Osclass pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set Osclass pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Osclass containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set Osclass container's Security Context runAsUser"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set Osclass container's Security Context runAsNonRoot"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            path: 
+              type: "string"
+              default: "/oc-admin"
+              description: "Path for the HTTP probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 600
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            path: 
+              type: "string"
+              default: "/oc-admin"
+              description: "Path for the HTTP probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom livenessProbe that overrides the default one"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readinessProbe that overrides the default one"
+        certificates: 
+          type: "object"
+          properties: 
+            customCertificate: 
+              type: "object"
+              properties: 
+                certificateSecret: 
+                  type: "string"
+                  default: ""
+                  description: "name of the secret with custom certificates"
+                chainSecret: 
+                  type: "object"
+                  properties: 
+                    name: 
+                      type: "string"
+                      default: ""
+                      description: "name of the secret with the chain"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "key of the secret with the chain"
+                certificateLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/ssl-cert-snakeoil.pem"
+                  description: "Location of the certificate inside the container"
+                keyLocation: 
+                  type: "string"
+                  default: "/etc/ssl/private/ssl-cert-snakeoil.key"
+                  description: "Location of the certificate key inside the container"
+                chainLocation: 
+                  type: "string"
+                  default: "/etc/ssl/certs/mychain.pem"
+                  description: "Location of the certificate chain inside the container"
+            customCAs: 
+              type: "array"
+              default: "[]"
+              description: "Array with custom CAs"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override certificate container command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override certificate container args"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with extra environment variables"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Apache Exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Apache Exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r199"
+                  description: "Apache Exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Apache Exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Apache Exporter image pull secrets"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "lifecycleHooks for the container to automate configuration before or after startup."
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for Osclass pods"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Osclass pods"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Osclass replicas to deploy"
+        containerPorts: 
+          type: "object"
+          properties: 
+            http: 
+              type: "number"
+              default: 8080
+              description: "WordPress HTTP container port"
+            https: 
+              type: "number"
+              default: 8443
+              description: "WordPress HTTPS container port"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Osclass deployment strategy type"
+            rollingUpdate: 
+              type: "object"
+              default: "{}"
+              description: "Osclass deployment rolling update configuration parameters"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array with extra environment variables to add to the Osclass container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for Osclass pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for Osclass container(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the Osclass pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the Osclass pod"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Osclass container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Osclass container"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "WordPress service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "WordPress service HTTP port"
+            httpsPort: 
+              type: "number"
+              default: 443
+              description: "WordPress service HTTPS port"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "WordPress service Cluster IP"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Osclass service Load Balancer IP"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Osclass service Load Balancer sources"
+            sessionAffinity: 
+              type: "string"
+              default: "None"
+              description: "Control where client requests go, to the same pod or round-robin"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for HTTP"
+                https: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for HTTPS"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Osclass service external traffic policy"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress record generation for Osclass"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add the corresponding annotations for cert-manager integration"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "osclass.local"
+              description: "Default host for the ingress record"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Default path for the ingress record"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for the ingress record"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the host defined at `ingress.hostname` parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional hostname(s) to be covered with the ingress record"
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional arbitrary paths that may need to be added to the ingress under the main host"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Custom TLS certificates as secrets"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "External Database server host"
+            port: 
+              type: "number"
+              default: 3306
+              description: "External Database server port"
+            user: 
+              type: "string"
+              default: "bn_osclass"
+              description: "External Database username"
+            password: 
+              type: "string"
+              default: ""
+              description: "External Database user password"
+            database: 
+              type: "string"
+              default: "bitnami_osclass"
+              description: "External Database database name"
+        mariadb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy a MariaDB server to satisfy the applications database requirements"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "MariaDB architecture. Allowed values: `standalone` or `replication`"
+            auth: 
+              type: "object"
+              properties: 
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB root password"
+                database: 
+                  type: "string"
+                  default: "bitnami_osclass"
+                  description: "MariaDB custom database"
+                username: 
+                  type: "string"
+                  default: "bn_osclass"
+                  description: "MariaDB custom user name"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB custom user password"
+            primary: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable persistence on MariaDB using PVC(s)"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "Persistent Volume storage class"
+                    accessModes: 
+                      type: "array"
+                      default: "[]"
+                      description: "Persistent Volume access modes"
+                    size: 
+                      type: "string"
+                      default: "8Gi"
+                      description: "Persistent Volume size"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using Persistent Volume Claims"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume storage class"
+            accessModes: 
+              type: "array"
+              default: "[]"
+              description: "Persistent Volume access modes"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "Persistent Volume size"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "The name of an existing PVC to use for persistence"
+            hostPath: 
+              type: "string"
+              default: ""
+              description: "If defined, the osclass-data volume will mount to the specified hostPath."
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami Shell image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Bitnami Shell image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r199"
+                  description: "Bitnami Shell image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Bitnami Shell image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami Shell image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number/percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number/percentage of pods that may be made unavailable"
+        autoscaling: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Horizontal POD autoscaling for Osclass"
+            minReplicas: 
+              type: "number"
+              default: 1
+              description: "Minimum number of Osclass replicas"
+            maxReplicas: 
+              type: "number"
+              default: 11
+              description: "Maximum number of Osclass replicas"
+            targetCPU: 
+              type: "number"
+              default: 50
+              description: "Target CPU utilization percentage"
+            targetMemory: 
+              type: "number"
+              default: 50
+              description: "Target Memory utilization percentage"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a sidecar prometheus exporter to expose metrics"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Apache Exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/apache-exporter"
+                  description: "Apache Exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.10.1-debian-10-r0"
+                  description: "Apache Exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Apache Exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Apache Exporter image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Prometheus exporter container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Prometheus exporter container"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Metrics service type"
+                port: 
+                  type: "number"
+                  default: 9117
+                  description: "Metrics service port"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Metrics service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "The namespace in which the ServiceMonitor will be created"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "The interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "The timeout after which the scrape is ended"
+                relabellings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metrics relabellings to add to the scrape endpoint"
+                honorLabels: 
+                  type: "boolean"
+                  default: false
+                  description: "Labels to honor to add to the scrape endpoint"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom labels for the ServiceMonitor"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: osclass
+          version: "11.0.13"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

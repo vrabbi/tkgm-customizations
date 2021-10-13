@@ -1,0 +1,345 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: metrics-server.bitnami.charts.5.10.3
+spec:
+  refName: metrics-server.bitnami.charts
+  version: 5.10.3
+  releaseNotes: |
+        Metrics Server is a cluster-wide aggregator of resource usage data. Metrics Server collects metrics from the Summary API, exposed by Kubelet on each node.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Metrics Server image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/metrics-server"
+              description: "Metrics Server image repository"
+            tag: 
+              type: "string"
+              default: "0.5.1-debian-10-r0"
+              description: "Metrics Server image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Metrics Server image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Metrics Server image pull secrets"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        replicas: 
+          type: "number"
+          default: 1
+          description: "Number of metrics-server nodes to deploy"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Set up update strategy for metrics-server installation."
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable RBAC authentication"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to create"
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: true
+              description: "Automount API credentials for a service account"
+        apiService: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether the v1beta1.metrics.k8s.io API service should be created. You can check if it is needed with `kubectl get --raw \"/apis/metrics.k8s.io/v1beta1/nodes\"`."
+        securePort: 
+          type: "number"
+          default: 8443
+          description: "Port where metrics-server will be running"
+        hostNetwork: 
+          type: "boolean"
+          default: false
+          description: "Enable hostNetwork mode"
+        command: 
+          type: "array"
+          default: "[\"metrics-server\"]"
+          description: "Override default container command (useful when using custom images)"
+        extraArgs: 
+          type: "object"
+          default: "{}"
+          description: "Extra arguments to pass to metrics-server on start up"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Pod labels"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Priority class for pod scheduling"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podDisruptionBudget: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Create a PodDisruptionBudget"
+            minAvailable: 
+              type: "string"
+              default: ""
+              description: "Minimum available instances"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum unavailable instances"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        topologySpreadConstraints: 
+          type: "array"
+          default: "[]"
+          description: "Topology spread constraints for pod"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 443
+              description: "Kubernetes Service port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Kubernetes Service port"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "LoadBalancer IP if Service type is `LoadBalancer`"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the Service"
+            labels: 
+              type: "object"
+              default: "{}"
+              description: "Labels for the Service"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/livez"
+                  description: "Request path for livenessProbe"
+                port: 
+                  type: "string"
+                  default: "https"
+                  description: "Port for livenessProbe"
+                scheme: 
+                  type: "string"
+                  default: "HTTPS"
+                  description: "Scheme for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 3
+              description: "Failure threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/readyz"
+                  description: "Request path for readinessProbe"
+                port: 
+                  type: "string"
+                  default: "https"
+                  description: "Port for readinessProbe"
+                scheme: 
+                  type: "string"
+                  default: "HTTPS"
+                  description: "Scheme for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 3
+              description: "Failure threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom Liveness probes for metrics-server"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom Readiness probes metrics-server"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Container security context"
+            readOnlyRootFilesystem: 
+              type: "boolean"
+              default: false
+              description: "ReadOnlyRootFilesystem for the container"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Run containers as non-root users"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Pod security context"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Extra volumes"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Mount extra volume(s)"
+        extraContainers: 
+          type: "object"
+          default: "{}"
+          description: "Extra containers to run within the pod"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: metrics-server
+          version: "5.10.3"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

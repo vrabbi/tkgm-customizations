@@ -1,0 +1,684 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: phabricator.bitnami.charts.11.0.27
+spec:
+  refName: phabricator.bitnami.charts
+  version: 11.0.27
+  releaseNotes: |
+        Collection of open source web applications that help software companies build better software.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes Cluster Domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Extra objects to deploy (value evaluated as a template)"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Phabricator image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/phabricator"
+              description: "Phabricator image repository"
+            tag: 
+              type: "string"
+              default: "2021.26.0-debian-10-r55"
+              description: "Phabricator image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        phabricatorUsername: 
+          type: "string"
+          default: "user"
+          description: "Phabricator admin user"
+        phabricatorPassword: 
+          type: "string"
+          default: ""
+          description: "Admin user password"
+        phabricatorEmail: 
+          type: "string"
+          default: "user@example.com"
+          description: "Admin user email"
+        phabricatorFirstName: 
+          type: "string"
+          default: "First Name"
+          description: "Admin user first name"
+        phabricatorLastName: 
+          type: "string"
+          default: "Last Name"
+          description: "Admin user last name"
+        phabricatorHost: 
+          type: "string"
+          default: ""
+          description: "Phabricator host to create application URLs"
+        phabricatorAlternateFileDomain: 
+          type: "string"
+          default: ""
+          description: "Phabricator alternate domain to upload files"
+        phabricatorEnableHttps: 
+          type: "boolean"
+          default: true
+          description: "Configure Phabricator to build application URLs using https"
+        phabricatorUseLFS: 
+          type: "boolean"
+          default: false
+          description: "Configure Phabricator to use GIT Large File Storage (LFS)"
+        phabricatorGitSSH: 
+          type: "boolean"
+          default: false
+          description: "Configure a self-hosted GIT repository with SSH authentication"
+        phabricatorEnablePygments: 
+          type: "boolean"
+          default: true
+          description: "Enable syntax highlighting using Pygments"
+        phabricatorSkipInstall: 
+          type: "boolean"
+          default: false
+          description: "Skip the initial bootstrapping for the application"
+        smtpHost: 
+          type: "string"
+          default: ""
+          description: "SMTP mail delivery host"
+        smtpPort: 
+          type: "string"
+          default: ""
+          description: "SMTP mail delivery port"
+        smtpUser: 
+          type: "string"
+          default: ""
+          description: "SMTP mail delivery user"
+        smtpPassword: 
+          type: "string"
+          default: ""
+          description: "SMTP mail delivery password"
+        smtpProtocol: 
+          type: "string"
+          default: ""
+          description: "SMTP mail delivery protocol [`ssl`, `tls`]"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "An array to add extra env vars"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra environment variables"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra environment variables"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "StrategyType"
+        containerPorts: 
+          type: "object"
+          default: "{}"
+          description: "Phabricator container ports to open"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Phabricator pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the volumes of the pod"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Phabricator containers' SecurityContext"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            path: 
+              type: "string"
+              default: "/auth/"
+              description: "Request path for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 180
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            path: 
+              type: "string"
+              default: "/auth/"
+              description: "Request path for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        startupProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable startupProbe"
+            path: 
+              type: "string"
+              default: "/auth/"
+              description: "Request path for startupProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 0
+              description: "Initial delay seconds for startupProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for startupProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 3
+              description: "Timeout seconds for startupProbe"
+            failureThreshold: 
+              type: "number"
+              default: 20
+              description: "Failure threshold for startupProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for startupProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        customStartupProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom Startup probe for Phabricator"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Phabricator pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for Phabricator pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment. Evaluated as a template."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for Phabricator pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for Phabricator container(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add init containers to the Phabricator pods."
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add sidecars to the Phabricator pods"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using PVC"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for Phabricator volume"
+            accessMode: 
+              type: "string"
+              default: "ReadWriteOnce"
+              description: "PVC Access Mode for Phabricator volume"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for Phabricator volume"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "An Existing PVC name for Phabricator volume"
+            hostPath: 
+              type: "string"
+              default: ""
+              description: "Host mount path for Phabricator volume"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Service HTTP port"
+            httpsPort: 
+              type: "number"
+              default: 443
+              description: "Service HTTP port"
+            sshPort: 
+              type: "number"
+              default: 22
+              description: "Service SSH port"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTP node port"
+                https: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTPS node port"
+                ssh: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes SSH node port"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "`loadBalancerIP` for the Phabricator Service"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Service annotations"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Set this to true in order to add the corresponding annotations for cert-manager"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "phabricator.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to Phabricator. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        mariadb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to use the MariaDB chart"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "MariaDB architecture. Allowed values: `standalone` or `replication`"
+            auth: 
+              type: "object"
+              properties: 
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the MariaDB `root` user"
+            primary: 
+              type: "object"
+              properties: 
+                configuration: 
+                  type: "string"
+                  default: "\"\""
+                  description: "MariaDB Primary configuration to be injected as ConfigMap"
+                extraFlags: 
+                  type: "string"
+                  default: "--local-infile=0"
+                  description: "Additional command line flags"
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable database persistence using PVC"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "mariadb data Persistent Volume Storage Class"
+                    accessModes: 
+                      type: "array"
+                      default: "[\"ReadWriteOnce\"]"
+                      description: "Database Persistent Volume Access Modes"
+                    size: 
+                      type: "string"
+                      default: "8Gi"
+                      description: "Database Persistent Volume Size"
+                    hostPath: 
+                      type: "string"
+                      default: ""
+                      description: "Host mount path for MariaDB volume in case you want to use local host path volumes (not recommended in production)"
+                    existingClaim: 
+                      type: "string"
+                      default: ""
+                      description: "Enable persistence using an existing PVC"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the database existing Secret Object"
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Host of the existing database"
+            port: 
+              type: "number"
+              default: 3306
+              description: "Port of the existing database"
+            rootUser: 
+              type: "string"
+              default: "root"
+              description: "Username in the external db with root privileges"
+            rootPassword: 
+              type: "string"
+              default: ""
+              description: "Password for the above username"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory ("
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r171"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Apache exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/apache-exporter"
+                  description: "Apache exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.10.0-debian-10-r25"
+                  description: "Apache exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for Metrics exporter pod"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: phabricator
+          version: "11.0.27"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: mysql.bitnami.charts
+spec:
+  displayName: "mysql"
+  longDescription: "Bitnami mysql Helm Chart"
+  shortDescription: "mysql Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - mysql
+  - database
+  - sql
+  - cluster
+  - high availability

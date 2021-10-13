@@ -1,0 +1,1882 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: kube-prometheus.bitnami.charts.6.1.11
+spec:
+  refName: kube-prometheus.bitnami.charts
+  version: 6.1.11
+  releaseNotes: |
+        kube-prometheus collects Kubernetes manifests to provide easy to operate end-to-end Kubernetes cluster monitoring with Prometheus using the Prometheus Operator.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+            labels: 
+              type: "object"
+              default: "{}"
+              description: "Additional labels to apply to all resources"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override `kube-prometheus.name` template with a string (will prepend the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override `kube-prometheus.fullname` template with a string"
+        operator: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy Prometheus Operator to the cluster"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Prometheus Operator image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/prometheus-operator"
+                  description: "Prometheus Operator image repository"
+                tag: 
+                  type: "string"
+                  default: "0.51.1-debian-10-r0"
+                  description: "Prometheus Operator Image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Prometheus Operator image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specify whether to create a ServiceAccount for Prometheus Operator"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to create"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Name of the Kubernetess scheduler (other than default)"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable pod security context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the container"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the container filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context"
+                capabilities: 
+                  type: "object"
+                  properties: 
+                    drop: 
+                      type: "array"
+                      default: "[]"
+                      description: "Linux Kernel capabilities which should be dropped"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container to run as a non root user"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possibility on or off"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "Mount / (root) as a readonly filesystem"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                port: 
+                  type: "number"
+                  default: 8080
+                  description: "Prometheus Operator service port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Specific cluster IP when service type is cluster IP. Use `None` for headless service"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes Service nodePort"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "`loadBalancerIP` if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when svc is `LoadBalancer`"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                healthCheckNodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Specifies the health check node port (numeric port number) for the service if `externalTrafficPolicy` is set to Local."
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional annotations for Prometheus Operator service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Creates a ServiceMonitor to monitor Prometheus Operator"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval (use by default, falling back to Prometheus' default)"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabeling"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Configure resource requests and limits"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Prometheus Operator Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Prometheus Operator Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Prometheus Operator Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Prometheus Operator Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Prometheus Operator Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Prometheus Operator Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Prometheus Operator Tolerations for pod assignment"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Priority class assigned to the Pods"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Turn on and off liveness probe"
+                path: 
+                  type: "string"
+                  default: "/metrics"
+                  description: "Path of the HTTP service for checking the healthy state"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Delay before liveness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Turn on and off readiness probe"
+                path: 
+                  type: "string"
+                  default: "/metrics"
+                  description: "Path of the HTTP service for checking the ready state"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Delay before readiness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Log level for Prometheus Operator"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Log format for Prometheus Operator"
+            configReloaderResources: 
+              type: "object"
+              default: "{}"
+              description: "Set the prometheus config reloader side-car CPU and memory requests and limits."
+            kubeletService: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "If true, the operator will create and maintain a service for scraping kubelets"
+                namespace: 
+                  type: "string"
+                  default: "kube-system"
+                  description: "Namespace to deploy the kubelet service"
+            prometheusConfigReloader: 
+              type: "object"
+              properties: 
+                image: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus Config Reloader image. If not set, the same as `operator.image.registry`"
+                containerSecurityContext: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable container security context"
+                    readOnlyRootFilesystem: 
+                      type: "boolean"
+                      default: false
+                      description: "mount / (root) as a readonly filesystem"
+                    allowPrivilegeEscalation: 
+                      type: "boolean"
+                      default: false
+                      description: "Switch privilegeEscalation possibility on or off"
+                    runAsNonRoot: 
+                      type: "boolean"
+                      default: true
+                      description: "Force the container to run as a non root user"
+                    capabilities: 
+                      type: "object"
+                      properties: 
+                        drop: 
+                          type: "array"
+                          default: "[]"
+                          description: "Linux Kernel capabilities which should be dropped"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Turn on and off liveness probe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Delay before liveness probe is initiated"
+                    periodSeconds: 
+                      type: "number"
+                      default: 10
+                      description: "How often to perform the probe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "When the probe times out"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Minimum consecutive failures for the probe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Minimum consecutive successes for the probe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Turn on and off readiness probe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 15
+                      description: "Delay before readiness probe is initiated"
+                    periodSeconds: 
+                      type: "number"
+                      default: 20
+                      description: "How often to perform the probe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "When the probe times out"
+                    failureThreshold: 
+                      type: "number"
+                      default: 6
+                      description: "Minimum consecutive failures for the probe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Minimum consecutive successes for the probe"
+        prometheus: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy Prometheus to the cluster"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Prometheus image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/prometheus"
+                  description: "Prometheus image repository"
+                tag: 
+                  type: "string"
+                  default: "2.30.0-debian-10-r13"
+                  description: "Prometheus Image tag (immutable tags are recommended)"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specify whether to create a ServiceAccount for Prometheus"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to create"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional annotations for created Prometheus ServiceAccount"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the container"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the container filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "Mount / (root) as a readonly filesystem"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possibility on or off"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container to run as a non root user"
+                capabilities: 
+                  type: "object"
+                  properties: 
+                    drop: 
+                      type: "array"
+                      default: "[]"
+                      description: "Linux Kernel capabilities which should be dropped"
+            podDisruptionBudget: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create a pod disruption budget for Prometheus"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number / percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number / percentage of pods that may be made unavailable"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                port: 
+                  type: "number"
+                  default: 9090
+                  description: "Prometheus service port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Specific cluster IP when service type is cluster IP. Use `None` for headless service"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the nodePort value for the LoadBalancer and NodePort service types."
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "`loadBalancerIP` if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is `LoadBalancer`"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                healthCheckNodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Specifies the health check node port"
+                stickySessions: 
+                  type: "string"
+                  default: ""
+                  description: "Set stickySessions to `true` to enable Session Affinity"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional annotations for Prometheus service  (this value is evaluated as a template)"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Creates a ServiceMonitor to monitor Prometheus itself"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval (use by default, falling back to Prometheus' default)"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabeling"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress controller resource"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress Path type"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Override API Version (automatically detected if not set)"
+                hostname: 
+                  type: "string"
+                  default: "prometheus.local"
+                  description: "Default host for the ingress resource"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "The Path to Prometheus. You may need to set this to '/*' in order to use this with ALB ingress controllers"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS configuration for the hostname defined at prometheus.ingress.hostname parameter"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Additional arbitrary path/backend objects"
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+            externalUrl: 
+              type: "string"
+              default: ""
+              description: "External URL used to access Prometheus"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "CPU/Memory resource requests/limits for node"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Prometheus Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Prometheus Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Prometheus Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Prometheus Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Prometheus Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Prometheus Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Prometheus Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Prometheus Tolerations for pod assignment"
+            scrapeInterval: 
+              type: "string"
+              default: ""
+              description: "Interval between consecutive scrapes"
+            evaluationInterval: 
+              type: "string"
+              default: ""
+              description: "Interval between consecutive evaluations"
+            listenLocal: 
+              type: "boolean"
+              default: false
+              description: "ListenLocal makes the Prometheus server listen on loopback"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Turn on and off liveness probe"
+                path: 
+                  type: "string"
+                  default: "/-/healthy"
+                  description: "Path of the HTTP service for checking the healthy state"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 0
+                  description: "Delay before liveness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 10
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Turn on and off readiness probe"
+                path: 
+                  type: "string"
+                  default: "/-/ready"
+                  description: "Path of the HTTP service for checking the ready state"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 0
+                  description: "Delay before readiness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 10
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            enableAdminAPI: 
+              type: "boolean"
+              default: false
+              description: "Enable Prometheus adminitrative API"
+            alertingEndpoints: 
+              type: "array"
+              default: "[]"
+              description: "Alertmanagers to which alerts will be sent"
+            externalLabels: 
+              type: "object"
+              default: "{}"
+              description: "External labels to add to any time series or alerts when communicating with external systems"
+            replicaExternalLabelName: 
+              type: "string"
+              default: ""
+              description: "Name of the external label used to denote replica name"
+            replicaExternalLabelNameClear: 
+              type: "boolean"
+              default: false
+              description: "Clear external label used to denote replica name"
+            routePrefix: 
+              type: "string"
+              default: "/"
+              description: "Prefix used to register routes, overriding externalUrl route"
+            prometheusExternalLabelName: 
+              type: "string"
+              default: ""
+              description: "Name of the external label used to denote Prometheus instance name"
+            prometheusExternalLabelNameClear: 
+              type: "boolean"
+              default: false
+              description: "Clear external label used to denote Prometheus instance name"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Secrets that should be mounted into the Prometheus Pods"
+            configMaps: 
+              type: "array"
+              default: "[]"
+              description: "ConfigMaps that should be mounted into the Prometheus Pods"
+            querySpec: 
+              type: "object"
+              default: "{}"
+              description: "The query command line flags when starting Prometheus"
+            ruleNamespaceSelector: 
+              type: "object"
+              default: "{}"
+              description: "Namespaces to be selected for PrometheusRules discovery"
+            ruleSelector: 
+              type: "object"
+              default: "{}"
+              description: "PrometheusRules to be selected for target discovery"
+            serviceMonitorSelector: 
+              type: "object"
+              default: "{}"
+              description: "ServiceMonitors to be selected for target discovery"
+            matchLabels: 
+              type: "object"
+              default: "{}"
+              description: "Matchlabels"
+            serviceMonitorNamespaceSelector: 
+              type: "object"
+              default: "{}"
+              description: "Namespaces to be selected for ServiceMonitor discovery"
+            podMonitorSelector: 
+              type: "object"
+              default: "{}"
+              description: "PodMonitors to be selected for target discovery."
+            podMonitorNamespaceSelector: 
+              type: "object"
+              default: "{}"
+              description: "Namespaces to be selected for PodMonitor discovery"
+            probeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Probes to be selected for target discovery."
+            probeNamespaceSelector: 
+              type: "object"
+              default: "{}"
+              description: "Namespaces to be selected for Probe discovery"
+            retention: 
+              type: "string"
+              default: "10d"
+              description: "Metrics retention days"
+            retentionSize: 
+              type: "string"
+              default: ""
+              description: "Maximum size of metrics"
+            disableCompaction: 
+              type: "boolean"
+              default: false
+              description: "Disable the compaction of the Prometheus TSDB"
+            walCompression: 
+              type: "boolean"
+              default: false
+              description: "Enable compression of the write-ahead log using Snappy"
+            paused: 
+              type: "boolean"
+              default: false
+              description: "If true, the Operator won't process any Prometheus configuration changes"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Prometheus replicas desired"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Log level for Prometheus"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Log format for Prometheus"
+            podMetadata: 
+              type: "object"
+              default: "{}"
+              description: "Standard object's metadata"
+            remoteRead: 
+              type: "array"
+              default: "[]"
+              description: "The remote_read spec configuration for Prometheus"
+            remoteWrite: 
+              type: "array"
+              default: "[]"
+              description: "The remote_write spec configuration for Prometheus"
+            storageSpec: 
+              type: "object"
+              default: "{}"
+              description: "Prometheus StorageSpec for persistent data"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Use PVCs to persist data. If the storageSpec is provided this will not take effect."
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Persistent Volume Storage Class"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "Persistent Volume Access Modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Persistent Volume Size"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Priority class assigned to the Pods"
+            containers: 
+              type: "array"
+              default: "[]"
+              description: "Containers allows injecting additional containers"
+            volumes: 
+              type: "array"
+              default: "[]"
+              description: "Volumes allows configuration of additional volumes"
+            volumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "VolumeMounts allows configuration of additional VolumeMounts. Evaluated as a template"
+            additionalPrometheusRules: 
+              type: "array"
+              default: "[]"
+              description: "PrometheusRule defines recording and alerting rules for a Prometheus instance."
+            additionalScrapeConfigs: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable additional scrape configs"
+                type: 
+                  type: "string"
+                  default: "external"
+                  description: "Indicates if the cart should use external additional scrape configs or internal configs"
+                external: 
+                  type: "object"
+                  properties: 
+                    name: 
+                      type: "string"
+                      default: ""
+                      description: "Name of the secret that Prometheus should use for the additional external scrape configuration"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Name of the key inside the secret to be used for the additional external scrape configuration"
+                internal: 
+                  type: "object"
+                  properties: 
+                    jobList: 
+                      type: "array"
+                      default: "[]"
+                      description: "A list of Prometheus scrape jobs"
+            additionalScrapeConfigsExternal: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Deprecated: Enable additional scrape configs that are managed externally to this chart"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Deprecated: Name of the secret that Prometheus should use for the additional scrape configuration"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Deprecated: Name of the key inside the secret to be used for the additional scrape configuration"
+            additionalAlertRelabelConfigsExternal: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable additional Prometheus alert relabel configs that are managed externally to this chart"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the secret that Prometheus should use for the additional Prometheus alert relabel configuration"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the key inside the secret to be used for the additional Prometheus alert relabel configuration"
+            thanos: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Create a Thanos sidecar container"
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "Thanos image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/thanos"
+                      description: "Thanos image name"
+                    tag: 
+                      type: "string"
+                      default: "0.23.0-scratch-r0"
+                      description: "Thanos image tag"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: "Thanos image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify docker-registry secret names as an array"
+                containerSecurityContext: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable container security context"
+                    readOnlyRootFilesystem: 
+                      type: "boolean"
+                      default: false
+                      description: "mount / (root) as a readonly filesystem"
+                    allowPrivilegeEscalation: 
+                      type: "boolean"
+                      default: false
+                      description: "Switch privilegeEscalation possibility on or off"
+                    runAsNonRoot: 
+                      type: "boolean"
+                      default: true
+                      description: "Force the container to run as a non root user"
+                    capabilities: 
+                      type: "object"
+                      properties: 
+                        drop: 
+                          type: "array"
+                          default: "[]"
+                          description: "Linux Kernel capabilities which should be dropped"
+                prometheusUrl: 
+                  type: "string"
+                  default: ""
+                  description: "Override default prometheus url \"http://localhost:9090\""
+                extraArgs: 
+                  type: "array"
+                  default: "[]"
+                  description: "Additional arguments passed to the thanos sidecar container"
+                objectStorageConfig: 
+                  type: "object"
+                  default: "{}"
+                  description: "Support mounting a Secret for the objectStorageConfig of the sideCar container."
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the Thanos sidecar container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources requests for the Thanos sidecar container"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Turn on and off liveness probe"
+                    path: 
+                      type: "string"
+                      default: "/-/healthy"
+                      description: "Path of the HTTP service for checking the healthy state"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 0
+                      description: "Delay before liveness probe is initiated"
+                    periodSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "How often to perform the probe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 3
+                      description: "When the probe times out"
+                    failureThreshold: 
+                      type: "number"
+                      default: 120
+                      description: "Minimum consecutive failures for the probe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Minimum consecutive successes for the probe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Turn on and off readiness probe"
+                    path: 
+                      type: "string"
+                      default: "/-/ready"
+                      description: "Path of the HTTP service for checking the ready state"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 0
+                      description: "Delay before readiness probe is initiated"
+                    periodSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "How often to perform the probe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 3
+                      description: "When the probe times out"
+                    failureThreshold: 
+                      type: "number"
+                      default: 120
+                      description: "Minimum consecutive failures for the probe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Minimum consecutive successes for the probe"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "Kubernetes service type"
+                    port: 
+                      type: "number"
+                      default: 10901
+                      description: "Thanos service port"
+                    clusterIP: 
+                      type: "string"
+                      default: "None"
+                      description: "Specific cluster IP when service type is cluster IP. Use `None` to create headless service by default."
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Specify the nodePort value for the LoadBalancer and NodePort service types."
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "`loadBalancerIP` if service type is `LoadBalancer`"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "Address that are allowed when svc is `LoadBalancer`"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional annotations for Prometheus service"
+                    extraPorts: 
+                      type: "array"
+                      default: "[]"
+                      description: "Additional ports to expose from the Thanos sidecar container"
+                ingress: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable ingress controller resource"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+                    hosts: 
+                      type: "array"
+                      default: "[]"
+                      description: "The list of hostnames to be covered with this ingress record."
+                    tls: 
+                      type: "object"
+                      default: "{}"
+                      description: "The tls configuration for the ingress"
+            portName: 
+              type: "string"
+              default: "web"
+              description: "Port name used for the pods and governing service. This defaults to web"
+        alertmanager: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy Alertmanager to the cluster"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Prometheus image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/alertmanager"
+                  description: "Prometheus Image repository"
+                tag: 
+                  type: "string"
+                  default: "0.23.0-debian-10-r33"
+                  description: "Prometheus Image tag (immutable tags are recommended)"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specify whether to create a ServiceAccount for Alertmanager"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to create"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the container"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the container filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "mount / (root) as a readonly filesystem"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possibility on or off"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container to run as a non root user"
+                capabilities: 
+                  type: "object"
+                  properties: 
+                    drop: 
+                      type: "array"
+                      default: "[]"
+                      description: "Linux Kernel capabilities which should be dropped"
+            podDisruptionBudget: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create a pod disruption budget for Alertmanager"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number / percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number / percentage of pods that may be made unavailable"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                port: 
+                  type: "number"
+                  default: 9093
+                  description: "Alertmanager service port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Specific cluster IP when service type is cluster IP. Use `None` for headless service"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the nodePort value for the LoadBalancer and NodePort service types."
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "`loadBalancerIP` if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when svc is `LoadBalancer`"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                healthCheckNodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Specifies the health check node port"
+                stickySessions: 
+                  type: "string"
+                  default: ""
+                  description: "Set stickySessions to `true` to enable Session Affinity"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional annotations for Alertmanager service (this value is evaluated as a template)"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Creates a ServiceMonitor to monitor Alertmanager"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval. If not set, the Prometheus default scrape interval is used."
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabeling"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress controller resource"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress Path type"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Override API Version (automatically detected if not set)"
+                hostname: 
+                  type: "string"
+                  default: "alertmanager.local"
+                  description: "Default host for the ingress resource"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "The Path to Alert Manager. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS configuration for the hostname defined at alertmanager.ingress.hostname parameter"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Additional arbitrary path/backend objects"
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+            externalUrl: 
+              type: "string"
+              default: ""
+              description: "External URL used to access Alertmanager"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "CPU/Memory resource requests/limits for node"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Alertmanager Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Alertmanager Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Alertmanager Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Alertmanager Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Alertmanager Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Alertmanager Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Alertmanager Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Alertmanager Tolerations for pod assignment"
+            config: 
+              type: "object"
+              default: "{}"
+              description: "Alertmanager configuration directive"
+            externalConfig: 
+              type: "boolean"
+              default: false
+              description: "Alertmanager configuration is created externally. If true, `alertmanager.config` is ignored, and a secret will not be created."
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Alertmanager replicas desired"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Turn on and off liveness probe"
+                path: 
+                  type: "string"
+                  default: "/-/healthy"
+                  description: "Path of the HTTP service for checking the healthy state"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 0
+                  description: "Delay before liveness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 120
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Turn on and off readiness probe"
+                path: 
+                  type: "string"
+                  default: "/-/ready"
+                  description: "Path of the HTTP service for checking the ready state"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 0
+                  description: "Delay before readiness probe is initiated"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "How often to perform the probe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 3
+                  description: "When the probe times out"
+                failureThreshold: 
+                  type: "number"
+                  default: 120
+                  description: "Minimum consecutive failures for the probe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum consecutive successes for the probe"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Log level for Alertmanager"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Log format for Alertmanager"
+            podMetadata: 
+              type: "object"
+              default: "{}"
+              description: "Standard object's metadata."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Secrets that should be mounted into the Alertmanager Pods"
+            configMaps: 
+              type: "array"
+              default: "[]"
+              description: "ConfigMaps that should be mounted into the Alertmanager Pods"
+            retention: 
+              type: "string"
+              default: "120h"
+              description: "Metrics retention days"
+            storageSpec: 
+              type: "object"
+              default: "{}"
+              description: "Alertmanager StorageSpec for persistent data"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Use PVCs to persist data. If the storageSpec is provided this will not take effect."
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Persistent Volume Storage Class"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "Persistent Volume Access Modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Persistent Volume Size"
+            paused: 
+              type: "boolean"
+              default: false
+              description: "If true, the Operator won't process any Alertmanager configuration changes"
+            listenLocal: 
+              type: "boolean"
+              default: false
+              description: "ListenLocal makes the Alertmanager server listen on loopback"
+            containers: 
+              type: "array"
+              default: "[]"
+              description: "Containers allows injecting additional containers"
+            volumes: 
+              type: "array"
+              default: "[]"
+              description: "Volumes allows configuration of additional volumes. Evaluated as a template"
+            volumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "VolumeMounts allows configuration of additional VolumeMounts. Evaluated as a template"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Priority class assigned to the Pods"
+            additionalPeers: 
+              type: "array"
+              default: "[]"
+              description: "AdditionalPeers allows injecting a set of additional Alertmanagers to peer with to form a highly available cluster"
+            routePrefix: 
+              type: "string"
+              default: "/"
+              description: "Prefix used to register routes, overriding externalUrl route"
+            portName: 
+              type: "string"
+              default: "web"
+              description: "Port name used for the pods and governing service. This defaults to web"
+            configNamespaceSelector: 
+              type: "object"
+              default: "{}"
+              description: "AlertmanagerConfigs to be selected for to merge and configure Alertmanager with. This defaults to {}"
+            configSelector: 
+              type: "object"
+              default: "{}"
+              description: "Namespaces to be selected for AlertmanagerConfig discovery. If nil, only check own namespace. This defaults to {}"
+        exporters: 
+          type: "object"
+          properties: 
+            node-exporter: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable node-exporter"
+            kube-state-metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable kube-state-metrics"
+        node-exporter: 
+          type: "object"
+          default: "{}"
+          description: "Node Exporter deployment configuration"
+        kube-state-metrics: 
+          type: "object"
+          default: "{}"
+          description: "Node Exporter deployment configuration"
+        kubelet: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Create a ServiceMonitor to scrape kubelet service"
+            namespace: 
+              type: "string"
+              default: "kube-system"
+              description: "Namespace where kubelet service is deployed. Related configuration `operator.kubeletService.namespace`"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                https: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable scraping of the kubelet over HTTPS"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval (use by default, falling back to Prometheus' default)"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabeling"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs"
+                cAdvisorMetricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabeling for scraping cAdvisor"
+                cAdvisorRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs for scraping cAdvisor"
+        kubeApiServer: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Create a ServiceMonitor to scrape kube-apiserver service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval. If not set, the Prometheus default scrape interval is used."
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabeling"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs"
+        kubeControllerManager: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Create a ServiceMonitor to scrape kube-controller-manager service"
+            endpoints: 
+              type: "array"
+              default: "[]"
+              description: "If your kube controller manager is not deployed as a pod, specify IPs it can be found on"
+            namespace: 
+              type: "string"
+              default: "kube-system"
+              description: "Namespace where kube-controller-manager service is deployed."
+            service: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether or not to create a Service object for kube-controller-manager"
+                port: 
+                  type: "number"
+                  default: 10252
+                  description: "Listening port of the kube-controller-manager Service object"
+                targetPort: 
+                  type: "number"
+                  default: 10252
+                  description: "Port to target on the kube-controller-manager Pods. This should be the port that kube-controller-manager is exposing metrics on"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Optional PODs Label selector for the service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval (use by default, falling back to Prometheus' default)"
+                https: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable scraping kube-controller-manager over https"
+                insecureSkipVerify: 
+                  type: "string"
+                  default: ""
+                  description: "Skip TLS certificate validation when scraping"
+                serverName: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the server to use when validating TLS certificate"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabeling"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs"
+        kubeScheduler: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Create a ServiceMonitor to scrape kube-scheduler service"
+            endpoints: 
+              type: "array"
+              default: "[]"
+              description: "If your kube scheduler is not deployed as a pod, specify IPs it can be found on"
+            namespace: 
+              type: "string"
+              default: "kube-system"
+              description: "Namespace where kube-scheduler service is deployed."
+            service: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether or not to create a Service object for kube-scheduler"
+                port: 
+                  type: "number"
+                  default: 10251
+                  description: "Listening port of the kube scheduler Service object"
+                targetPort: 
+                  type: "number"
+                  default: 10251
+                  description: "Port to target on the kube scheduler Pods. This should be the port that kube scheduler is exposing metrics on"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Optional PODs Label selector for the service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval (use by default, falling back to Prometheus' default)"
+                https: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable scraping kube-scheduler over https"
+                insecureSkipVerify: 
+                  type: "string"
+                  default: ""
+                  description: "Skip TLS certificate validation when scraping"
+                serverName: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the server to use when validating TLS certificate"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabeling"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs"
+        coreDns: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Create a ServiceMonitor to scrape coredns service"
+            namespace: 
+              type: "string"
+              default: "kube-system"
+              description: "Namespace where core dns service is deployed."
+            service: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether or not to create a Service object for coredns"
+                port: 
+                  type: "number"
+                  default: 9153
+                  description: "Listening port of the coredns Service object"
+                targetPort: 
+                  type: "number"
+                  default: 9153
+                  description: "Port to target on the coredns Pods. This should be the port that coredns is exposing metrics on"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Optional PODs Label selector for the service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval. If not set, the Prometheus default scrape interval is used."
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabel configs to apply to samples before ingestion."
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs to apply to samples before ingestion."
+        kubeProxy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Create a ServiceMonitor to scrape the kube-proxy Service"
+            endpoints: 
+              type: "array"
+              default: "[]"
+              description: "If your kube-proxy is not deployed as a pod, specify IPs it can be found on"
+            namespace: 
+              type: "string"
+              default: "kube-system"
+              description: "Namespace where cube-proxy service is deployed."
+            service: 
+              type: "object"
+              default: "{}"
+              description: "Service ports and selector information"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                https: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable scraping kube-proxy over https."
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Scrape interval (use by default, falling back to Prometheus' default)"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metric relabeling"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Relabel configs"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Whether to create and use RBAC resources or not"
+            apiVersion: 
+              type: "string"
+              default: "v1beta1"
+              description: "Version of the RBAC API"
+            pspEnabled: 
+              type: "boolean"
+              default: true
+              description: "PodSecurityPolicy"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: kube-prometheus
+          version: "6.1.11"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

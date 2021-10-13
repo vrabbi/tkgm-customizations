@@ -1,0 +1,24 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: phabricator.bitnami.charts
+spec:
+  displayName: "phabricator"
+  longDescription: "Bitnami phabricator Helm Chart"
+  shortDescription: "phabricator Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - phabricator
+  - http
+  - https
+  - web
+  - application
+  - collaboration
+  - project management
+  - bug tracking
+  - code review
+  - wiki
+  - git
+  - mercurial
+  - subversion

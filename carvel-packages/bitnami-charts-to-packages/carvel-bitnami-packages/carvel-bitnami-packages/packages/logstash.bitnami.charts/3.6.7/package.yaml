@@ -1,0 +1,661 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: logstash.bitnami.charts.3.6.7
+spec:
+  refName: logstash.bitnami.charts
+  version: 3.6.7
+  releaseNotes: |
+        Logstash is an open source, server-side data processing pipeline that ingests data from a multitude of sources simultaneously, transforms it, and then sends it to your favorite "stash".
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override logstash.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override logstash.fullname template"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Default Kubernetes cluster domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)."
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Logstash image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/logstash"
+              description: "Logstash image repository"
+            tag: 
+              type: "string"
+              default: "7.15.0-debian-10-r0"
+              description: "Logstash image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Logstash image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        configFileName: 
+          type: "string"
+          default: "logstash.conf"
+          description: "Logstash configuration file name. It must match the name of the configuration file mounted as a configmap."
+        enableMonitoringAPI: 
+          type: "boolean"
+          default: true
+          description: "Whether to enable the Logstash Monitoring API or not  Kubernetes cluster domain"
+        monitoringAPIPort: 
+          type: "number"
+          default: 9600
+          description: "Logstash Monitoring API Port"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array containing extra env vars to configure Logstash"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "To add secrets to environment"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "To add configmaps to environment"
+        input: 
+          type: "string"
+          default: "\"\""
+          description: "Input Plugins configuration"
+        filter: 
+          type: "string"
+          default: ""
+          description: "Filter Plugins configuration"
+        output: 
+          type: "string"
+          default: "\"\""
+          description: "Output Plugins configuration"
+        existingConfiguration: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap object with the Logstash configuration (`input`, `filter`, and `output` will be ignored)."
+        enableMultiplePipelines: 
+          type: "boolean"
+          default: false
+          description: "Allows user to use multiple pipelines"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra volumes (evaluated as a template)"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra mounts (normally used with extraVolumes, evaluated as a template)"
+        containerPorts: 
+          type: "array"
+          default: "[]"
+          description: "Array containing the ports to open in the Logstash container"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Logstash replicas to deploy"
+        updateStrategy: 
+          type: "string"
+          default: "RollingUpdate"
+          description: "Update strategy (`RollingUpdate`, or `OnDelete`)"
+        podManagementPolicy: 
+          type: "string"
+          default: "OrderedReady"
+          description: "Pod management policy"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Pod priority"
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context for Logstash"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the Logstash filesystem"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the Logstash container"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Logstash container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Logstash container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Request path for livenessProbe"
+                port: 
+                  type: "string"
+                  default: "monitoring"
+                  description: "Port for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 60
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Request path for readinessProbe"
+                port: 
+                  type: "string"
+                  default: "monitoring"
+                  description: "Port for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 60
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        lifecycle: 
+          type: "object"
+          default: "{}"
+          description: "Logstash pods' lifecycle hooks"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes service type (`ClusterIP`, `NodePort`, or `LoadBalancer`)"
+            ports: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "object"
+                  default: "{}"
+                  description: "Logstash svc ports"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "loadBalancerIP if service type is `LoadBalancer`"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Addresses that are allowed when service is LoadBalancer"
+            externalTrafficPolicy: 
+              type: "string"
+              default: ""
+              description: "External traffic policy, configure to Local to preserve client source IP when using an external loadBalancer"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Static clusterIP or None for headless services"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Logstash service"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Logstash data persistence using PVC"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "A manually managed Persistent Volume and Claim"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for Logstash data volume"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "PVC Access Mode for Logstash data volume"
+            size: 
+              type: "string"
+              default: "2Gi"
+              description: "PVC Storage Request for Logstash data volume"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the PVC"
+            mountPath: 
+              type: "string"
+              default: "/bitnami/logstash/data"
+              description: "Mount path of the Logstash data volume"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`"
+            securityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "User ID for the volumePermissions init container"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r200"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource limits"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource requests"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Set this to true in order to add the corresponding annotations for cert-manager"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress Path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "logstash.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to Logstash. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable the export of Prometheus metrics"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Logstash Relay image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/logstash-exporter"
+                  description: "Logstash Relay image repository"
+                tag: 
+                  type: "string"
+                  default: "7.3.0-debian-10-r306"
+                  description: "Logstash Relay image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Logstash Relay image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Logstash Prometheus Exporter container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Logstash Prometheus Exporter container"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "ServiceMonitor selector labels"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                httpGet: 
+                  type: "object"
+                  properties: 
+                    path: 
+                      type: "string"
+                      default: "/metrics"
+                      description: "Request path for livenessProbe"
+                    port: 
+                      type: "string"
+                      default: "metrics"
+                      description: "Port for livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 60
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                httpGet: 
+                  type: "object"
+                  properties: 
+                    path: 
+                      type: "string"
+                      default: "/metrics"
+                      description: "Request path for readinessProbe"
+                    port: 
+                      type: "string"
+                      default: "metrics"
+                      description: "Port for readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 60
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type (`ClusterIP`, `NodePort` or `LoadBalancer`)"
+                port: 
+                  type: "number"
+                  default: 9198
+                  description: "Logstash Prometheus port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Kubernetes HTTP node port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Addresses that are allowed when service is LoadBalancer"
+                clusterIP: 
+                  type: "string"
+                  default: "None"
+                  description: "Static clusterIP or None for headless services"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the Prometheus metrics service"
+        podDisruptionBudget: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "If true, create a pod disruption budget for pods."
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number / percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number / percentage of pods that may be made unavailable"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Extra containers to run before logstash for initialization purposes like custom plugin install."
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: logstash
+          version: "3.6.7"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

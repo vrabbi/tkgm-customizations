@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: apache.bitnami.charts
+spec:
+  displayName: "apache"
+  longDescription: "Bitnami apache Helm Chart"
+  shortDescription: "apache Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - apache
+  - http
+  - https
+  - www
+  - web
+  - reverse proxy

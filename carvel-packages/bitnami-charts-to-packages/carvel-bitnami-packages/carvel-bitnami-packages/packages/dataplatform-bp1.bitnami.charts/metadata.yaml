@@ -1,0 +1,20 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: dataplatform-bp1.bitnami.charts
+spec:
+  displayName: "dataplatform-bp1"
+  longDescription: "Bitnami dataplatform-bp1 Helm Chart"
+  shortDescription: "dataplatform-bp1 Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - dataplatform
+  - kafka
+  - spark
+  - solr
+  - zookeeper
+  - wavefront
+  - observability
+  - apache
+  - tanzuobservability

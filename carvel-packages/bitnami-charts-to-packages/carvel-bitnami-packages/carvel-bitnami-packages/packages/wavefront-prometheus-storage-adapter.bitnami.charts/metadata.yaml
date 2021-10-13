@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: wavefront-prometheus-storage-adapter.bitnami.charts
+spec:
+  displayName: "wavefront-prometheus-storage-adapter"
+  longDescription: "Bitnami wavefront-prometheus-storage-adapter Helm Chart"
+  shortDescription: "wavefront-prometheus-storage-adapter Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - alerting
+  - adapter
+  - metrics
+  - monitoring
+  - observability
+  - wavefront

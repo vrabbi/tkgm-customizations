@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: cassandra.bitnami.charts
+spec:
+  displayName: "cassandra"
+  longDescription: "Bitnami cassandra Helm Chart"
+  shortDescription: "cassandra Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - cassandra
+  - database
+  - nosql

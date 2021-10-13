@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: mediawiki.bitnami.charts
+spec:
+  displayName: "mediawiki"
+  longDescription: "Bitnami mediawiki Helm Chart"
+  shortDescription: "mediawiki Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - mediawiki
+  - wiki
+  - http
+  - web
+  - application
+  - php

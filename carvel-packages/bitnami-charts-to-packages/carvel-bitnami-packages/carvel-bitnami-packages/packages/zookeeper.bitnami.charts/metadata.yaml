@@ -1,0 +1,12 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: zookeeper.bitnami.charts
+spec:
+  displayName: "zookeeper"
+  longDescription: "Bitnami zookeeper Helm Chart"
+  shortDescription: "zookeeper Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - zookeeper

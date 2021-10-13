@@ -1,0 +1,13 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: memcached.bitnami.charts
+spec:
+  displayName: "memcached"
+  longDescription: "Bitnami memcached Helm Chart"
+  shortDescription: "memcached Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - memcached
+  - cache

@@ -1,0 +1,867 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: kiam.bitnami.charts.0.3.11
+spec:
+  refName: kiam.bitnami.charts
+  version: 0.3.11
+  releaseNotes: |
+        kiam is a proxy that captures AWS Metadata API requests. It allows AWS IAM roles to be set for Kubernetes workloads.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "Release name override"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "Release full name override"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "kiam image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/kiam"
+              description: "kiam image name"
+            tag: 
+              type: "string"
+              default: "3.6.0-debian-10-r251"
+              description: "kiam image tag"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "kiam image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        server: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy the kiam server"
+            containerPort: 
+              type: "number"
+              default: 8443
+              description: "HTTPS port to expose at container level"
+            resourceType: 
+              type: "string"
+              default: "daemonset"
+              description: "Specify how to deploy the server (allowed values: `daemonset` and `deployment`)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            useHostNetwork: 
+              type: "boolean"
+              default: false
+              description: "Use host networking (ports will be directly exposed in the host)"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of replicas to deploy (when `server.resourceType` is `daemonset`)"
+            logJsonOutput: 
+              type: "boolean"
+              default: true
+              description: "Use JSON format for logs"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Logging level"
+            sslCertHostPath: 
+              type: "string"
+              default: "/etc/ssl/certs"
+              description: "Path to the host system SSL certificates (necessary for contacting the AWS metadata server)"
+            podSecurityPolicy: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Create a PodSecurityPolicy resource"
+                allowedHostPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra host paths to allow in the PodSecurityPolicy"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Server priorityClassName"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            extraArgs: 
+              type: "object"
+              default: "{}"
+              description: "Extra arguments to add to the default kiam command"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override kiam default command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override kiam default args"
+            tlsFiles: 
+              type: "object"
+              default: "{}"
+              description: "Base64-encoded PEM values for server's CA certificate(s), certificate and private key"
+            gatewayTimeoutCreation: 
+              type: "string"
+              default: "1s"
+              description: "Timeout when creating the kiam gateway"
+            tlsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of a secret with TLS certificates for the container"
+            dnsPolicy: 
+              type: "string"
+              default: "Default"
+              description: "Pod DNS policy"
+            roleBaseArn: 
+              type: "string"
+              default: ""
+              description: "Base ARN for IAM roles. If not set kiam will detect it automatically"
+            cacheSyncInterval: 
+              type: "string"
+              default: "1m"
+              description: "Cache synchronization interval"
+            assumeRoleArn: 
+              type: "string"
+              default: ""
+              description: "IAM role for the server to assume"
+            sessionDuration: 
+              type: "string"
+              default: "15m"
+              description: "Session duration for STS tokens"
+            tlsCerts: 
+              type: "object"
+              default: "{}"
+              description: "Agent TLS Certificate filenames"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the kiam container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the kiam container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled kiam server containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set kiam server container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set kiam server container's Security Context runAsNonRoot"
+                seLinuxOptions: 
+                  type: "object"
+                  default: "{}"
+                  description: "Set kiam server container's Security Context SE Linux options"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled kiam server pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set kiam server pod's Security Context fsGroup"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for kiam pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for kiam pods"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "lifecycleHooks for the kiam server container to automate configuration before or after startup."
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars to configure kiam server"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars to configure kiam server"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars to configure kiam server (in case of sensitive data)"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for kiam pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for kiam container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the kiam pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the kiam pods"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                port: 
+                  type: "number"
+                  default: 8443
+                  description: "Service HTTPS port"
+                nodePorts: 
+                  type: "object"
+                  default: "{}"
+                  description: "Specify the nodePort values for the LoadBalancer and NodePort service types."
+                clusterIP: 
+                  type: "string"
+                  default: "None"
+                  description: "kiam service clusterIP IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for kiam service"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable the creation of a ServiceAccount for kiam pods"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the created ServiceAccount"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable exposing kiam statistics"
+                port: 
+                  type: "number"
+                  default: 9621
+                  description: "Metrics port"
+                syncInterval: 
+                  type: "string"
+                  default: "5s"
+                  description: "Metrics synchronization interval statistics"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for enabling prometheus to access the metrics endpoints"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                    namespace: 
+                      type: "string"
+                      default: ""
+                      description: "Namespace in which Prometheus is running"
+                    interval: 
+                      type: "string"
+                      default: "30s"
+                      description: "Interval at which metrics should be scraped"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify Metric Relabellings to add to the scrape endpoint"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify Relabelings to add to the scrape endpoint"
+                    scrapeTimeout: 
+                      type: "string"
+                      default: ""
+                      description: "Specify the timeout after which the scrape is ended"
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "metrics service selector"
+        agent: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy the kiam agent"
+            logJsonOutput: 
+              type: "boolean"
+              default: true
+              description: "Use JSON format for logs"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Logging level"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Server priorityClassName"
+            allowRouteRegExp: 
+              type: "string"
+              default: ""
+              description: "Regexp with the allowed paths for agents to redirect"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            containerPort: 
+              type: "number"
+              default: 8183
+              description: "HTTPS port to expose at container level"
+            iptables: 
+              type: "boolean"
+              default: false
+              description: "Have the agent modify the host iptables rules"
+            iptablesRemoveOnShutdown: 
+              type: "boolean"
+              default: false
+              description: "Remove iptables rules when shutting down the agent node"
+            hostInterface: 
+              type: "string"
+              default: "cali+"
+              description: "Interface for agents for redirecting requests"
+            keepaliveParams: 
+              type: "object"
+              properties: 
+                permitWithoutStream: 
+                  type: "boolean"
+                  default: false
+                  description: "Permit keepalive without stream"
+                time: 
+                  type: "string"
+                  default: ""
+                  description: "Keepalive time"
+                timeout: 
+                  type: "string"
+                  default: ""
+                  description: "Keepalive timeout"
+            enableDeepProbe: 
+              type: "boolean"
+              default: false
+              description: "Use the probes using the `/health` endpoint"
+            dnsPolicy: 
+              type: "string"
+              default: "ClusterFirstWithHostNet"
+              description: "Pod DNS policy"
+            sslCertHostPath: 
+              type: "string"
+              default: "/etc/ssl/certs"
+              description: "Path to the host system SSL certificates (necessary for contacting the AWS metadata agent)"
+            tlsFiles: 
+              type: "object"
+              default: "{}"
+              description: "Base64-encoded PEM values for server's CA certificate(s), certificate and private key"
+            podSecurityPolicy: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Create a PodSecurityPolicy resource"
+                allowedHostPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra host paths to allow in the PodSecurityPolicy"
+            tlsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of a secret with TLS certificates for the container"
+            useHostNetwork: 
+              type: "boolean"
+              default: true
+              description: "Use host networking (ports will be directly exposed in the host)"
+            tlsCerts: 
+              type: "object"
+              default: "{}"
+              description: "Agent TLS Certificate filenames"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            extraArgs: 
+              type: "object"
+              default: "{}"
+              description: "Extra arguments to add to the default kiam command"
+            gatewayTimeoutCreation: 
+              type: "string"
+              default: "1s"
+              description: "Timeout when creating the kiam gateway"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override kiam default command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override kiam default args"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the kiam container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the kiam container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled agent containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set agent container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set agent container's Security Context runAsNonRoot"
+                seLinuxOptions: 
+                  type: "object"
+                  default: "{}"
+                  description: "Set agent container's Security Context SE Linux options"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled agent pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set agent pod's Security Context fsGroup"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for kiam pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for kiam pods"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHooks to set additional configuration at startup."
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars to configure kiam agent"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars to configure kiam agent"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars to configure kiam agent (in case of sensitive data)"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for kiam pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for kiam container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the kiam pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the kiam pods"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                nodePorts: 
+                  type: "object"
+                  default: "{}"
+                  description: "Specify the nodePort values for the LoadBalancer and NodePort service types."
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "kiam service clusterIP IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for kiam service"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable the creation of a ServiceAccount for kiam pods"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the created ServiceAccount"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable exposing kiam statistics"
+                port: 
+                  type: "number"
+                  default: 9620
+                  description: "Service HTTP management port"
+                syncInterval: 
+                  type: "string"
+                  default: "5s"
+                  description: "Metrics synchronization interval statistics"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for enabling prometheus to access the metrics endpoints"
+                serviceMonitor: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                    namespace: 
+                      type: "string"
+                      default: ""
+                      description: "Namespace which Prometheus is running in"
+                    interval: 
+                      type: "string"
+                      default: "30s"
+                      description: "Interval at which metrics should be scraped"
+                    metricRelabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify Metric Relabelings to add to the scrape endpoint"
+                    relabelings: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify Relabelings to add to the scrape endpoint"
+                    scrapeTimeout: 
+                      type: "string"
+                      default: ""
+                      description: "Specify the timeout after which the scrape is ended"
+                    selector: 
+                      type: "object"
+                      default: "{}"
+                      description: "metrics service selector"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Whether to create and use RBAC resources or not"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: kiam
+          version: "0.3.11"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kubewatch.bitnami.charts
+spec:
+  displayName: "kubewatch"
+  longDescription: "Bitnami kubewatch Helm Chart"
+  shortDescription: "kubewatch Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - kubernetes
+  - slack
+  - hipchat
+  - mattermost
+  - flock
+  - msteams

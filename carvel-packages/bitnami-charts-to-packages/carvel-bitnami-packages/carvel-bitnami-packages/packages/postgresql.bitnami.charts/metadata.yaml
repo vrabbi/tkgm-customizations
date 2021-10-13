@@ -1,0 +1,12 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: postgresql.bitnami.charts
+spec:
+  displayName: "postgresql"
+  longDescription: "Bitnami postgresql Helm Chart"
+  shortDescription: "postgresql Helm Chart"
+  categories:
+  - bitnami
+  - helm
+

@@ -1,0 +1,18 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: wordpress.bitnami.charts
+spec:
+  displayName: "wordpress"
+  longDescription: "Bitnami wordpress Helm Chart"
+  shortDescription: "wordpress Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - application
+  - blog
+  - cms
+  - http
+  - php
+  - web
+  - wordpress

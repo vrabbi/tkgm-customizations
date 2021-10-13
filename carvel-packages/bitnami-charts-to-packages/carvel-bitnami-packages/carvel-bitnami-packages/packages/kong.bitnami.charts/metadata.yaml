@@ -1,0 +1,19 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kong.bitnami.charts
+spec:
+  displayName: "kong"
+  longDescription: "Bitnami kong Helm Chart"
+  shortDescription: "kong Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - kong
+  - ingress
+  - openresty
+  - controller
+  - http
+  - web
+  - www
+  - reverse proxy

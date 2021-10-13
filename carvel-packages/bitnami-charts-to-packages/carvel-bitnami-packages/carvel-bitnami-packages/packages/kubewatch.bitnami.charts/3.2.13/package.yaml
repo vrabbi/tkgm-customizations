@@ -1,0 +1,466 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: kubewatch.bitnami.charts.3.2.13
+spec:
+  refName: kubewatch.bitnami.charts
+  version: 3.2.13
+  releaseNotes: |
+        Kubewatch is a Kubernetes watcher that currently publishes notification to Slack.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Kubewatch image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/kubewatch"
+              description: "Kubewatch image repository"
+            tag: 
+              type: "string"
+              default: "0.1.0-debian-10-r346"
+              description: "Kubewatch image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Kubewatch image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        slack: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Slack notifications"
+            channel: 
+              type: "string"
+              default: "XXXX"
+              description: "Slack channel to notify"
+            token: 
+              type: "string"
+              default: "XXXX"
+              description: "Slack API token"
+        hipchat: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable HipChat notifications"
+            room: 
+              type: "string"
+              default: ""
+              description: "HipChat room to notify"
+            token: 
+              type: "string"
+              default: ""
+              description: "HipChat token"
+            url: 
+              type: "string"
+              default: ""
+              description: "HipChat URL"
+        mattermost: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Mattermost notifications"
+            channel: 
+              type: "string"
+              default: ""
+              description: "Mattermost channel to notify"
+            url: 
+              type: "string"
+              default: ""
+              description: "Mattermost URL"
+            username: 
+              type: "string"
+              default: ""
+              description: "Mattermost user to notify"
+        flock: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Flock notifications"
+            url: 
+              type: "string"
+              default: ""
+              description: "Flock URL"
+        msteams: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Microsoft Teams notifications"
+            webhookurl: 
+              type: "string"
+              default: ""
+              description: "Microsoft Teams webhook URL"
+        webhook: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Webhook notifications"
+            url: 
+              type: "string"
+              default: ""
+              description: "Webhook URL"
+        smtp: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable SMTP (email) notifications"
+            to: 
+              type: "string"
+              default: ""
+              description: "Destination email address (required)"
+            from: 
+              type: "string"
+              default: ""
+              description: "Source email address (required)"
+            hello: 
+              type: "string"
+              default: ""
+              description: "SMTP hello field (optional)"
+            smarthost: 
+              type: "string"
+              default: ""
+              description: "SMTP server address (name:port) (required)"
+            subject: 
+              type: "string"
+              default: ""
+              description: "Source email subject"
+            auth: 
+              type: "object"
+              properties: 
+                username: 
+                  type: "string"
+                  default: ""
+                  description: "Username for LOGIN and PLAIN auth mech"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Password for LOGIN and PLAIN auth mech"
+                secret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret for CRAM-MD5 auth mech"
+                identity: 
+                  type: "string"
+                  default: ""
+                  description: "Identity for PLAIN auth mech"
+            requireTLS: 
+              type: "string"
+              default: ""
+              description: "Force STARTTLS. Set to `true` or `false`"
+        namespaceToWatch: 
+          type: "string"
+          default: ""
+          description: "Namespace to watch, leave it empty for watching all"
+        resourcesToWatch: 
+          type: "object"
+          properties: 
+            deployment: 
+              type: "boolean"
+              default: true
+              description: "Watch changes to Deployments"
+            replicationcontroller: 
+              type: "boolean"
+              default: false
+              description: "Watch changes to ReplicationControllers"
+            replicaset: 
+              type: "boolean"
+              default: false
+              description: "Watch changes to ReplicaSets"
+            daemonset: 
+              type: "boolean"
+              default: false
+              description: "Watch changes to DaemonSets"
+            services: 
+              type: "boolean"
+              default: false
+              description: "Watch changes to Services"
+            pod: 
+              type: "boolean"
+              default: true
+              description: "Watch changes to Pods"
+            job: 
+              type: "boolean"
+              default: false
+              description: "Watch changes to Jobs"
+            persistentvolume: 
+              type: "boolean"
+              default: false
+              description: "Watch changes to PersistentVolumes"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on Kubewatch container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Kubewatch replicas to deploy"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Kubewatch containers' SecurityContext"
+            fsGroup: 
+              type: "string"
+              default: ""
+              description: "Set Kubewatch containers' SecurityContext fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Kubewatch pods' Security Context"
+            runAsUser: 
+              type: "string"
+              default: ""
+              description: "Set Kubewatch pods' SecurityContext runAsUser"
+            runAsNonRoot: 
+              type: "string"
+              default: ""
+              description: "Set Kubewatch pods' SecurityContext runAsNonRoot"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Kubewatch container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Kubewatch container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 10
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 3
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 10
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 3
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Controller priorityClassName"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Kubewatch pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for Kubewatch pods"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for Kubewatch pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for Kubewatch container(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the Kubewatch pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the Kubewatch pods"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Whether to create & use RBAC resources or not"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable the creation of a ServiceAccount for Kubewatch pods"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of the created ServiceAccount"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: kubewatch
+          version: "3.2.13"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

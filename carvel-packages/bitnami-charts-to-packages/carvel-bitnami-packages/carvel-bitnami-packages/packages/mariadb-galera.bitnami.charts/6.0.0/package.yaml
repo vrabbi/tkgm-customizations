@@ -1,0 +1,704 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: mariadb-galera.bitnami.charts.6.0.0
+spec:
+  refName: mariadb-galera.bitnami.charts
+  version: 6.0.0
+  releaseNotes: |
+        MariaDB Galera is a multi-master database cluster solution for synchronous replication and high availability.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template with a string (will prepend the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template with a string"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Name of the Kubernetes scheduler (other than default)"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes DNS Domain name to use"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "MariaDB Galera image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/mariadb-galera"
+              description: "MariaDB Galera image repository"
+            tag: 
+              type: "string"
+              default: "10.6.4-debian-10-r14"
+              description: "MariaDB Galera image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "MariaDB Galera image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        podManagementPolicy: 
+          type: "string"
+          default: "OrderedReady"
+          description: "StatefulSet controller supports relax its ordering guarantees while preserving its uniqueness and identity guarantees. There are two valid pod management policies: OrderedReady and Parallel"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes service type"
+            port: 
+              type: "number"
+              default: 3306
+              description: "MariaDB service port"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Specific cluster IP when service type is cluster IP. Use `None` for headless service"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Specify the nodePort value for the LoadBalancer and NodePort service types."
+            externalIPs: 
+              type: "array"
+              default: "[]"
+              description: "External IP list to use with ClusterIP service type"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "`loadBalancerIP` if service type is `LoadBalancer`"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Addresses that are allowed when svc is `LoadBalancer`"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for MariaDB Galera service"
+            headless: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the headless service. May be useful for setting `service.alpha.kubernetes.io/tolerate-unready-endpoints=\"true\"` when using peer-finder."
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specify whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to create"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array containing extra env vars to configure MariaDB Galera replicas"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap containing extra env vars to configure MariaDB Galera replicas"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret containing extra env vars to configure MariaDB Galera replicas"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specify whether RBAC resources should be created and used"
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container filesystem"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+        rootUser: 
+          type: "object"
+          properties: 
+            user: 
+              type: "string"
+              default: "root"
+              description: "Username for the admin user."
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the admin user. Ignored if existing secret is provided."
+            forcePassword: 
+              type: "boolean"
+              default: false
+              description: "Option to force users to specify a password. That is required for 'helm upgrade' to work properly."
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Use existing secret for password details (`rootUser.password`, `db.password`, `galera.mariabackup.password` will be ignored and picked up from this secret)"
+        usePasswordFiles: 
+          type: "boolean"
+          default: false
+          description: "Mount credentials as a files instead of using an environment variable."
+        customPasswordFiles: 
+          type: "object"
+          default: "{}"
+          description: "Use custom password files when `usePasswordFiles` is set to `true`. Define path for keys `root`, `user`, and `mariabackup`."
+        db: 
+          type: "object"
+          properties: 
+            user: 
+              type: "string"
+              default: ""
+              description: "Username of new user to create"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the new user. Ignored if existing secret is provided."
+            name: 
+              type: "string"
+              default: "my_database"
+              description: "Name for new database to create"
+            forcePassword: 
+              type: "boolean"
+              default: false
+              description: "Option to force users to specify a password. That is required for 'helm upgrade' to work properly."
+        galera: 
+          type: "object"
+          properties: 
+            name: 
+              type: "string"
+              default: "galera"
+              description: "Galera cluster name"
+            bootstrap: 
+              type: "object"
+              properties: 
+                bootstrapFromNode: 
+                  type: "string"
+                  default: ""
+                  description: "Node to bootstrap from, you will need to change this parameter in case you want to bootstrap from other node"
+                forceSafeToBootstrap: 
+                  type: "boolean"
+                  default: false
+                  description: "Force `safe_to_bootstrap: 1` in `grastate.date` file"
+            mariabackup: 
+              type: "object"
+              properties: 
+                user: 
+                  type: "string"
+                  default: "mariabackup"
+                  description: "MariaBackup username"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "MariaBackup password. Password is ignored if existingSecret is specified."
+                forcePassword: 
+                  type: "boolean"
+                  default: false
+                  description: "Option to force users to specify a password. That is required for 'helm upgrade' to work properly."
+        ldap: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable LDAP support"
+            uri: 
+              type: "string"
+              default: ""
+              description: "LDAP URL beginning in the form `ldap"
+            base: 
+              type: "string"
+              default: ""
+              description: "LDAP base DN"
+            binddn: 
+              type: "string"
+              default: ""
+              description: "LDAP bind DN"
+            bindpw: 
+              type: "string"
+              default: ""
+              description: "LDAP bind password"
+            bslookup: 
+              type: "string"
+              default: ""
+              description: "LDAP base lookup"
+            filter: 
+              type: "string"
+              default: ""
+              description: "LDAP custom filter"
+            map: 
+              type: "string"
+              default: ""
+              description: "LDAP custom map"
+            nss_initgroups_ignoreusers: 
+              type: "string"
+              default: "root,nslcd"
+              description: "LDAP ignored users"
+            scope: 
+              type: "string"
+              default: ""
+              description: "LDAP search scope"
+            tls_reqcert: 
+              type: "string"
+              default: ""
+              description: "LDAP TLS check on server certificates"
+        tls: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS support for replication traffic"
+            autoGenerated: 
+              type: "boolean"
+              default: false
+              description: "Generate automatically self-signed TLS certificates"
+            certificatesSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the secret that contains the certificates"
+            certFilename: 
+              type: "string"
+              default: ""
+              description: "Certificate filename"
+            certKeyFilename: 
+              type: "string"
+              default: ""
+              description: "Certificate key filename"
+            certCAFilename: 
+              type: "string"
+              default: ""
+              description: "CA Certificate filename"
+        mariadbConfiguration: 
+          type: "string"
+          default: "\"\""
+          description: "Configuration for the MariaDB server"
+        configurationConfigMap: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with the MariaDB configuration files (Note: Overrides `mariadbConfiguration`). The value is evaluated as a template."
+        initdbScripts: 
+          type: "object"
+          default: "{}"
+          description: "Specify dictionary of scripts to be run at first boot"
+        initdbScriptsConfigMap: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with the initdb scripts (Note: Overrides `initdbScripts`)"
+        extraFlags: 
+          type: "string"
+          default: ""
+          description: "MariaDB additional command line flags"
+        replicaCount: 
+          type: "number"
+          default: 3
+          description: "Desired number of cluster nodes"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "updateStrategy for MariaDB Master StatefulSet"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for MariaDB Galera pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for MariaDB Galera  pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        topologySpreadConstraints: 
+          type: "object"
+          default: "{}"
+          description: "Topology Spread Constraints for pods assignment"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using PVC"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Provide an existing `PersistentVolumeClaim`"
+            subPath: 
+              type: "string"
+              default: ""
+              description: "Subdirectory of the volume to mount"
+            mountPath: 
+              type: "string"
+              default: "/bitnami/mariadb"
+              description: "Path to mount the volume at"
+            selector: 
+              type: "object"
+              default: "{}"
+              description: "Selector to match an existing Persistent Volume (this value is evaluated as a template)"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume Storage Class"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Persistent Volume Claim annotations"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "Persistent Volume Access Modes"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "Persistent Volume Size"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Priority Class Name for Statefulset"
+        extraInitContainers: 
+          type: "array"
+          default: "[]"
+          description: "Additional init containers (this value is evaluated as a template)"
+        extraContainers: 
+          type: "array"
+          default: "[]"
+          description: "Additional containers (this value is evaluated as a template)"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Extra volumes"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Mount extra volume(s)"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Turn on and off liveness probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Delay before liveness probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 3
+              description: "Minimum consecutive failures for the probe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes for the probe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Turn on and off readiness probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Delay before readiness probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 3
+              description: "Minimum consecutive failures for the probe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes for the probe"
+        startupProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Turn on and off startup probe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Delay before startup probe is initiated"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "How often to perform the probe"
+            timeoutSeconds: 
+              type: "number"
+              default: 1
+              description: "When the probe times out"
+            failureThreshold: 
+              type: "number"
+              default: 48
+              description: "Minimum consecutive failures for the probe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Minimum consecutive successes for the probe"
+        podDisruptionBudget: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether a Pod disruption budget should be created"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number / percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number / percentage of pods that may be made unavailable"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "MariaDB Prometheus exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/mysqld-exporter"
+                  description: "MariaDB Prometheus exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.13.0-debian-10-r114"
+                  description: "MariaDB Prometheus exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "MariaDB Prometheus exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "MariaDB Prometheus exporter image pull secrets"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "MariaDB Prometheus exporter additional command line flags"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Prometheus exporter service type"
+                port: 
+                  type: "number"
+                  default: 9104
+                  description: "Prometheus exporter service port"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus exporter service annotations"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Optional namespace which Prometheus is running in"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "How frequently to scrape metrics (use by default, falling back to Prometheus' default)"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "ServiceMonitor selector labels"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "RelabelConfigs to apply to samples before scraping"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "MetricRelabelConfigs to apply to samples before ingestion"
+            prometheusRules: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator PrometheusRule (also requires `metrics.enabled` to be `true`, and makes little sense without ServiceMonitor)"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels to add to the PrometheusRule so it is picked up by the operator"
+                rules: 
+                  type: "object"
+                  default: "{}"
+                  description: "PrometheusRule rules to configure"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: mariadb-galera
+          version: "6.0.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

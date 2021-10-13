@@ -1,0 +1,643 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: nats.bitnami.charts.6.4.7
+spec:
+  refName: nats.bitnami.charts
+  version: 6.4.7
+  releaseNotes: |
+        An open-source, cloud-native messaging system
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes Cluster Domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "NATS image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/nats"
+              description: "NATS image repository"
+            tag: 
+              type: "string"
+              default: "2.6.0-debian-10-r0"
+              description: "NATS image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        auth: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable/disable client authentication"
+            user: 
+              type: "string"
+              default: "nats_client"
+              description: "Client authentication user"
+            password: 
+              type: "string"
+              default: ""
+              description: "Client authentication password"
+            token: 
+              type: "string"
+              default: ""
+              description: "Client authentication token"
+            timeout: 
+              type: "number"
+              default: 1
+              description: "Client authentication timeout (seconds)"
+        clusterAuth: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable/disable cluster authentication"
+            user: 
+              type: "string"
+              default: "nats_cluster"
+              description: "Cluster authentication user"
+            password: 
+              type: "string"
+              default: ""
+              description: "Cluster authentication password"
+            token: 
+              type: "string"
+              default: ""
+              description: "Cluster authentication token"
+        debug: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Switch to enable/disable debug on logging"
+            trace: 
+              type: "boolean"
+              default: false
+              description: "Switch to enable/disable trace debug level on logging"
+            logtime: 
+              type: "boolean"
+              default: false
+              description: "Switch to enable/disable logtime on logging"
+        maxConnections: 
+          type: "string"
+          default: ""
+          description: "Max. number of client connections"
+        maxControlLine: 
+          type: "string"
+          default: ""
+          description: "Max. protocol control line"
+        maxPayload: 
+          type: "string"
+          default: ""
+          description: "Max. payload"
+        writeDeadline: 
+          type: "string"
+          default: ""
+          description: "Duration the server can block on a socket write to a client"
+        natsFilename: 
+          type: "string"
+          default: "nats-server"
+          description: "Filename used by several NATS files (binary, configurarion file, and pid file)"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        extraFlags: 
+          type: "object"
+          default: "{}"
+          description: "Extra flags to be passed to NATS"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on NATS container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with extra environment variables"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret with extra environment variables"
+        resourceType: 
+          type: "string"
+          default: "statefulset"
+          description: "NATS cluster resource type under Kubernetes. Allowed values: `statefulset` (default) or `deployment`"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of NATS nodes"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Use an alternate scheduler, e.g. \"stork\"."
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Name of pod priority class"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "StrategyType. Can be set to RollingUpdate or OnDelete"
+        podSecurityContext: 
+          type: "object"
+          default: "{}"
+          description: "NATS pods' Security Context"
+        containerSecurityContext: 
+          type: "object"
+          default: "{}"
+          description: "NATS containers' Security Context"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the NATS container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the NATS container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Request path for livenessProbe"
+                port: 
+                  type: "string"
+                  default: "monitoring"
+                  description: "Port for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Request path for readinessProbe"
+                port: 
+                  type: "string"
+                  default: "monitoring"
+                  description: "Port for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for NATS pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for NATS pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment. Evaluated as a template."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment. Evaluated as a template."
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment. Evaluated as a template."
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for NATS pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for NATS container(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the NATS pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the NATS pods"
+        client: 
+          type: "object"
+          properties: 
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes Service type (NATS client)"
+                port: 
+                  type: "number"
+                  default: 4222
+                  description: "NATS client port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Port to bind to for the LoadBalancer and NodePort service type (NATS client)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for NATS client service"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if NATS client service type is `LoadBalancer`, otherwise leave blank"
+        cluster: 
+          type: "object"
+          properties: 
+            connectRetries: 
+              type: "string"
+              default: ""
+              description: "Configure number of connect retries for implicit routes, otherwise leave blank"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes Service type (NATS cluster)"
+                port: 
+                  type: "number"
+                  default: 6222
+                  description: "NATS cluster port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Port to bind to for NodePort service type (NATS cluster)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for NATS cluster service"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if NATS cluster service type is `LoadBalancer`"
+        monitoring: 
+          type: "object"
+          properties: 
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes Service type (NATS monitoring)"
+                port: 
+                  type: "number"
+                  default: 8222
+                  description: "NATS monitoring port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Port to bind to for NodePort service type (NATS monitoring)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for NATS monitoring service"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Use loadBalancerIP to request a specific static IP, otherwise leave blank"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Set to true to enable ingress record generation"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Set this to true in order to add the corresponding annotations for cert-manager"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress Path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Override API Version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "nats.local"
+              description: "When the ingress is enabled, a host pointing to this will be created"
+            path: 
+              type: "string"
+              default: "/"
+              description: "The Path to NATS. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable creation of NetworkPolicy resources"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "The Policy model to apply"
+            additionalRules: 
+              type: "object"
+              default: "{}"
+              description: "Additional NetworkPolicy Ingress \"from\" rules to set. Note that all rules are OR-ed."
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Prometheus metrics via exporter side-car"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Prometheus metrics exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/nats-exporter"
+                  description: "Prometheus metrics exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.8.0-debian-10-r83"
+                  description: "Prometheus metrics exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Prometheus metrics image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Prometheus metrics image pull secrets"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter resource requests and limits"
+            containerPort: 
+              type: "number"
+              default: 7777
+              description: "Prometheus metrics exporter port"
+            flags: 
+              type: "array"
+              default: "[]"
+              description: "Flags to be passed to Prometheus metrics"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type (`ClusterIP`, `NodePort` or `LoadBalancer`)"
+                port: 
+                  type: "number"
+                  default: 7777
+                  description: "Prometheus metrics service port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Use serviceLoadBalancerIP to request a specific static IP, otherwise leave blank"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Prometheus metrics service"
+                labels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Labels for Prometheus metrics service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Specify a namespace if needed. Fallback to the Prometheus default unless specified"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number/percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number/percentage of pods that may be made unavailable"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: nats
+          version: "6.4.7"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

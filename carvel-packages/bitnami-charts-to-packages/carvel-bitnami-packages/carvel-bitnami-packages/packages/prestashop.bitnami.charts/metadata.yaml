@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: prestashop.bitnami.charts
+spec:
+  displayName: "prestashop"
+  longDescription: "Bitnami prestashop Helm Chart"
+  shortDescription: "prestashop Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - prestashop
+  - e-commerce
+  - http
+  - web
+  - php

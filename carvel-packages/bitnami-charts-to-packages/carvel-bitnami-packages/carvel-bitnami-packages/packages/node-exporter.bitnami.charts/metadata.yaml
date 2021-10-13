@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: node-exporter.bitnami.charts
+spec:
+  displayName: "node-exporter"
+  longDescription: "Bitnami node-exporter Helm Chart"
+  shortDescription: "node-exporter Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - prometheus
+  - node-exporter
+  - monitoring

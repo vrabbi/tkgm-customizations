@@ -1,0 +1,12 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: contour.bitnami.charts
+spec:
+  displayName: "contour"
+  longDescription: "Bitnami contour Helm Chart"
+  shortDescription: "contour Helm Chart"
+  categories:
+  - bitnami
+  - helm
+

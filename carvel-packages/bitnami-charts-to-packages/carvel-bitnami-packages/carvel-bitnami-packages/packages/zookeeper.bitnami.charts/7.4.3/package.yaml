@@ -1,0 +1,726 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: zookeeper.bitnami.charts.7.4.3
+spec:
+  refName: zookeeper.bitnami.charts
+  version: 7.4.3
+  releaseNotes: |
+        A centralized service for maintaining configuration information, naming, providing distributed synchronization, and providing group services for distributed applications.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes Cluster Domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Extra objects to deploy (value evaluated as a template)"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Add annotations to all the deployed resources"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "ZooKeeper image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/zookeeper"
+              description: "ZooKeeper image repository"
+            tag: 
+              type: "string"
+              default: "3.7.0-debian-10-r127"
+              description: "ZooKeeper Image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "ZooKeeper image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug values should be set"
+        tickTime: 
+          type: "number"
+          default: 2000
+          description: "Basic time unit in milliseconds used by ZooKeeper for heartbeats"
+        initLimit: 
+          type: "number"
+          default: 10
+          description: "ZooKeeper uses to limit the length of time the ZooKeeper servers in quorum have to connect to a leader"
+        syncLimit: 
+          type: "number"
+          default: 5
+          description: "How far out of date a server can be from a leader"
+        preAllocSize: 
+          type: "number"
+          default: 65536
+          description: "Block size for transaction log file"
+        snapCount: 
+          type: "number"
+          default: 100000
+          description: "The number of transactions recorded in the transaction log before a snapshot can be taken (and the transaction log rolled)"
+        maxClientCnxns: 
+          type: "number"
+          default: 60
+          description: "Limits the number of concurrent connections that a single client may make to a single member of the ZooKeeper ensemble"
+        fourlwCommandsWhitelist: 
+          type: "string"
+          default: "srvr, mntr, ruok"
+          description: "A list of comma separated Four Letter Words commands to use"
+        listenOnAllIPs: 
+          type: "boolean"
+          default: false
+          description: "Allow Zookeeper to listen for connections from its peers on all available IP addresses"
+        allowAnonymousLogin: 
+          type: "boolean"
+          default: true
+          description: "Allow to accept connections from unauthenticated users"
+        autopurge: 
+          type: "object"
+          properties: 
+            snapRetainCount: 
+              type: "number"
+              default: 3
+              description: "Retains the snapRetainCount most recent snapshots and the corresponding transaction logs and deletes the rest"
+            purgeInterval: 
+              type: "number"
+              default: 0
+              description: "The time interval in hours for which the purge task has to be triggered"
+        maxSessionTimeout: 
+          type: "number"
+          default: 40000
+          description: "Maximum session timeout in milliseconds that the server will allow the client to negotiate"
+        auth: 
+          type: "object"
+          properties: 
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Use existing secret (ignores previous password)"
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Zookeeper auth. It uses SASL/Digest-MD5"
+            clientUser: 
+              type: "string"
+              default: ""
+              description: "User that will use ZooKeeper clients to auth"
+            clientPassword: 
+              type: "string"
+              default: ""
+              description: "Password that will use ZooKeeper clients to auth"
+            serverUsers: 
+              type: "string"
+              default: ""
+              description: "Comma, semicolon or whitespace separated list of user to be created"
+            serverPasswords: 
+              type: "string"
+              default: ""
+              description: "Comma, semicolon or whitespace separated list of passwords to assign to users when created"
+        heapSize: 
+          type: "number"
+          default: 1024
+          description: "Size in MB for the Java Heap options (Xmx and XMs)"
+        logLevel: 
+          type: "string"
+          default: "ERROR"
+          description: "Log level for the Zookeeper server. ERROR by default"
+        dataLogDir: 
+          type: "string"
+          default: ""
+          description: "Data log directory. Specifying this option will direct zookeeper to write the transaction log to the dataLogDir rather than the dataDir."
+        jvmFlags: 
+          type: "string"
+          default: ""
+          description: "Default JVMFLAGS for the ZooKeeper process"
+        config: 
+          type: "string"
+          default: ""
+          description: "Configure ZooKeeper with a custom zoo.cfg file"
+        namespaceOverride: 
+          type: "string"
+          default: ""
+          description: "Namespace for ZooKeeper resources"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Extra volumes"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Mount extra volume(s)"
+        updateStrategy: 
+          type: "string"
+          default: "RollingUpdate"
+          description: "StatefulSet controller supports automated updates. There are two valid update strategies: `RollingUpdate` and `OnDelete`"
+        podDisruptionBudget: 
+          type: "object"
+          properties: 
+            maxUnavailable: 
+              type: "number"
+              default: 1
+              description: "Max number of pods down simultaneously"
+        rollingUpdatePartition: 
+          type: "string"
+          default: ""
+          description: "Partition update strategy"
+        podManagementPolicy: 
+          type: "string"
+          default: "Parallel"
+          description: "StatefulSet controller supports relax its ordering guarantees while preserving its uniqueness and identity guarantees. There are two valid pod management policies: `OrderedReady` and `Parallel`"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of ZooKeeper nodes"
+        containerPort: 
+          type: "number"
+          default: 2181
+          description: "ZooKeeper port"
+        tlsContainerPort: 
+          type: "number"
+          default: 3181
+          description: "ZooKeeper TLS port"
+        followerContainerPort: 
+          type: "number"
+          default: 2888
+          description: "ZooKeeper follower port"
+        electionContainerPort: 
+          type: "number"
+          default: 3888
+          description: "ZooKeeper election port"
+        minServerId: 
+          type: "number"
+          default: 1
+          description: "Minimal SERVER_ID value, nodes increment their IDs respectively"
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context (ZooKeeper master pod)"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container (ZooKeeper master pod)"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container (ZooKeeper master pod)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Extra init container to add to the statefulset"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        topologySpreadConstraints: 
+          type: "object"
+          default: "{}"
+          description: "Topology Spread Constraints for pod assignment spread across your cluster among failure-domains. Evaluated as a template"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "ZooKeeper pod labels"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "ZooKeeper Pod annotations"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Name of the existing priority class to be used by ZooKeeper pods, priority class needs to be created beforehand"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Kubernetes pod scheduler registry"
+        resources: 
+          type: "object"
+          properties: 
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+            probeCommandTimeout: 
+              type: "number"
+              default: 2
+              description: "Probe command timeout for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+            probeCommandTimeout: 
+              type: "number"
+              default: 2
+              description: "Probe command timeout for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Load balancer IP for the Zookeper Service (optional, cloud specific)"
+            port: 
+              type: "number"
+              default: 2181
+              description: "ZooKeeper port"
+            followerPort: 
+              type: "number"
+              default: 2888
+              description: "ZooKeeper follower port"
+            electionPort: 
+              type: "number"
+              default: 3888
+              description: "ZooKeeper election port"
+            nodePorts: 
+              type: "object"
+              default: "{}"
+              description: "Specify the nodePort value for the LoadBalancer and NodePort service types."
+            publishNotReadyAddresses: 
+              type: "boolean"
+              default: true
+              description: "If the ZooKeeper headless service should publish DNS records for not ready pods"
+            tlsClientPort: 
+              type: "number"
+              default: 3181
+              description: "Service port for tls client connections"
+            disableBaseClientPort: 
+              type: "boolean"
+              default: false
+              description: "Remove client port from service definitions."
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the Service"
+            headless: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the Headless Service"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable creation of ServiceAccount for Zookeeper pod"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use."
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: true
+              description: "Allows auto mount of ServiceAccountToken on the serviceAccount created"
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether a NetworkPolicy should be created"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "Don't require client label for connections"
+        persistence: 
+          type: "object"
+          properties: 
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Provide an existing `PersistentVolumeClaim`"
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Zookeeper data persistence using PVC"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for ZooKeeper data volume"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "PVC Access modes"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for ZooKeeper data volume"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the PVC"
+            selector: 
+              type: "object"
+              default: "{}"
+              description: "Selector to match an existing Persistent Volume for Zookeeper's data PVC"
+            dataLogDir: 
+              type: "object"
+              properties: 
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "PVC Storage Request for ZooKeeper's Data log directory"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Provide an existing `PersistentVolumeClaim` for Zookeeper's Data log directory"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector to match an existing Persistent Volume for Zookeeper's Data log PVC"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r172"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Init container volume-permissions image pull secrets"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Init container resource requests/limit"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable prometheus to access zookeeper metrics endpoint"
+            containerPort: 
+              type: "number"
+              default: 9141
+              description: "Zookeeper Prometheus Exporter container port"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Zookeeper Prometheus Exporter service type"
+                port: 
+                  type: "number"
+                  default: 9141
+                  description: "Prometheus metrics service port"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the Zookeeper to auto-discover the metrics endpoint"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace for the ServiceMonitor Resource (defaults to the Release Namespace)"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+            prometheusRule: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator PrometheusRule (also requires `metrics.enabled` to be `true` and `metrics.prometheusRule.rules`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace for the PrometheusRule Resource (defaults to the Release Namespace)"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+                rules: 
+                  type: "array"
+                  default: "[]"
+                  description: "Prometheus Rule definitions"
+        tls: 
+          type: "object"
+          properties: 
+            client: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS for client connections"
+                autoGenerated: 
+                  type: "boolean"
+                  default: false
+                  description: "Generate automatically self-signed TLS certificates for Zookeeper client communications"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the TLS certificates for Zookeper client communications"
+                keystorePath: 
+                  type: "string"
+                  default: "/opt/bitnami/zookeeper/config/certs/client/zookeeper.keystore.jks"
+                  description: "Location of the KeyStore file used for Client connections"
+                truststorePath: 
+                  type: "string"
+                  default: "/opt/bitnami/zookeeper/config/certs/client/zookeeper.truststore.jks"
+                  description: "Location of the TrustStore file used for Client connections"
+                passwordsSecretName: 
+                  type: "string"
+                  default: ""
+                  description: "Existing secret containing Keystore and truststore passwords"
+                keystorePassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password to access KeyStore if needed"
+                truststorePassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password to access TrustStore if needed"
+            quorum: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS for quorum protocol"
+                autoGenerated: 
+                  type: "boolean"
+                  default: false
+                  description: "Create self-signed TLS certificates. Currently only supports PEM certificates."
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the TLS certificates for Zookeper quorum protocol"
+                keystorePath: 
+                  type: "string"
+                  default: "/opt/bitnami/zookeeper/config/certs/quorum/zookeeper.keystore.jks"
+                  description: "Location of the KeyStore file used for Quorum protocol"
+                truststorePath: 
+                  type: "string"
+                  default: "/opt/bitnami/zookeeper/config/certs/quorum/zookeeper.truststore.jks"
+                  description: "Location of the TrustStore file used for Quorum protocol"
+                passwordsSecretName: 
+                  type: "string"
+                  default: ""
+                  description: "Existing secret containing Keystore and truststore passwords"
+                keystorePassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password to access KeyStore if needed"
+                truststorePassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password to access TrustStore if needed"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the TLS init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the TLS init container"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: zookeeper
+          version: "7.4.3"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

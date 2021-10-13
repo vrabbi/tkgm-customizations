@@ -1,0 +1,409 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: dataplatform-bp1.bitnami.charts.6.0.2
+spec:
+  refName: dataplatform-bp1.bitnami.charts
+  version: 6.0.2
+  releaseNotes: |
+        OCTO Data platform Kafka-Spark-Solr Helm Chart
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        zookeeper: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Zookeeper helm chart"
+            replicaCount: 
+              type: "number"
+              default: 3
+              description: "Number of Zookeeper replicas"
+            heapSize: 
+              type: "number"
+              default: 4096
+              description: "Size in MB for the Java Heap options (Xmx and XMs)."
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for Zookeeper containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for Zookeeper containers"
+            affinity: 
+              type: "object"
+              properties: 
+                podAntiAffinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+        kafka: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Kafka helm chart"
+            replicaCount: 
+              type: "number"
+              default: 3
+              description: "Number of Kafka replicas"
+            heapOpts: 
+              type: "string"
+              default: "-Xmx4096m -Xms4096m"
+              description: "Kafka's Java Heap size"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for Kafka containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for Kafka containers"
+            affinity: 
+              type: "object"
+              properties: 
+                podAntiAffinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+                podAffinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Zookeeper pods Affinity rules for best possible resiliency (evaluated as a template)"
+            metrics: 
+              type: "object"
+              properties: 
+                kafka: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Whether or not to create a standalone Kafka exporter to expose Kafka metrics"
+                    resources: 
+                      type: "object"
+                      properties: 
+                        limits: 
+                          type: "object"
+                          default: "{}"
+                          description: "The resources limits for the container"
+                        requests: 
+                          type: "object"
+                          default: "{}"
+                          description: "Kafka Exporter container resource requests"
+                    service: 
+                      type: "object"
+                      properties: 
+                        port: 
+                          type: "number"
+                          default: 9308
+                          description: "Kafka Exporter Prometheus port to be used in Wavefront configuration"
+                jmx: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Whether or not to expose JMX metrics to Prometheus"
+                    resources: 
+                      type: "object"
+                      properties: 
+                        limits: 
+                          type: "object"
+                          default: "{}"
+                          description: "The resources limits for the container"
+                        requests: 
+                          type: "object"
+                          default: "{}"
+                          description: "JMX Exporter container resource requests"
+                    service: 
+                      type: "object"
+                      properties: 
+                        port: 
+                          type: "number"
+                          default: 5556
+                          description: "JMX Exporter Prometheus port"
+            zookeeper: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch to enable or disable the Zookeeper helm chart"
+            externalZookeeper: 
+              type: "object"
+              properties: 
+                servers: 
+                  type: "array"
+                  default: "[\"{{ .Release.Name }}-zookeeper\"]"
+                  description: "Server or list of external Zookeeper servers to use"
+        solr: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Solr helm chart"
+            replicaCount: 
+              type: "number"
+              default: 2
+              description: "Number of Solr replicas"
+            authentication: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Solr authentication. BUG: Exporter deployment does not work with authentication enabled"
+            javaMem: 
+              type: "string"
+              default: "-Xmx4096m -Xms4096m"
+              description: "Java recommended memory options to pass to the Solr container"
+            affinity: 
+              type: "object"
+              properties: 
+                podAntiAffinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for Solr containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for Solr containers"
+            exporter: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Start a prometheus exporter"
+                port: 
+                  type: "number"
+                  default: 9983
+                  description: "Solr exporter port"
+                affinity: 
+                  type: "object"
+                  properties: 
+                    podAffinity: 
+                      type: "object"
+                      default: "{}"
+                      description: "Zookeeper pods Affinity rules for best possible resiliency (evaluated as a template)"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+            zookeeper: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Zookeeper deployment. Needed for Solr cloud."
+            externalZookeeper: 
+              type: "object"
+              properties: 
+                servers: 
+                  type: "array"
+                  default: "[\"{{ .Release.Name }}-zookeeper\"]"
+                  description: "Servers for an already existing Zookeeper."
+        spark: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Spark helm chart"
+            master: 
+              type: "object"
+              properties: 
+                webPort: 
+                  type: "number"
+                  default: 8080
+                  description: "Specify the port where the web interface will listen on the master"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                affinity: 
+                  type: "object"
+                  properties: 
+                    podAntiAffinity: 
+                      type: "object"
+                      default: "{}"
+                      description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+            worker: 
+              type: "object"
+              properties: 
+                replicaCount: 
+                  type: "number"
+                  default: 2
+                  description: "Set the number of workers"
+                webPort: 
+                  type: "number"
+                  default: 8081
+                  description: "Specify the port where the web interface will listen on the worker"
+                affinity: 
+                  type: "object"
+                  properties: 
+                    podAntiAffinity: 
+                      type: "object"
+                      default: "{}"
+                      description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Start a side-car Prometheus exporter"
+                masterAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for enabling prometheus to access the metrics endpoint of the master nodes"
+                workerAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for enabling prometheus to access the metrics endpoint of the worker nodes"
+        wavefront: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Switch to enable or disable the Wavefront helm chart"
+            clusterName: 
+              type: "string"
+              default: "KUBERNETES_CLUSTER_NAME"
+              description: "Unique name for the Kubernetes cluster (required)"
+            wavefront: 
+              type: "object"
+              properties: 
+                url: 
+                  type: "string"
+                  default: "https://YOUR_CLUSTER.wavefront.com"
+                  description: "Wavefront URL for your cluster (required)"
+                token: 
+                  type: "string"
+                  default: "YOUR_API_TOKEN"
+                  description: "Wavefront API Token (required)"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of an existing secret containing the token"
+            collector: 
+              type: "object"
+              properties: 
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the collector container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the collector container"
+                discovery: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Rules based and Prometheus endpoints auto-discovery"
+                    enableRuntimeConfigs: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable runtime discovery rules"
+                    config: 
+                      type: "array"
+                      default: "[]"
+                      description: "Configuration for rules based auto-discovery"
+            proxy: 
+              type: "object"
+              properties: 
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the proxy container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the proxy container"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: dataplatform-bp1
+          version: "6.0.2"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

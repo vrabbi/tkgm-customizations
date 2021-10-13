@@ -1,0 +1,684 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: ghost.bitnami.charts.15.0.0
+spec:
+  refName: ghost.bitnami.charts
+  version: 15.0.0
+  releaseNotes: |
+        A simple, powerful publishing platform that allows you to share your stories with the world
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Ghost image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/ghost"
+              description: "Ghost image repository"
+            tag: 
+              type: "string"
+              default: "4.17.1-debian-10-r0"
+              description: "Ghost image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Ghost image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Ghost image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        ghostUsername: 
+          type: "string"
+          default: "user"
+          description: "Ghost user name"
+        ghostPassword: 
+          type: "string"
+          default: ""
+          description: "Ghost user password"
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing secret containing Ghost credentials"
+        ghostEmail: 
+          type: "string"
+          default: "user@example.com"
+          description: "Ghost user email"
+        ghostBlogTitle: 
+          type: "string"
+          default: "User's Blog"
+          description: "Ghost Blog title"
+        ghostHost: 
+          type: "string"
+          default: ""
+          description: "Ghost host to create application URLs"
+        ghostPath: 
+          type: "string"
+          default: "/"
+          description: "URL sub path where to server the Ghost application"
+        ghostEnableHttps: 
+          type: "boolean"
+          default: false
+          description: "Configure Ghost to build application URLs using https"
+        smtpHost: 
+          type: "string"
+          default: ""
+          description: "SMTP server host"
+        smtpPort: 
+          type: "string"
+          default: ""
+          description: "SMTP server port"
+        smtpUser: 
+          type: "string"
+          default: ""
+          description: "SMTP username"
+        smtpPassword: 
+          type: "string"
+          default: ""
+          description: "SMTP user password"
+        smtpService: 
+          type: "string"
+          default: ""
+          description: "SMTP service"
+        smtpExistingSecret: 
+          type: "string"
+          default: ""
+          description: "The name of an existing secret with SMTP credentials"
+        allowEmptyPassword: 
+          type: "boolean"
+          default: true
+          description: "Allow the container to be started with blank passwords"
+        ghostSkipInstall: 
+          type: "boolean"
+          default: false
+          description: "Skip performing the initial bootstrapping for Ghost"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array with extra environment variables to add to the Ghost container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Ghost replicas to deploy"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Ghost deployment strategy type"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Ghost pod priority class name"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Name of the k8s scheduler (other than default)"
+        topologySpreadConstraints: 
+          type: "array"
+          default: "[]"
+          description: "Topology Spread Constraints for pod assignment"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Ghost pod host aliases"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for Ghost pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for Ghost container(s)"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the Ghost pod"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the Ghost pods"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "Add lifecycle hooks to the Ghost deployment"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Ghost pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for Ghost pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "object"
+          default: "{}"
+          description: "Tolerations for pod assignment"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Ghost container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Ghost container"
+        containerPorts: 
+          type: "object"
+          properties: 
+            http: 
+              type: "number"
+              default: 2368
+              description: "Ghost HTTP container port"
+            https: 
+              type: "number"
+              default: 2368
+              description: "Ghost HTTPS container port"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Ghost pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set Ghost pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled Ghost containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set Ghost container's Security Context runAsUser"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set Ghost container's Security Context runAsNonRoot"
+        startupProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable startupProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Initial delay seconds for startupProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for startupProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for startupProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for startupProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for startupProbe"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 120
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 5
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 3
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom livenessProbe that overrides the default one"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readinessProbe that overrides the default one"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Ghost service type"
+            ports: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "number"
+                  default: 80
+                  description: "Ghost service HTTP port"
+                https: 
+                  type: "number"
+                  default: 443
+                  description: "Ghost service HTTPS port"
+            nodePorts: 
+              type: "object"
+              properties: 
+                http: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for HTTP"
+                https: 
+                  type: "string"
+                  default: ""
+                  description: "Node port for HTTPS"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Ghost service Cluster IP"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Ghost service Load Balancer IP"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Ghost service Load Balancer sources"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Ghost service external traffic policy"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for Ghost service"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Extra port to expose on Ghost service"
+            sessionAffinity: 
+              type: "string"
+              default: "None"
+              description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+            sessionAffinityConfig: 
+              type: "object"
+              default: "{}"
+              description: "Additional settings for the sessionAffinity"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress record generation for Ghost"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "ghost.local"
+              description: "Default host for the ingress record"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Default path for the ingress record"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the host defined at `ingress.hostname` parameter"
+            selfSigned: 
+              type: "boolean"
+              default: false
+              description: "Create a TLS secret for this ingress record using self-signed certificates generated by Helm"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional hostname(s) to be covered with the ingress record"
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional arbitrary paths that may need to be added to the ingress under the main host"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Custom TLS certificates as secrets"
+            ingressClassName: 
+              type: "string"
+              default: ""
+              description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using Persistent Volume Claims"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume storage class"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for the PVC"
+            accessModes: 
+              type: "array"
+              default: "[]"
+              description: "Persistent Volume access modes"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "Persistent Volume size"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "The name of an existing PVC to use for persistence"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami Shell image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Bitnami Shell image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r214"
+                  description: "Bitnami Shell image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Bitnami Shell image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami Shell image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+            securityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "Set init container's Security Context runAsUser"
+        mariadb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy a MariaDB server to satisfy the applications database requirements"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "MariaDB architecture. Allowed values: `standalone` or `replication`"
+            auth: 
+              type: "object"
+              properties: 
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB root password"
+                database: 
+                  type: "string"
+                  default: "bitnami_ghost"
+                  description: "MariaDB custom database"
+                username: 
+                  type: "string"
+                  default: "bn_ghost"
+                  description: "MariaDB custom user name"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB custom user password"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Existing secret with MariaDB credentials"
+            primary: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable persistence on MariaDB using PVC(s)"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "Persistent Volume storage class"
+                    accessModes: 
+                      type: "array"
+                      default: "[]"
+                      description: "Persistent Volume access modes"
+                    size: 
+                      type: "string"
+                      default: "8Gi"
+                      description: "Persistent Volume size"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "External Database server host"
+            port: 
+              type: "number"
+              default: 3306
+              description: "External Database server port"
+            user: 
+              type: "string"
+              default: "bn_ghost"
+              description: "External Database username"
+            password: 
+              type: "string"
+              default: ""
+              description: "External Database user password"
+            database: 
+              type: "string"
+              default: "bitnami_ghost"
+              description: "External Database database name"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "The name of an existing secret with database credentials"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: ghost
+          version: "15.0.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

@@ -1,0 +1,12 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: rabbitmq.bitnami.charts
+spec:
+  displayName: "rabbitmq"
+  longDescription: "Bitnami rabbitmq Helm Chart"
+  shortDescription: "rabbitmq Helm Chart"
+  categories:
+  - bitnami
+  - helm
+

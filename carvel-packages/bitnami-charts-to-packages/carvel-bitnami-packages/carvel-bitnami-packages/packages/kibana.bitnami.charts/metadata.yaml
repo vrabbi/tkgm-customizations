@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kibana.bitnami.charts
+spec:
+  displayName: "kibana"
+  longDescription: "Bitnami kibana Helm Chart"
+  shortDescription: "kibana Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - kibana
+  - analytics
+  - monitoring
+  - metrics
+  - logs

@@ -1,0 +1,973 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: external-dns.bitnami.charts.5.4.9
+spec:
+  refName: external-dns.bitnami.charts
+  version: 5.4.9
+  releaseNotes: |
+        ExternalDNS is a Kubernetes addon that configures public DNS servers with information about exposed Kubernetes services to make them discoverable.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override external-dns.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override external-dns.fullname template"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes Cluster Domain"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "ExternalDNS image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/external-dns"
+              description: "ExternalDNS image repository"
+            tag: 
+              type: "string"
+              default: "0.10.0-debian-10-r0"
+              description: "ExternalDNS Image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "ExternalDNS image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "ExternalDNS image pull secrets"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Deployment pod host aliases"
+        sources: 
+          type: "array"
+          default: "[]"
+          description: "K8s resources type to be observed for new DNS entries by ExternalDNS"
+        provider: 
+          type: "string"
+          default: "aws"
+          description: "DNS provider where the DNS records will be created."
+        namespace: 
+          type: "string"
+          default: ""
+          description: "Limit sources of endpoints to a specific namespace (default: all namespaces)"
+        fqdnTemplates: 
+          type: "array"
+          default: "[]"
+          description: "Templated strings that are used to generate DNS names from sources that don't define a hostname themselves"
+        combineFQDNAnnotation: 
+          type: "boolean"
+          default: false
+          description: "Combine FQDN template and annotations instead of overwriting"
+        ignoreHostnameAnnotation: 
+          type: "boolean"
+          default: false
+          description: "Ignore hostname annotation when generating DNS names, valid only when fqdn-template is set"
+        publishInternalServices: 
+          type: "boolean"
+          default: false
+          description: "Allow external-dns to publish DNS records for ClusterIP services"
+        publishHostIP: 
+          type: "boolean"
+          default: false
+          description: "Allow external-dns to publish host-ip for headless services"
+        serviceTypeFilter: 
+          type: "array"
+          default: "[]"
+          description: "The service types to take care about (default: all, options: ClusterIP, NodePort, LoadBalancer, ExternalName)"
+        alibabacloud: 
+          type: "object"
+          properties: 
+            accessKeyId: 
+              type: "string"
+              default: ""
+              description: "When using the Alibaba Cloud provider, set `accessKeyId` in the Alibaba Cloud configuration file (optional)"
+            accessKeySecret: 
+              type: "string"
+              default: ""
+              description: "When using the Alibaba Cloud provider, set `accessKeySecret` in the Alibaba Cloud configuration file (optional)"
+            regionId: 
+              type: "string"
+              default: ""
+              description: "When using the Alibaba Cloud provider, set `regionId` in the Alibaba Cloud configuration file (optional)"
+            vpcId: 
+              type: "string"
+              default: ""
+              description: "Alibaba Cloud VPC Id"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "Use an existing secret with key \"alibaba-cloud.json\" defined."
+            zoneType: 
+              type: "string"
+              default: ""
+              description: "Zone Filter. Available values are: public, private, or no value for both"
+        aws: 
+          type: "object"
+          properties: 
+            credentials: 
+              type: "object"
+              properties: 
+                secretKey: 
+                  type: "string"
+                  default: ""
+                  description: "When using the AWS provider, set `aws_secret_access_key` in the AWS credentials (optional)"
+                accessKey: 
+                  type: "string"
+                  default: ""
+                  description: "When using the AWS provider, set `aws_access_key_id` in the AWS credentials (optional)"
+                mountPath: 
+                  type: "string"
+                  default: "/.aws"
+                  description: "When using the AWS provider, determine `mountPath` for `credentials` secret"
+                secretName: 
+                  type: "string"
+                  default: ""
+                  description: "Use an existing secret with key \"credentials\" defined."
+            region: 
+              type: "string"
+              default: "us-east-1"
+              description: "When using the AWS provider, `AWS_DEFAULT_REGION` to set in the environment (optional)"
+            zoneType: 
+              type: "string"
+              default: ""
+              description: "When using the AWS provider, filter for zones of this type (optional, options: public, private)"
+            assumeRoleArn: 
+              type: "string"
+              default: ""
+              description: "When using the AWS provider, assume role by specifying --aws-assume-role to the external-dns daemon"
+            apiRetries: 
+              type: "number"
+              default: 3
+              description: "Maximum number of retries for AWS API calls before giving up"
+            batchChangeSize: 
+              type: "number"
+              default: 1000
+              description: "When using the AWS provider, set the maximum number of changes that will be applied in each batch"
+            zoneTags: 
+              type: "array"
+              default: "[]"
+              description: "When using the AWS provider, filter for zones with these tags"
+            preferCNAME: 
+              type: "string"
+              default: ""
+              description: "When using the AWS provider, replaces Alias records with CNAME (options: true, false)"
+            evaluateTargetHealth: 
+              type: "string"
+              default: ""
+              description: "When using the AWS provider, sets the evaluate target health flag (options: true, false)"
+        azure: 
+          type: "object"
+          properties: 
+            secretName: 
+              type: "string"
+              default: ""
+              description: "When using the Azure provider, set the secret containing the `azure.json` file"
+            cloud: 
+              type: "string"
+              default: ""
+              description: "When using the Azure provider, set the Azure Cloud"
+            resourceGroup: 
+              type: "string"
+              default: ""
+              description: "When using the Azure provider, set the Azure Resource Group"
+            tenantId: 
+              type: "string"
+              default: ""
+              description: "When using the Azure provider, set the Azure Tenant ID"
+            subscriptionId: 
+              type: "string"
+              default: ""
+              description: "When using the Azure provider, set the Azure Subscription ID"
+            aadClientId: 
+              type: "string"
+              default: ""
+              description: "When using the Azure provider, set the Azure AAD Client ID"
+            aadClientSecret: 
+              type: "string"
+              default: ""
+              description: "When using the Azure provider, set the Azure AAD Client Secret"
+            useManagedIdentityExtension: 
+              type: "boolean"
+              default: false
+              description: "When using the Azure provider, set if you use Azure MSI"
+            userAssignedIdentityID: 
+              type: "string"
+              default: ""
+              description: "When using the Azure provider with Azure MSI, set Client ID of Azure user-assigned managed identity (optional, otherwise system-assigned managed identity is used)"
+        cloudflare: 
+          type: "object"
+          properties: 
+            apiToken: 
+              type: "string"
+              default: ""
+              description: "When using the Cloudflare provider, `CF_API_TOKEN` to set (optional)"
+            apiKey: 
+              type: "string"
+              default: ""
+              description: "When using the Cloudflare provider, `CF_API_KEY` to set (optional)"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "When using the Cloudflare provider, it's the name of the secret containing cloudflare_api_token or cloudflare_api_key."
+            email: 
+              type: "string"
+              default: ""
+              description: "When using the Cloudflare provider, `CF_API_EMAIL` to set (optional). Needed when using CF_API_KEY"
+            proxied: 
+              type: "boolean"
+              default: true
+              description: "When using the Cloudflare provider, enable the proxy feature (DDOS protection, CDN...) (optional)"
+        coredns: 
+          type: "object"
+          properties: 
+            etcdEndpoints: 
+              type: "string"
+              default: "http://etcd-extdns:2379"
+              description: "When using the CoreDNS provider, set etcd backend endpoints (comma-separated list)"
+            etcdTLS: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "When using the CoreDNS provider, enable secure communication with etcd"
+                autoGenerated: 
+                  type: "boolean"
+                  default: false
+                  description: "Generate automatically self-signed TLS certificates"
+                secretName: 
+                  type: "string"
+                  default: "etcd-client-certs"
+                  description: "When using the CoreDNS provider, specify a name of existing Secret with etcd certs and keys"
+                mountPath: 
+                  type: "string"
+                  default: "/etc/coredns/tls/etcd"
+                  description: "When using the CoreDNS provider, set destination dir to mount data from `coredns.etcdTLS.secretName` to"
+                caFilename: 
+                  type: "string"
+                  default: "ca.crt"
+                  description: "When using the CoreDNS provider, specify CA PEM file name from the `coredns.etcdTLS.secretName`"
+                certFilename: 
+                  type: "string"
+                  default: "cert.pem"
+                  description: "When using the CoreDNS provider, specify cert PEM file name from the `coredns.etcdTLS.secretName`"
+                keyFilename: 
+                  type: "string"
+                  default: "key.pem"
+                  description: "When using the CoreDNS provider, specify private key PEM file name from the `coredns.etcdTLS.secretName`"
+        designate: 
+          type: "object"
+          properties: 
+            username: 
+              type: "string"
+              default: ""
+              description: "When using the Designate provider, specify the OpenStack authentication username. (optional)"
+            password: 
+              type: "string"
+              default: ""
+              description: "When using the Designate provider, specify the OpenStack authentication password. (optional)"
+            authUrl: 
+              type: "string"
+              default: ""
+              description: "When using the Designate provider, specify the OpenStack authentication Url. (optional)"
+            regionName: 
+              type: "string"
+              default: ""
+              description: "When using the Designate provider, specify the OpenStack region name. (optional)"
+            userDomainName: 
+              type: "string"
+              default: ""
+              description: "When using the Designate provider, specify the OpenStack user domain name. (optional)"
+            projectName: 
+              type: "string"
+              default: ""
+              description: "When using the Designate provider, specify the OpenStack project name. (optional)"
+            customCAHostPath: 
+              type: "string"
+              default: ""
+              description: "When using the Designate provider, use a CA file already on the host to validate Openstack APIs.  This conflicts with `designate.customCA.enabled`"
+            customCA: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "When using the Designate provider, enable a custom CA (optional)"
+                content: 
+                  type: "string"
+                  default: ""
+                  description: "When using the Designate provider, set the content of the custom CA"
+                mountPath: 
+                  type: "string"
+                  default: "/config/designate"
+                  description: "When using the Designate provider, set the mountPath in which to mount the custom CA configuration"
+                filename: 
+                  type: "string"
+                  default: "designate-ca.pem"
+                  description: "When using the Designate provider, set the custom CA configuration filename"
+        digitalocean: 
+          type: "object"
+          properties: 
+            apiToken: 
+              type: "string"
+              default: ""
+              description: "When using the DigitalOcean provider, `DO_TOKEN` to set (optional)"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "Use an existing secret with key \"digitalocean_api_token\" defined."
+        google: 
+          type: "object"
+          properties: 
+            project: 
+              type: "string"
+              default: ""
+              description: "When using the Google provider, specify the Google project (required when provider=google)"
+            serviceAccountSecret: 
+              type: "string"
+              default: ""
+              description: "When using the Google provider, specify the existing secret which contains credentials.json (optional)"
+            serviceAccountSecretKey: 
+              type: "string"
+              default: "credentials.json"
+              description: "When using the Google provider with an existing secret, specify the key name (optional)"
+            serviceAccountKey: 
+              type: "string"
+              default: ""
+              description: "When using the Google provider, specify the service account key JSON file. In this case a new secret will be created holding this service account (optional)"
+        hetzner: 
+          type: "object"
+          properties: 
+            token: 
+              type: "string"
+              default: ""
+              description: "When using the Hetzner provider, specify your token here. (required when `hetzner.secretName` is not provided. In this case a new secret will be created holding the token.)"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "When using the Hetzner provider, specify the existing secret which contains your token. Disables the usage of `hetzner.token` (optional)"
+            secretKey: 
+              type: "string"
+              default: "hetzner_token"
+              description: "When using the Hetzner provider with an existing secret, specify the key name (optional)"
+        infoblox: 
+          type: "object"
+          properties: 
+            wapiUsername: 
+              type: "string"
+              default: "admin"
+              description: "When using the Infoblox provider, specify the Infoblox WAPI username"
+            wapiPassword: 
+              type: "string"
+              default: ""
+              description: "When using the Infoblox provider, specify the Infoblox WAPI password (required when provider=infoblox)"
+            gridHost: 
+              type: "string"
+              default: ""
+              description: "When using the Infoblox provider, specify the Infoblox Grid host (required when provider=infoblox)"
+            view: 
+              type: "string"
+              default: ""
+              description: "Infoblox view"
+            domainFilter: 
+              type: "string"
+              default: ""
+              description: "When using the Infoblox provider, specify the domain (optional)"
+            noSslVerify: 
+              type: "boolean"
+              default: false
+              description: "When using the Infoblox provider, disable SSL verification (optional)"
+            wapiPort: 
+              type: "string"
+              default: ""
+              description: "When using the Infoblox provider, specify the Infoblox WAPI port (optional)"
+            wapiVersion: 
+              type: "string"
+              default: ""
+              description: "When using the Infoblox provider, specify the Infoblox WAPI version (optional)"
+            wapiConnectionPoolSize: 
+              type: "string"
+              default: ""
+              description: "When using the Infoblox provider, specify the Infoblox WAPI request connection pool size (optional)"
+            wapiHttpTimeout: 
+              type: "string"
+              default: ""
+              description: "When using the Infoblox provider, specify the Infoblox WAPI request timeout in seconds (optional)"
+            maxResults: 
+              type: "string"
+              default: ""
+              description: "When using the Infoblox provider, specify the Infoblox Max Results (optional)"
+        linode: 
+          type: "object"
+          properties: 
+            apiToken: 
+              type: "string"
+              default: ""
+              description: "When using the Linode provider, `LINODE_TOKEN` to set (optional)"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "Use an existing secret with key \"linode_api_token\" defined."
+        ns1: 
+          type: "object"
+          properties: 
+            minTTL: 
+              type: "number"
+              default: 10
+              description: "When using the ns1 provider, specify minimal TTL, as an integer, for records"
+        ovh: 
+          type: "object"
+          properties: 
+            consumerKey: 
+              type: "string"
+              default: ""
+              description: "When using the OVH provider, specify the existing consumer key. (required when provider=ovh and `ovh.secretName` is not provided.)"
+            applicationKey: 
+              type: "string"
+              default: ""
+              description: "When using the OVH provider with an existing application, specify the application key. (required when provider=ovh and `ovh.secretName` is not provided.)"
+            applicationSecret: 
+              type: "string"
+              default: ""
+              description: "When using the OVH provider with an existing application, specify the application secret. (required when provider=ovh and `ovh.secretName` is not provided.)"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "When using the OVH provider, it's the name of the secret containing `ovh_consumer_key`, `ovh_application_key` and `ovh_application_secret`. Disables usage of other `ovh."
+        scaleway: 
+          type: "object"
+          properties: 
+            scwAccessKey: 
+              type: "string"
+              default: ""
+              description: "When using the Scaleway provider, specify an existing access key. (required when provider=scaleway)"
+            scwSecretKey: 
+              type: "string"
+              default: ""
+              description: "When using the Scaleway provider, specify an existing secret key. (required when provider=scaleway)"
+            scwDefaultOrganizationId: 
+              type: "string"
+              default: ""
+              description: "When using the Scaleway provider, specify the existing organization id. (required when provider=scaleway)"
+        rfc2136: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "When using the rfc2136 provider, specify the RFC2136 host (required when provider=rfc2136)"
+            port: 
+              type: "number"
+              default: 53
+              description: "When using the rfc2136 provider, specify the RFC2136 port (optional)"
+            zone: 
+              type: "string"
+              default: ""
+              description: "When using the rfc2136 provider, specify the zone (required when provider=rfc2136)"
+            tsigSecret: 
+              type: "string"
+              default: ""
+              description: "When using the rfc2136 provider, specify the tsig secret to enable security. (do not specify if `rfc2136.secretName` is provided.) (optional)"
+            secretName: 
+              type: "string"
+              default: ""
+              description: "When using the rfc2136 provider, specify the existing secret which contains your tsig secret. Disables the usage of `rfc2136.tsigSecret` (optional)"
+            tsigSecretAlg: 
+              type: "string"
+              default: "hmac-sha256"
+              description: "When using the rfc2136 provider, specify the tsig secret to enable security (optional)"
+            tsigKeyname: 
+              type: "string"
+              default: "externaldns-key"
+              description: "When using the rfc2136 provider, specify the tsig keyname to enable security (optional)"
+            tsigAxfr: 
+              type: "boolean"
+              default: true
+              description: "When using the rfc2136 provider, enable AFXR to enable security (optional)"
+            minTTL: 
+              type: "string"
+              default: "0s"
+              description: "When using the rfc2136 provider, specify minimal TTL (in duration format) for records[ns, us, ms, s, m, h], see more https://golang.org/pkg/time/#ParseDuration"
+            rfc3645Enabled: 
+              type: "boolean"
+              default: false
+              description: "When using the rfc2136 provider, extend using RFC3645 to support secure updates over Kerberos with GSS-TSIG"
+            kerberosConfig: 
+              type: "string"
+              default: ""
+              description: "When using the rfc2136 provider with rfc3645Enabled, the contents of a configuration file for krb5 (optional)"
+            kerberosUsername: 
+              type: "string"
+              default: ""
+              description: "When using the rfc2136 provider with rfc3645Enabled, specify the username to authenticate with (optional)"
+            kerberosPassword: 
+              type: "string"
+              default: ""
+              description: "When using the rfc2136 provider with rfc3645Enabled, specify the password to authenticate with (optional)"
+            kerberosRealm: 
+              type: "string"
+              default: ""
+              description: "When using the rfc2136 provider with rfc3645Enabled, specify the realm to authenticate to (required when provider=rfc2136 and rfc2136.rfc3645Enabled=true)"
+        pdns: 
+          type: "object"
+          properties: 
+            apiUrl: 
+              type: "string"
+              default: ""
+              description: "When using the PowerDNS provider, specify the API URL of the server."
+            apiPort: 
+              type: "string"
+              default: "8081"
+              description: "When using the PowerDNS provider, specify the API port of the server."
+            apiKey: 
+              type: "string"
+              default: ""
+              description: "When using the PowerDNS provider, specify the API key of the server."
+            secretName: 
+              type: "string"
+              default: ""
+              description: "When using the PowerDNS provider, specify as secret name containing the API Key"
+        transip: 
+          type: "object"
+          properties: 
+            account: 
+              type: "string"
+              default: ""
+              description: "When using the TransIP provider, specify the account name."
+            apiKey: 
+              type: "string"
+              default: ""
+              description: "When using the TransIP provider, specify the API key to use."
+        vinyldns: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: ""
+              description: "When using the VinylDNS provider, specify the VinylDNS API host."
+            accessKey: 
+              type: "string"
+              default: ""
+              description: "When using the VinylDNS provider, specify the Access Key to use."
+            secretKey: 
+              type: "string"
+              default: ""
+              description: "When using the VinylDNS provider, specify the Secret key to use."
+        domainFilters: 
+          type: "array"
+          default: "[]"
+          description: "Limit possible target zones by domain suffixes (optional)"
+        excludeDomains: 
+          type: "array"
+          default: "[]"
+          description: "Exclude subdomains (optional)"
+        regexDomainFilter: 
+          type: "string"
+          default: ""
+          description: "Limit possible target zones by regex domain suffixes (optional)"
+        regexDomainExclusion: 
+          type: "string"
+          default: ""
+          description: "Exclude subdomains by using regex pattern (optional)"
+        zoneNameFilters: 
+          type: "array"
+          default: "[]"
+          description: "Filter target zones by zone domain (optional)"
+        zoneIdFilters: 
+          type: "array"
+          default: "[]"
+          description: "Limit possible target zones by zone id (optional)"
+        annotationFilter: 
+          type: "string"
+          default: ""
+          description: "Filter sources managed by external-dns via annotation using label selector (optional)"
+        dryRun: 
+          type: "boolean"
+          default: false
+          description: "When enabled, prints DNS record changes rather than actually performing them (optional)"
+        triggerLoopOnEvent: 
+          type: "boolean"
+          default: false
+          description: "When enabled, triggers run loop on create/update/delete events in addition to regular interval (optional)"
+        interval: 
+          type: "string"
+          default: "1m"
+          description: "Interval update period to use"
+        logLevel: 
+          type: "string"
+          default: "info"
+          description: "Verbosity of the logs (options: panic, debug, info, warning, error, fatal, trace)"
+        logFormat: 
+          type: "string"
+          default: "text"
+          description: "Which format to output logs in (options: text, json)"
+        policy: 
+          type: "string"
+          default: "upsert-only"
+          description: "Modify how DNS records are synchronized between sources and providers (options: sync, upsert-only )"
+        registry: 
+          type: "string"
+          default: "txt"
+          description: "Registry method to use (options: txt, aws-sd, noop)"
+        txtPrefix: 
+          type: "string"
+          default: ""
+          description: "When using the TXT registry, a prefix for ownership records that avoids collision with CNAME entries (optional)<CNAME record> (Mutual exclusive with txt-suffix)"
+        txtSuffix: 
+          type: "string"
+          default: ""
+          description: "When using the TXT registry, a suffix for ownership records that avoids collision with CNAME entries (optional)<CNAME record>.suffix (Mutual exclusive with txt-prefix)"
+        txtOwnerId: 
+          type: "string"
+          default: ""
+          description: "A name that identifies this instance of ExternalDNS. Currently used by registry types: txt & aws-sd (optional)"
+        forceTxtOwnerId: 
+          type: "boolean"
+          default: false
+          description: "(backward compatibility) When using the non-TXT registry, it will pass the value defined by `txtOwnerId` down to the application (optional)"
+        extraArgs: 
+          type: "object"
+          default: "{}"
+          description: "Extra arguments to be passed to external-dns"
+        extraEnv: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be passed to external-dns"
+        replicas: 
+          type: "number"
+          default: 1
+          description: "Desired number of ExternalDNS replicas"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Additional annotations to apply to the pod."
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Additional labels to be added to pods"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "priorityClassName"
+        secretAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Additional annotations to apply to the secret"
+        crd: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Install and use the integrated DNSEndpoint CRD"
+            apiversion: 
+              type: "string"
+              default: ""
+              description: "Sets the API version for the CRD to watch"
+            kind: 
+              type: "string"
+              default: ""
+              description: "Sets the kind for the CRD to watch"
+        service: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to create Service resource or not"
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 7979
+              description: "ExternalDNS client port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Port to bind to for NodePort service type (client port)"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "IP address to assign to service"
+            externalIPs: 
+              type: "array"
+              default: "[]"
+              description: "Service external IP addresses"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "IP address to assign to load balancer (if supported)"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "List of IP CIDRs allowed access to load balancer (if supported)"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations to add to service"
+            labels: 
+              type: "object"
+              default: "{}"
+              description: "Provide any additional labels which may be required."
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Determine whether a Service Account should be created or it should reuse a exiting one."
+            name: 
+              type: "string"
+              default: ""
+              description: "ServiceAccount to use. A name is generated using the external-dns.fullname template if it is not set"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional Service Account annotations"
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: true
+              description: "Automount API credentials for a service account."
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Whether to create & use RBAC resources or not"
+            clusterRole: 
+              type: "boolean"
+              default: true
+              description: "Whether to create Cluster Role. When set to false creates a Role in `namespace`"
+            apiVersion: 
+              type: "string"
+              default: "v1"
+              description: "Version of the RBAC API"
+            pspEnabled: 
+              type: "boolean"
+              default: false
+              description: "PodSecurityPolicy"
+        securityContext: 
+          type: "object"
+          default: "{}"
+          description: "Security context for the container"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/healthz"
+                  description: "Request path for livenessProbe"
+                port: 
+                  type: "string"
+                  default: "http"
+                  description: "Port for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 10
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 2
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            httpGet: 
+              type: "object"
+              properties: 
+                path: 
+                  type: "string"
+                  default: "/healthz"
+                  description: "Request path for readinessProbe"
+                port: 
+                  type: "string"
+                  default: "http"
+                  description: "Port for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 5
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "A list of volumes to be added to the pod"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "A list of volume mounts to be added to the pod"
+        podDisruptionBudget: 
+          type: "object"
+          default: "{}"
+          description: "Configure PodDisruptionBudget"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable prometheus to access external-dns metrics endpoint"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for enabling prometheus to access the metrics endpoint"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor object"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels for ServiceMonitor object"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: external-dns
+          version: "5.4.9"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

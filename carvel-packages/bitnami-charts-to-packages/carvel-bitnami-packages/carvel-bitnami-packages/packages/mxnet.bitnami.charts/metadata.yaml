@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: mxnet.bitnami.charts
+spec:
+  displayName: "mxnet"
+  longDescription: "Bitnami mxnet Helm Chart"
+  shortDescription: "mxnet Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - mxnet
+  - python
+  - machine
+  - learning

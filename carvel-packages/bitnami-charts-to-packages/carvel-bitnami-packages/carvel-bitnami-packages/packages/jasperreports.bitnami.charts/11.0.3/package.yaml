@@ -1,0 +1,524 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: jasperreports.bitnami.charts.11.0.3
+spec:
+  refName: jasperreports.bitnami.charts
+  version: 11.0.3
+  releaseNotes: |
+        The JasperReports server can be used as a stand-alone or embedded reporting and BI server that offers web-based reporting, analytic tools and visualization, and a dashboard feature for compiling multiple custom views
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Default Kubernetes cluster domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "JasperReports image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/jasperreports"
+              description: "JasperReports image repository"
+            tag: 
+              type: "string"
+              default: "7.8.0-debian-10-r308"
+              description: "JasperReports image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "JasperReports image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        jasperreportsUsername: 
+          type: "string"
+          default: "jasperadmin"
+          description: "JasperReports user"
+        jasperreportsPassword: 
+          type: "string"
+          default: ""
+          description: "JasperReports password"
+        jasperreportsEmail: 
+          type: "string"
+          default: "user@example.com"
+          description: "JasperReports user email"
+        allowEmptyPassword: 
+          type: "string"
+          default: "no"
+          description: "Set to `yes` to allow the container to be started with blank passwords"
+        smtpHost: 
+          type: "string"
+          default: ""
+          description: "SMTP host"
+        smtpPort: 
+          type: "string"
+          default: ""
+          description: "SMTP port"
+        smtpEmail: 
+          type: "string"
+          default: ""
+          description: "SMTP email"
+        smtpUser: 
+          type: "string"
+          default: ""
+          description: "SMTP user"
+        smtpPassword: 
+          type: "string"
+          default: ""
+          description: "SMTP password"
+        smtpProtocol: 
+          type: "string"
+          default: ""
+          description: "SMTP protocol [`ssl`, `none`]"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on Jasperreports container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "StrategyType"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        containerPort: 
+          type: "number"
+          default: 8080
+          description: "HTTP port to expose at container level"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable pod's Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable container's Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set container's Security Context runAsUser"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the Jasperreports container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the Jasperreports container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            path: 
+              type: "string"
+              default: "/jasperserver/login.html"
+              description: "Request path for livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 450
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            path: 
+              type: "string"
+              default: "/jasperserver/login.html"
+              description: "Request path for readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 30
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for Jasperreports pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for Jasperreports pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "LifecycleHooks to set additional configuration at startup."
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for Jasperreports pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for Jasperreports container(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the Jasperreports pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the Jasperreports pods"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable persistence using PVC"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "PVC Storage Class for Jasperreports volume"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "Persistent Volume Access Mode"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for Jasperreports volume"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "An Existing PVC name for Jasperreports volume"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "Kubernetes Service type"
+            port: 
+              type: "number"
+              default: 80
+              description: "Service HTTP port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Kubernetes http node port"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Kubernetes LoadBalancerIP to request"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Jasperreports service"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            certManager: 
+              type: "boolean"
+              default: false
+              description: "Add annotations for cert-manager"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "jasperreports.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Ingress path"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Ingress annotations"
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        mariadb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Whether to use the MariaDB chart"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "MariaDB architecture (`standalone` or `replication`)"
+            auth: 
+              type: "object"
+              properties: 
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the MariaDB `root` user"
+                database: 
+                  type: "string"
+                  default: "bitnami_jasperreports"
+                  description: "Database name to create"
+                username: 
+                  type: "string"
+                  default: "bn_jasperreports"
+                  description: "Database user to create"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the database"
+            primary: 
+              type: "object"
+              properties: 
+                persistence: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable database persistence using PVC"
+                    storageClass: 
+                      type: "string"
+                      default: ""
+                      description: "PVC Storage Class"
+                    accessModes: 
+                      type: "array"
+                      default: "[\"ReadWriteOnce\"]"
+                      description: "Access mode of persistent volume"
+                    size: 
+                      type: "string"
+                      default: "8Gi"
+                      description: "Database Persistent Volume Size"
+                    hostPath: 
+                      type: "string"
+                      default: ""
+                      description: "Host mount path for MariaDB volume"
+                    existingClaim: 
+                      type: "string"
+                      default: ""
+                      description: "Enable persistence using an existing PVC"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the database existing Secret Object"
+            host: 
+              type: "string"
+              default: ""
+              description: "Host of the existing database"
+            port: 
+              type: "number"
+              default: 3306
+              description: "Port of the existing database"
+            user: 
+              type: "string"
+              default: "bn_jasperreports"
+              description: "Existing username in the external db"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the above username"
+            database: 
+              type: "string"
+              default: "bitnami_jasperreports"
+              description: "Name of the existing database"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: jasperreports
+          version: "11.0.3"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

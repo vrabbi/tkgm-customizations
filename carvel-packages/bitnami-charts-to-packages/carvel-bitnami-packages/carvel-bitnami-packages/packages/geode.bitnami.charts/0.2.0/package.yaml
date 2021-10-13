@@ -1,0 +1,1187 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: geode.bitnami.charts.0.2.0
+spec:
+  refName: geode.bitnami.charts
+  version: 0.2.0
+  releaseNotes: |
+        Apache Geode is a data management platform that provides advanced capabilities for data-intensive applications.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Apache Geode image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/geode"
+              description: "Apache Geode image repository"
+            tag: 
+              type: "string"
+              default: "1.14.0-debian-10-r7"
+              description: "Apache Geode image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Apache Geode image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Apache Geode image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable Apache Geode image debug mode"
+        groups: 
+          type: "array"
+          default: "[]"
+          description: "List of Apache Geode member groups to belong to"
+        auth: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Apache Geode security"
+            securityManager: 
+              type: "string"
+              default: "org.apache.geode.examples.security.ExampleSecurityManager"
+              description: "Fully qualified name of the class that implements the SecurityManager interface"
+            username: 
+              type: "string"
+              default: "admin"
+              description: "Username credential to use to connect with locators"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password credential to use to connect with locators"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of the existing secret containing to use to connect with locators"
+            tls: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS authentication"
+                components: 
+                  type: "array"
+                  default: "[]"
+                  description: "List of components for which to enable TLS"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the TLS certificates for the Apache Geode nodes"
+                keystorePassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password to access they key stores when they are password-protected"
+                truststorePassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password to access they trust store when it is password-protected"
+                requireAuthentication: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable two-way authentication"
+                endpointIdentificationEnabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable server hostname validation using server certificates"
+        locator: 
+          type: "object"
+          properties: 
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Log level for Locator nodes"
+            initialHeapSize: 
+              type: "string"
+              default: ""
+              description: "Initial size of the heap on Locator nodes"
+            maxHeapSize: 
+              type: "string"
+              default: ""
+              description: "Maximum size of the heap on Locator nodes"
+            configuration: 
+              type: "string"
+              default: ""
+              description: "Specify content for gemfire.properties on Locator nodes (auto-generated based on other env. vars otherwise)"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "The name of an existing ConfigMap with your custom configuration for Locator"
+            log4j: 
+              type: "string"
+              default: ""
+              description: "Specify content for log4j2.xml on Locator nodes (optional)"
+            existingLog4jConfigMap: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing a custom log4j2.xml configuration for Locator"
+            replicaCount: 
+              type: "number"
+              default: 2
+              description: "Number of Locator replicas to deploy"
+            podManagementPolicy: 
+              type: "string"
+              default: "OrderedReady"
+              description: "Locator statefulset Pod Management Policy Type"
+            containerPorts: 
+              type: "object"
+              properties: 
+                locator: 
+                  type: "number"
+                  default: 10334
+                  description: "Locator multicast container port"
+                http: 
+                  type: "number"
+                  default: 7070
+                  description: "Locator HTTP container port"
+                rmi: 
+                  type: "number"
+                  default: 1099
+                  description: "Locator RMI container port"
+                metrics: 
+                  type: "number"
+                  default: 9915
+                  description: "Locator internal metrics container port"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Locator containers"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Locator containers"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe on Locator containers"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 15
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom startupProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Locator containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Locator containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Locator pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Locator pod's Security Context fsGroup"
+                sysctls: 
+                  type: "array"
+                  default: "[]"
+                  description: "List of namespaced sysctls used for the Locator pods"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Locator containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Locator containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Locator containers' Security Context runAsNonRoot"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Locator pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Locator pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Locator pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `locator.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `locator.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `locator.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `locator.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `locator.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Locator pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Locator pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Locator pods assignment"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology Spread Constraints for Locator pods assignment spread across your cluster among failure-domains"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Locator statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Locator pods' priorityClassName"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Name of the k8s scheduler (other than default) for Locator pods"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the Locator container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to Locator nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for Locator nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for Locator nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Locator pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Locator container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Locator pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Locator pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Locator service type"
+                ports: 
+                  type: "object"
+                  properties: 
+                    locator: 
+                      type: "number"
+                      default: 10334
+                      description: "Locator multicast service port"
+                    http: 
+                      type: "number"
+                      default: 7070
+                      description: "Locator HTTP service port"
+                    rmi: 
+                      type: "number"
+                      default: 1099
+                      description: "Locator RMI service port"
+                nodePorts: 
+                  type: "object"
+                  properties: 
+                    locator: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for multicast"
+                    http: 
+                      type: "string"
+                      default: ""
+                      description: "Node port for HTTP"
+                sessionAffinity: 
+                  type: "string"
+                  default: "None"
+                  description: "Control where client requests go, to the same pod or round-robin"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Locator service Cluster IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Locator service Load Balancer IP"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Locator service Load Balancer sources"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Locator service external traffic policy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Locator service"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose in the Locator service (normally used with the `sidecar` value)"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence on Locator replicas using a `PersistentVolumeClaim`"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB secondary persistent volume storage Class"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "MariaDB secondary persistent volume claim annotations"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "MariaDB secondary persistent volume access Modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "MariaDB secondary persistent volume size"
+        server: 
+          type: "object"
+          properties: 
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Log level for Cache Server nodes"
+            initialHeapSize: 
+              type: "string"
+              default: ""
+              description: "Initial size of the heap on Cache Server nodes"
+            maxHeapSize: 
+              type: "string"
+              default: ""
+              description: "Maximum size of the heap on Cache Server nodes"
+            configuration: 
+              type: "string"
+              default: ""
+              description: "Specify content for gemfire.properties on Cache server nodes (auto-generated based on other env. vars otherwise)"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "The name of an existing ConfigMap with your custom configuration for Cache server"
+            log4j: 
+              type: "string"
+              default: ""
+              description: "Specify content for log4j2.xml on Cache server nodes (optional)"
+            existingLog4jConfigMap: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing a custom log4j2.xml configuration for Cache server"
+            restoreRedundancyOnContainerTermination: 
+              type: "boolean"
+              default: true
+              description: "Use a PreStop hook on container termination to restore redundancy to partitioned regions and reassign which members host the primary copies"
+            replicaCount: 
+              type: "number"
+              default: 3
+              description: "Number of Cache Server replicas to deploy"
+            podManagementPolicy: 
+              type: "string"
+              default: "OrderedReady"
+              description: "Cache Server statefulset Pod Management Policy Type"
+            containerPorts: 
+              type: "object"
+              properties: 
+                server: 
+                  type: "number"
+                  default: 40404
+                  description: "Cache Server container port"
+                http: 
+                  type: "number"
+                  default: 7070
+                  description: "Cache Server HTTP container port"
+                rmi: 
+                  type: "number"
+                  default: 1099
+                  description: "Cache Server RMI container port"
+                metrics: 
+                  type: "number"
+                  default: 9915
+                  description: "Cache Server internal metrics container port"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Cache server containers"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 40
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Cache server containers"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 40
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe on Cache server containers"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 45
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 15
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom startupProbe that overrides the default one"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Cache server containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Cache server containers"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Cache server pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Cache server pod's Security Context fsGroup"
+                sysctls: 
+                  type: "array"
+                  default: "[]"
+                  description: "List of namespaced sysctls used for the Cache server pods"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Cache server containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Cache server containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Cache server containers' Security Context runAsNonRoot"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Cache server pods host aliases"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Cache server pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Cache server pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `server.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `server.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Cache server pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Cache server pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Cache server pods assignment"
+            topologySpreadConstraints: 
+              type: "array"
+              default: "[]"
+              description: "Topology Spread Constraints for Cache server pods assignment spread across your cluster among failure-domains"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Cache server statefulset strategy type"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Cache server pods' priorityClassName"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Name of the k8s scheduler (other than default) for Cache server pods"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "for the Cache server container(s) to automate configuration before or after startup"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array with extra environment variables to add to Cache server nodes"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for Cache server nodes"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for Cache server nodes"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for the Cache server pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the Cache server container(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Cache server pod(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Cache server pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                ports: 
+                  type: "object"
+                  properties: 
+                    server: 
+                      type: "number"
+                      default: 40404
+                      description: "Cache server multicast service port"
+                    http: 
+                      type: "number"
+                      default: 7070
+                      description: "Cache server HTTP service port"
+                    rmi: 
+                      type: "number"
+                      default: 1099
+                      description: "Cache server RMI service port"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for Cache server service"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence on Cache server replicas using a `PersistentVolumeClaim`"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB secondary persistent volume storage Class"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "MariaDB secondary persistent volume claim annotations"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "MariaDB secondary persistent volume access Modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "MariaDB secondary persistent volume size"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress record generation for Apache Geode"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "geode.local"
+              description: "Default host for the ingress record"
+            path: 
+              type: "string"
+              default: "/pulse"
+              description: "Default path for the ingress record"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS configuration for the host defined at `ingress.hostname` parameter"
+            selfSigned: 
+              type: "boolean"
+              default: false
+              description: "Create a TLS secret for this ingress record using self-signed certificates generated by Helm"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional hostname(s) to be covered with the ingress record"
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "An array with additional arbitrary paths that may need to be added to the ingress under the main host"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "TLS configuration for additional hostname(s) to be covered with this ingress record"
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "Custom TLS certificates as secrets"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner/group of the PV mount point to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami Shell image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Bitnami Shell image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r212"
+                  description: "Bitnami Shell image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Bitnami Shell image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami Shell image pull secrets"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the init container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the init container"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "Set init container's Security Context runAsUser"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Expose Apache Geode metrics"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Bitnami HAProxy image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/haproxy"
+                  description: "Bitnami HAProxy image repository"
+                tag: 
+                  type: "string"
+                  default: "2.4.6-debian-10-r0"
+                  description: "Bitnami HAProxy image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Bitnami HAProxy image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Bitnami HAProxy image pull secrets"
+            containerPort: 
+              type: "number"
+              default: 9914
+              description: "Metrics container port"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe on Metrics containers"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe on Metrics containers"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom livenessProbe that overrides the default one"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Custom readinessProbe that overrides the default one"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Metrics containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Metrics containers' Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Metrics containers' Security Context runAsNonRoot"
+            service: 
+              type: "object"
+              properties: 
+                port: 
+                  type: "number"
+                  default: 9914
+                  description: "Service HTTP management port"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for enabling prometheus to access the metrics endpoints"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify if a ServiceMonitor will be deployed for Prometheus Operator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                labels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Extra labels for the ServiceMonitor"
+                jobLabel: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the label on the target service to use as the job name in Prometheus"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "How frequently to scrape metrics"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify additional relabeling of metrics"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify general relabeling"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use."
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: false
+              description: "Allows auto mount of ServiceAccountToken on the serviceAccount created"
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Specifies whether a NetworkPolicy should be created"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "Don't require client label for connections"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: geode
+          version: "0.2.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

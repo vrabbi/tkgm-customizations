@@ -1,0 +1,1046 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: dataplatform-bp1.bitnami.charts.8.0.1
+spec:
+  refName: dataplatform-bp1.bitnami.charts
+  version: 8.0.1
+  releaseNotes: |
+        OCTO Data platform Kafka-Spark-Solr Helm Chart
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        dataplatform: 
+          type: "object"
+          properties: 
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to create"
+                automountServiceAccountToken: 
+                  type: "boolean"
+                  default: true
+                  description: "Allows auto mount of ServiceAccountToken on the serviceAccount created"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to create & use RBAC resources or not"
+            exporter: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Start a prometheus exporter"
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "dataplatform exporter image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/dataplatform-exporter"
+                      description: "dataplatform exporter image repository"
+                    tag: 
+                      type: "string"
+                      default: "0.0.11-scratch-r4"
+                      description: "dataplatform exporter image tag (immutable tags are recommended)"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: "dataplatform exporter image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify docker-registry secret names as an array"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable livenessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for livenessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Period seconds for livenessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 15
+                      description: "Timeout seconds for livenessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Failure threshold for livenessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for livenessProbe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable readinessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for readinessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Period seconds for readinessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 15
+                      description: "Timeout seconds for readinessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Failure threshold for readinessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Success threshold for readinessProbe"
+                startupProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable startupProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for startupProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Period seconds for startupProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 15
+                      description: "Timeout seconds for startupProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Failure threshold for startupProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Success threshold for startupProbe"
+                containerPorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "number"
+                      default: 9090
+                      description: "Data Platform Prometheus exporter port"
+                priorityClassName: 
+                  type: "string"
+                  default: ""
+                  description: "exporter priorityClassName"
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override Data Platform Exporter entrypoint string."
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Arguments for the provided command if needed"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+                containerSecurityContext: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable Data Platform exporter containers' Security Context"
+                    runAsUser: 
+                      type: "number"
+                      default: 1001
+                      description: "User ID for the containers."
+                    runAsNonRoot: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable Data Platform exporter containers' Security Context runAsNonRoot"
+                podSecurityContext: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable Data Platform exporter pods' Security Context"
+                    fsGroup: 
+                      type: "number"
+                      default: 1001
+                      description: "Group ID for the pods."
+                podAffinityPreset: 
+                  type: "string"
+                  default: ""
+                  description: "Data Platform exporter pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                podAntiAffinityPreset: 
+                  type: "string"
+                  default: "soft"
+                  description: "Data Platform exporter pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                nodeAffinityPreset: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: ""
+                      description: "Data Platform exporter node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Data Platform exporter node label key to match Ignored if `affinity` is set."
+                    values: 
+                      type: "array"
+                      default: "[]"
+                      description: "Data Platform exporter node label values to match. Ignored if `affinity` is set."
+                affinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Affinity settings for exporter pod assignment. Evaluated as a template"
+                nodeSelector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Node labels for exporter pods assignment. Evaluated as a template"
+                tolerations: 
+                  type: "array"
+                  default: "[]"
+                  description: "Tolerations for exporter pods assignment. Evaluated as a template"
+                podLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels for Metrics exporter pod"
+                podAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional annotations for Metrics exporter pod"
+                customLivenessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default liveness probe"
+                customReadinessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default readiness probe"
+                customStartupProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default startup probe"
+                updateStrategy: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "RollingUpdate"
+                      description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+                    rollingUpdate: 
+                      type: "object"
+                      default: "{}"
+                      description: "Deployment rolling update configuration parameters"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Additional environment variables to set"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap with extra environment variables"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret with extra environment variables"
+                extraVolumes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra volumes to add to the deployment"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra volume mounts to add to the container"
+                initContainers: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add init containers to the %%MAIN_CONTAINER_NAME%% pods"
+                sidecars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add sidecars to the %%MAIN_CONTAINER_NAME%% pods"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "Service type for default Data Platform Prometheus exporter service"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Metrics exporter service annotations"
+                    labels: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional labels for Data Platform exporter service"
+                    ports: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "number"
+                          default: 9090
+                          description: "Kubernetes Service port"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "Load balancer IP for the Data Platform Exporter Service (optional, cloud specific)"
+                    nodePorts: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "string"
+                          default: ""
+                          description: "Node ports for the HTTP exporter service"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "Exporter Load Balancer Source ranges"
+                hostAliases: 
+                  type: "array"
+                  default: "[]"
+                  description: "Deployment pod host aliases"
+            emitter: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Start Data Platform metrics emitter"
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "Data Platform emitter image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/dataplatform-emitter"
+                      description: "Data Platform emitter image repository"
+                    tag: 
+                      type: "string"
+                      default: "0.0.10-scratch-r3"
+                      description: "Data Platform emitter image tag (immutable tags are recommended)"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: "Data Platform emitter image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "Specify docker-registry secret names as an array"
+                livenessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable livenessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for livenessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Period seconds for livenessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 15
+                      description: "Timeout seconds for livenessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Failure threshold for livenessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 1
+                      description: "Success threshold for livenessProbe"
+                readinessProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable readinessProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for readinessProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Period seconds for readinessProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 15
+                      description: "Timeout seconds for readinessProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Failure threshold for readinessProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Success threshold for readinessProbe"
+                startupProbe: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable startupProbe"
+                    initialDelaySeconds: 
+                      type: "number"
+                      default: 10
+                      description: "Initial delay seconds for startupProbe"
+                    periodSeconds: 
+                      type: "number"
+                      default: 5
+                      description: "Period seconds for startupProbe"
+                    timeoutSeconds: 
+                      type: "number"
+                      default: 15
+                      description: "Timeout seconds for startupProbe"
+                    failureThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Failure threshold for startupProbe"
+                    successThreshold: 
+                      type: "number"
+                      default: 15
+                      description: "Success threshold for startupProbe"
+                containerPorts: 
+                  type: "object"
+                  properties: 
+                    http: 
+                      type: "number"
+                      default: 8091
+                      description: "Data Platform emitter port"
+                priorityClassName: 
+                  type: "string"
+                  default: ""
+                  description: "exporter priorityClassName"
+                command: 
+                  type: "array"
+                  default: "[]"
+                  description: "Override Data Platform entrypoint string."
+                args: 
+                  type: "array"
+                  default: "[]"
+                  description: "Arguments for the provided command if needed"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+                containerSecurityContext: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable Data Platform emitter containers' Security Context"
+                    runAsUser: 
+                      type: "number"
+                      default: 1001
+                      description: "User ID for the containers."
+                    runAsNonRoot: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable Data Platform emitter containers' Security Context runAsNonRoot"
+                podSecurityContext: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable Data Platform emitter pods' Security Context"
+                    fsGroup: 
+                      type: "number"
+                      default: 1001
+                      description: "Group ID for the pods."
+                podAffinityPreset: 
+                  type: "string"
+                  default: ""
+                  description: "Data Platform emitter pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                podAntiAffinityPreset: 
+                  type: "string"
+                  default: "soft"
+                  description: "Data Platform emitter pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                nodeAffinityPreset: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: ""
+                      description: "Data Platform emitter node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Data Platform emitter node label key to match Ignored if `affinity` is set."
+                    values: 
+                      type: "array"
+                      default: "[]"
+                      description: "Data Platform emitter node label values to match. Ignored if `affinity` is set."
+                affinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Affinity settings for emitter pod assignment. Evaluated as a template"
+                nodeSelector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Node labels for emitter pods assignment. Evaluated as a template"
+                tolerations: 
+                  type: "array"
+                  default: "[]"
+                  description: "Tolerations for emitter pods assignment. Evaluated as a template"
+                podLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels for Metrics emitter pod"
+                podAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional annotations for Metrics emitter pod"
+                customLivenessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default liveness probe%%MAIN_CONTAINER_NAME%%"
+                customReadinessProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default readiness probe%%MAIN_CONTAINER_NAME%%"
+                customStartupProbe: 
+                  type: "object"
+                  default: "{}"
+                  description: "Override default startup probe"
+                updateStrategy: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "RollingUpdate"
+                      description: "Update strategy - only really applicable for deployments with RWO PVs attached"
+                    rollingUpdate: 
+                      type: "object"
+                      default: "{}"
+                      description: "Deployment rolling update configuration parameters"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Additional environment variables to set"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap with extra environment variables"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Secret with extra environment variables"
+                extraVolumes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra volumes to add to the deployment"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra volume mounts to add to the container"
+                initContainers: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add init containers to the %%MAIN_CONTAINER_NAME%% pods"
+                sidecars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add sidecars to the %%MAIN_CONTAINER_NAME%% pods"
+                service: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "ClusterIP"
+                      description: "Service type for default Data Platform metrics emitter service"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "annotations for Data Platform emitter service"
+                    labels: 
+                      type: "object"
+                      default: "{}"
+                      description: "Additional labels for Data Platform emitter service"
+                    ports: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "number"
+                          default: 8091
+                          description: "Kubernetes Service port"
+                    loadBalancerIP: 
+                      type: "string"
+                      default: ""
+                      description: "Load balancer IP for the dataplatform emitter Service (optional, cloud specific)"
+                    nodePorts: 
+                      type: "object"
+                      properties: 
+                        http: 
+                          type: "string"
+                          default: ""
+                          description: "Node ports for the HTTP emitter service"
+                    loadBalancerSourceRanges: 
+                      type: "array"
+                      default: "[]"
+                      description: "Data Platform Emitter Load Balancer Source ranges"
+                hostAliases: 
+                  type: "array"
+                  default: "[]"
+                  description: "Deployment pod host aliases"
+        zookeeper: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Zookeeper helm chart"
+            replicaCount: 
+              type: "number"
+              default: 3
+              description: "Number of Zookeeper replicas"
+            heapSize: 
+              type: "number"
+              default: 4096
+              description: "Size in MB for the Java Heap options (Xmx and XMs)."
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for Zookeeper containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for Zookeeper containers"
+            affinity: 
+              type: "object"
+              properties: 
+                podAntiAffinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+        kafka: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Kafka helm chart"
+            replicaCount: 
+              type: "number"
+              default: 3
+              description: "Number of Kafka replicas"
+            heapOpts: 
+              type: "string"
+              default: "-Xmx4096m -Xms4096m"
+              description: "Kafka's Java Heap size"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for Kafka containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for Kafka containers"
+            affinity: 
+              type: "object"
+              properties: 
+                podAntiAffinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+                podAffinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Zookeeper pods Affinity rules for best possible resiliency (evaluated as a template)"
+            metrics: 
+              type: "object"
+              properties: 
+                kafka: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Whether or not to create a standalone Kafka exporter to expose Kafka metrics"
+                    resources: 
+                      type: "object"
+                      properties: 
+                        limits: 
+                          type: "object"
+                          default: "{}"
+                          description: "The resources limits for the container"
+                        requests: 
+                          type: "object"
+                          default: "{}"
+                          description: "Kafka Exporter container resource requests"
+                    service: 
+                      type: "object"
+                      properties: 
+                        port: 
+                          type: "number"
+                          default: 9308
+                          description: "Kafka Exporter Prometheus port to be used in Wavefront configuration"
+                jmx: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Whether or not to expose JMX metrics to Prometheus"
+                    resources: 
+                      type: "object"
+                      properties: 
+                        limits: 
+                          type: "object"
+                          default: "{}"
+                          description: "The resources limits for the container"
+                        requests: 
+                          type: "object"
+                          default: "{}"
+                          description: "JMX Exporter container resource requests"
+                    service: 
+                      type: "object"
+                      properties: 
+                        port: 
+                          type: "number"
+                          default: 5556
+                          description: "JMX Exporter Prometheus port"
+            zookeeper: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch to enable or disable the Zookeeper helm chart"
+            externalZookeeper: 
+              type: "object"
+              properties: 
+                servers: 
+                  type: "array"
+                  default: "[\"{{ .Release.Name }}-zookeeper\"]"
+                  description: "Server or list of external Zookeeper servers to use"
+        solr: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Solr helm chart"
+            replicaCount: 
+              type: "number"
+              default: 2
+              description: "Number of Solr replicas"
+            authentication: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Solr authentication. BUG: Exporter deployment does not work with authentication enabled"
+            javaMem: 
+              type: "string"
+              default: "-Xmx4096m -Xms4096m"
+              description: "Java recommended memory options to pass to the Solr container"
+            affinity: 
+              type: "object"
+              properties: 
+                podAntiAffinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for Solr containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for Solr containers"
+            exporter: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Start a prometheus exporter"
+                port: 
+                  type: "number"
+                  default: 9983
+                  description: "Solr exporter port"
+                affinity: 
+                  type: "object"
+                  properties: 
+                    podAffinity: 
+                      type: "object"
+                      default: "{}"
+                      description: "Zookeeper pods Affinity rules for best possible resiliency (evaluated as a template)"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the container"
+            zookeeper: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Zookeeper deployment. Needed for Solr cloud."
+            externalZookeeper: 
+              type: "object"
+              properties: 
+                servers: 
+                  type: "array"
+                  default: "[\"{{ .Release.Name }}-zookeeper\"]"
+                  description: "Servers for an already existing Zookeeper."
+        spark: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Switch to enable or disable the Spark helm chart"
+            master: 
+              type: "object"
+              properties: 
+                webPort: 
+                  type: "number"
+                  default: 8080
+                  description: "Specify the port where the web interface will listen on the master"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                affinity: 
+                  type: "object"
+                  properties: 
+                    podAntiAffinity: 
+                      type: "object"
+                      default: "{}"
+                      description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+            worker: 
+              type: "object"
+              properties: 
+                replicaCount: 
+                  type: "number"
+                  default: 2
+                  description: "Set the number of workers"
+                webPort: 
+                  type: "number"
+                  default: 8081
+                  description: "Specify the port where the web interface will listen on the worker"
+                affinity: 
+                  type: "object"
+                  properties: 
+                    podAntiAffinity: 
+                      type: "object"
+                      default: "{}"
+                      description: "Zookeeper pods Anti Affinity rules for best possible resiliency (evaluated as a template)"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the container"
+            metrics: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Start a side-car Prometheus exporter"
+                masterAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for enabling prometheus to access the metrics endpoint of the master nodes"
+                workerAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for enabling prometheus to access the metrics endpoint of the worker nodes"
+        wavefront: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Switch to enable or disable the Wavefront helm chart"
+            clusterName: 
+              type: "string"
+              default: "KUBERNETES_CLUSTER_NAME"
+              description: "Unique name for the Kubernetes cluster (required)"
+            wavefront: 
+              type: "object"
+              properties: 
+                url: 
+                  type: "string"
+                  default: "https://YOUR_CLUSTER.wavefront.com"
+                  description: "Wavefront URL for your cluster (required)"
+                token: 
+                  type: "string"
+                  default: "YOUR_API_TOKEN"
+                  description: "Wavefront API Token (required)"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of an existing secret containing the token"
+            collector: 
+              type: "object"
+              properties: 
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the collector container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the collector container"
+                discovery: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Rules based and Prometheus endpoints auto-discovery"
+                    enableRuntimeConfigs: 
+                      type: "boolean"
+                      default: true
+                      description: "Enable runtime discovery rules"
+                    config: 
+                      type: "array"
+                      default: "[]"
+                      description: "Configuration for rules based auto-discovery"
+            proxy: 
+              type: "object"
+              properties: 
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the proxy container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the proxy container"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: dataplatform-bp1
+          version: "8.0.1"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

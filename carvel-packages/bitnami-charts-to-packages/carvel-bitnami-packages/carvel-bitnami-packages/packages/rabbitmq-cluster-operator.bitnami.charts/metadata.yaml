@@ -1,0 +1,16 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: rabbitmq-cluster-operator.bitnami.charts
+spec:
+  displayName: "rabbitmq-cluster-operator"
+  longDescription: "Bitnami rabbitmq-cluster-operator Helm Chart"
+  shortDescription: "rabbitmq-cluster-operator Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - rabbitmq
+  - operator
+  - infrastructure
+  - message queue
+  - AMQP

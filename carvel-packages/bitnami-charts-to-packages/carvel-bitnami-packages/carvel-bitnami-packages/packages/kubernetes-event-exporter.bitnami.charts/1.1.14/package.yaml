@@ -1,0 +1,246 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: kubernetes-event-exporter.bitnami.charts.1.1.14
+spec:
+  refName: kubernetes-event-exporter.bitnami.charts
+  version: 1.1.14
+  releaseNotes: |
+        This tool allows exporting the often missed Kubernetes events to various outputs so that they can be used for observability or alerting purposes.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override kubernetes-event-exporter.fullname include (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override kubernetes-event-exporter.fullname template"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Container image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/kubernetes-event-exporter"
+              description: "Container image name"
+            tag: 
+              type: "string"
+              default: "0.10.0-debian-10-r58"
+              description: "Container image tag"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Container image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        config: 
+          type: "object"
+          properties: 
+            logLevel: 
+              type: "string"
+              default: "debug"
+              description: "Verbosity of the logs (options: `fatal`, `error`, `warn`, `info` or `debug`)"
+            logFormat: 
+              type: "string"
+              default: "pretty"
+              description: "How the logs are formatted. Allowed values: `pretty` or `json`"
+            receivers: 
+              type: "array"
+              default: "[]"
+              description: "Array containing event receivers"
+            route: 
+              type: "object"
+              properties: 
+                routes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array containing event route configuration"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Create the RBAC roles for API accessibility"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Create a serviceAccount for the pod"
+            name: 
+              type: "string"
+              default: ""
+              description: "Use the serviceAccount with the specified name"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable container security context"
+            capabilities: 
+              type: "object"
+              properties: 
+                add: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add capabilities for the securityContext"
+                drop: 
+                  type: "array"
+                  default: "[]"
+                  description: "Drop capabilities for the securityContext"
+            readOnlyRootFilesystem: 
+              type: "boolean"
+              default: true
+              description: "Allows the pod to mount the RootFS as ReadOnly only"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "If the pod should run as a non root container."
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Define the uid with which the pod will run"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "Specify resource limits which the container is not allowed to succeed."
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "Specify resource requests which the container needs to spawn."
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Set Priority Class Name to allow priority control over other pods"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array containing extra env vars to be added to all containers"
+        extraEnvVarsConfigMap: 
+          type: "string"
+          default: ""
+          description: "ConfigMap containing extra env vars to be added to all containers"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Secret containing extra env vars to be added to all containers"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra mounts (normally used with extraVolumes)"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array to add extra volumes"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional init containers to pods"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: kubernetes-event-exporter
+          version: "1.1.14"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

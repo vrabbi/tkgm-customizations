@@ -1,0 +1,15 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: grafana-tempo.bitnami.charts
+spec:
+  displayName: "grafana-tempo"
+  longDescription: "Bitnami grafana-tempo Helm Chart"
+  shortDescription: "grafana-tempo Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - grafana
+  - tracing
+  - metrics
+  - infrastructure

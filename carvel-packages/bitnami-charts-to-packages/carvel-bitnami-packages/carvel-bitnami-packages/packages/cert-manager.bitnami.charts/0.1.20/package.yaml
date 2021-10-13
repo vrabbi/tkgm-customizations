@@ -1,0 +1,816 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: cert-manager.bitnami.charts.0.1.20
+spec:
+  refName: cert-manager.bitnami.charts
+  version: 0.1.20
+  releaseNotes: |
+        Cert Manager is a Kubernetes add-on to automate the management and issuance of TLS certificates from various issuing sources.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        logLevel: 
+          type: "number"
+          default: 2
+          description: "Set up cert manager log level"
+        leaderElection: 
+          type: "object"
+          properties: 
+            namespace: 
+              type: "string"
+              default: "kube-system"
+              description: "Namespace which leaderElection works."
+        installCRDs: 
+          type: "boolean"
+          default: false
+          description: "Flag to install Cert Manager CRDs"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of Cert Manager replicas"
+        controller: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Controller replicas"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Controller image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/cert-manager"
+                  description: "Controller image repository"
+                tag: 
+                  type: "string"
+                  default: "1.5.3-debian-10-r29"
+                  description: "Controller image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Controller image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Controller image pull secrets"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Controller image debug mode"
+            acmesolver: 
+              type: "object"
+              properties: 
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "Controller image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/acmesolver"
+                      description: "Controller image repository"
+                    tag: 
+                      type: "string"
+                      default: "1.5.3-debian-10-r29"
+                      description: "Controller image tag (immutable tags are recommended)"
+                    pullPolicy: 
+                      type: "string"
+                      default: "IfNotPresent"
+                      description: "Controller image pull policy"
+                    pullSecrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "Controller image pull secrets"
+                    debug: 
+                      type: "boolean"
+                      default: false
+                      description: "Controller image debug mode"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Controller container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Controller container"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Controller pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Controller pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Controller containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Controller container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Controller container's Security Context runAsNonRoot"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `controller.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `controller.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `controller.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `controller.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `controller.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Cert Manager Controller"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+            containerPort: 
+              type: "number"
+              default: 9402
+              description: "Controller container port"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override Controller default command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override Controller default args"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Controller pod priority class name"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Custom host aliases for Controller pods"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Controller pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Controller pods"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "Add lifecycle hooks to the Controller deployment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Controller deployment update strategy"
+                rollingUpdate: 
+                  type: "object"
+                  default: "{}"
+                  description: "Controller deployment rolling update configuration parameters"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Add extra environment variables to the Controller container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for Controller pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for Controller container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Controller pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Controller pod"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use."
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for the ServiceAccount"
+        webhook: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Webhook replicas"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Webhook image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/cert-manager-webhook"
+                  description: "Webhook image repository"
+                tag: 
+                  type: "string"
+                  default: "1.5.3-debian-10-r29"
+                  description: "Webhook image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Webhook image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Webhook image pull secrets"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Webhook image debug mode"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Webhook container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Webhook container"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Webhook pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Webhook pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled Webhook containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Webhook container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set Webhook container's Security Context runAsNonRoot"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `webhook.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `webhook.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `webhook.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `webhook.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `webhook.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Cert Manager Webhook"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+            containerPort: 
+              type: "number"
+              default: 10250
+              description: "Webhook container port"
+            httpsPort: 
+              type: "number"
+              default: 443
+              description: "Webhook container port"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override Webhook default command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override Webhook default args"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                path: 
+                  type: "string"
+                  default: "/livez"
+                  description: "Path for livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 60
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                path: 
+                  type: "string"
+                  default: "/healthz"
+                  description: "Path for readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default startup probe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Webhook pod priority class name"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Custom host aliases for Webhook pods"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for Webhook pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Webhook pods"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "Add lifecycle hooks to the Webhook deployment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Webhook deployment update strategy"
+                rollingUpdate: 
+                  type: "object"
+                  default: "{}"
+                  description: "Controller deployment rolling update configuration parameters"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Add extra environment variables to the Webhook container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for Webhook pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for Webhook container"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the Webhook pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the Webhook pod"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use."
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for the ServiceAccount"
+        cainjector: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of CAInjector replicas"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "CAInjector image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/cainjector"
+                  description: "CAInjector image repository"
+                tag: 
+                  type: "string"
+                  default: "1.5.3-debian-10-r29"
+                  description: "CAInjector image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "CAInjector image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "CAInjector image pull secrets"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "CAInjector image debug mode"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the CAInjector container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the CAInjector container"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled CAInjector pods' Security Context"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Set CAInjector pod's Security Context fsGroup"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enabled CAInjector containers' Security Context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set CAInjector container's Security Context runAsUser"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Set CAInjector container's Security Context runAsNonRoot"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pod affinity preset. Ignored if `cainjector.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pod anti-affinity preset. Ignored if `cainjector.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Node affinity preset type. Ignored if `cainjector.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Node label key to match. Ignored if `cainjector.affinity` is set"
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Node label values to match. Ignored if `cainjector.affinity` is set"
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Cert Manager CAInjector"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for pod assignment"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override CAInjector default command"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override CAInjector default args"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "CAInjector pod priority class name"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Custom host aliases for CAInjector pods"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels for CAInjector pods"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for CAInjector pods"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "Add lifecycle hooks to the CAInjector deployment"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Controller deployment update strategy"
+                rollingUpdate: 
+                  type: "object"
+                  default: "{}"
+                  description: "Controller deployment rolling update configuration parameters"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Add extra environment variables to the CAInjector container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes for CAInjector pods"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for CAInjector container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers to the CAInjector pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers to the CAInjector pod"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specifies whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to use."
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional custom annotations for the ServiceAccount"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Start metrics"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Cert Manager exporter pods"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor resource(s) for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "The namespace in which the ServiceMonitor will be created"
+                interval: 
+                  type: "string"
+                  default: "60s"
+                  description: "The interval at which metrics should be scraped"
+                path: 
+                  type: "string"
+                  default: "/metrics"
+                  description: "The path which the ServiceMonitor will monitor"
+                scrapeTimeout: 
+                  type: "string"
+                  default: "30s"
+                  description: "The timeout after which the scrape is ended"
+                targetPort: 
+                  type: "number"
+                  default: 9402
+                  description: "The port in which the ServiceMonitor will monitor"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels that can be used so ServiceMonitor resource(s) can be discovered by Prometheus"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether RBAC resources should be created"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: cert-manager
+          version: "0.1.20"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

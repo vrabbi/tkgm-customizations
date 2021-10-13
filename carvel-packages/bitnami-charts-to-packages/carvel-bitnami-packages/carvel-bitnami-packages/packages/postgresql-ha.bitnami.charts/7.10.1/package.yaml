@@ -1,0 +1,1412 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: postgresql-ha.bitnami.charts.7.10.1
+spec:
+  refName: postgresql-ha.bitnami.charts
+  version: 7.10.1
+  releaseNotes: |
+        Chart for PostgreSQL with HA architecture (using Replication Manager (repmgr) and Pgpool).
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+            postgresql: 
+              type: "object"
+              properties: 
+                username: 
+                  type: "string"
+                  default: ""
+                  description: "PostgreSQL username (overrides `postgresql.username`)"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "PostgreSQL password (overrides `postgresql.password`)"
+                database: 
+                  type: "string"
+                  default: ""
+                  description: "PostgreSQL database (overrides `postgresql.database`)"
+                repmgrUsername: 
+                  type: "string"
+                  default: ""
+                  description: "PostgreSQL repmgr username (overrides `postgresql.repmgrUsername`)"
+                repmgrPassword: 
+                  type: "string"
+                  default: ""
+                  description: "PostgreSQL repmgr password (overrides `postgresql.repmgrpassword`)"
+                repmgrDatabase: 
+                  type: "string"
+                  default: ""
+                  description: "PostgreSQL repmgr database (overrides `postgresql.repmgrDatabase`)"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of existing secret to use for PostgreSQL passwords (overrides `postgresql.existingSecret`)"
+            ldap: 
+              type: "object"
+              properties: 
+                bindpw: 
+                  type: "string"
+                  default: ""
+                  description: "LDAP bind password (overrides `ldap.bindpw`)"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of existing secret to use for LDAP passwords (overrides `ldap.existingSecret`)"
+            pgpool: 
+              type: "object"
+              properties: 
+                adminUsername: 
+                  type: "string"
+                  default: ""
+                  description: "Pgpool Admin username (overrides `pgpool.adminUsername`)"
+                adminPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Pgpool Admin password (overrides `pgpool.adminPassword`)"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Pgpool existing secret"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes Cluster Domain"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Common annotations to add to all resources (sub-charts are not considered). Evaluated as a template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Common labels to add to all resources (sub-charts are not considered). Evaluated as a template"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable service account (Note: Service Account will only be automatically created if `serviceAccount.name` is not set)"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of an already existing service account. Setting this value disables the automatic service account creation"
+        topologySpreadConstraints: 
+          type: "object"
+          default: "{}"
+          description: "Topology Spread Constraints for pod assignment spread across your cluster among failure-domains. Evaluated as a template"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Args to override all containers in the deployment"
+        postgresqlImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "PostgreSQL with Repmgr image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/postgresql-repmgr"
+              description: "PostgreSQL with Repmgr image repository"
+            tag: 
+              type: "string"
+              default: "11.13.0-debian-10-r53"
+              description: "PostgreSQL with Repmgr image tag"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "PostgreSQL with Repmgr image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        postgresql: 
+          type: "object"
+          properties: 
+            labels: 
+              type: "object"
+              default: "{}"
+              description: "Labels to add to the StatefulSet. Evaluated as template"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Labels to add to the StatefulSet pods. Evaluated as template"
+            replicaCount: 
+              type: "number"
+              default: 2
+              description: "Number of replicas to deploy"
+            updateStrategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy for PostgreSQL statefulset"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Pod priority class"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL pod affinity preset. Ignored if `postgresql.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "PostgreSQL pod anti-affinity preset. Ignored if `postgresql.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "PostgreSQL node affinity preset type. Ignored if `postgresql.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "PostgreSQL node label key to match Ignored if `postgresql.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "PostgreSQL node label values to match. Ignored if `postgresql.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for PostgreSQL pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for PostgreSQL pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for PostgreSQL pods assignment"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for PostgreSQL with Repmgr"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the PostgreSQL with Repmgr filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the PostgreSQL with Repmgr container"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default startup probe"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra environment variables"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with extra environment variables"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes to add to the deployment"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra volume mounts to add to the container. Normally used with `extraVolumes`."
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Extra init containers to add to the deployment"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Extra sidecar containers to add to the deployment"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 10
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Specifies whether to create a Pod disruption budget for PostgreSQL with Repmgr"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number / percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number / percentage of pods that may be made unavailable"
+            username: 
+              type: "string"
+              default: "postgres"
+              description: "PostgreSQL username"
+            password: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL password"
+            database: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL database"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL password using existing secret"
+            postgresPassword: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL password for the `postgres` user when `username` is not `postgres`"
+            usePasswordFile: 
+              type: "string"
+              default: ""
+              description: "Set to `true` to mount PostgreSQL secret as a file instead of passing environment variable"
+            repmgrUsePassfile: 
+              type: "string"
+              default: ""
+              description: "Set to `true` to configure repmgrl to use `passfile` instead of `password` vars*:*:*:username:password\" and use it to configure Repmgr instead of using password (Requires Postgresql 10+, otherwise ignored)"
+            repmgrPassfilePath: 
+              type: "string"
+              default: ""
+              description: "Custom path where `passfile` will be stored"
+            upgradeRepmgrExtension: 
+              type: "boolean"
+              default: false
+              description: "Upgrade repmgr extension in the database"
+            pgHbaTrustAll: 
+              type: "boolean"
+              default: false
+              description: "Configures PostgreSQL HBA to trust every user"
+            syncReplication: 
+              type: "boolean"
+              default: false
+              description: "Make the replication synchronous. This will wait until the data is synchronized in all the replicas before other query can be run. This ensures the data availability at the expenses of speed."
+            repmgrUsername: 
+              type: "string"
+              default: "repmgr"
+              description: "PostgreSQL Repmgr username"
+            repmgrPassword: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL Repmgr password"
+            repmgrDatabase: 
+              type: "string"
+              default: "repmgr"
+              description: "PostgreSQL Repmgr database"
+            repmgrLogLevel: 
+              type: "string"
+              default: "NOTICE"
+              description: "Repmgr log level (DEBUG, INFO, NOTICE, WARNING, ERROR, ALERT, CRIT or EMERG)"
+            repmgrConnectTimeout: 
+              type: "number"
+              default: 5
+              description: "Repmgr backend connection timeout (in seconds)"
+            repmgrReconnectAttempts: 
+              type: "number"
+              default: 3
+              description: "Repmgr backend reconnection attempts"
+            repmgrReconnectInterval: 
+              type: "number"
+              default: 5
+              description: "Repmgr backend reconnection interval (in seconds)"
+            audit: 
+              type: "object"
+              properties: 
+                logHostname: 
+                  type: "boolean"
+                  default: true
+                  description: "Add client hostnames to the log file"
+                logConnections: 
+                  type: "boolean"
+                  default: false
+                  description: "Add client log-in operations to the log file"
+                logDisconnections: 
+                  type: "boolean"
+                  default: false
+                  description: "Add client log-outs operations to the log file"
+                pgAuditLog: 
+                  type: "string"
+                  default: ""
+                  description: "Add operations to log using the pgAudit extension"
+                pgAuditLogCatalog: 
+                  type: "string"
+                  default: "off"
+                  description: "Log catalog using pgAudit"
+                clientMinMessages: 
+                  type: "string"
+                  default: "error"
+                  description: "Message log level to share with the user"
+                logLinePrefix: 
+                  type: "string"
+                  default: ""
+                  description: "Template string for the log line prefix"
+                logTimezone: 
+                  type: "string"
+                  default: ""
+                  description: "Timezone for the log timestamps"
+            sharedPreloadLibraries: 
+              type: "string"
+              default: "pgaudit, repmgr"
+              description: "Shared preload libraries (comma-separated list)"
+            maxConnections: 
+              type: "string"
+              default: ""
+              description: "Maximum total connections"
+            postgresConnectionLimit: 
+              type: "string"
+              default: ""
+              description: "Maximum connections for the postgres user"
+            dbUserConnectionLimit: 
+              type: "string"
+              default: ""
+              description: "Maximum connections for the created user"
+            tcpKeepalivesInterval: 
+              type: "string"
+              default: ""
+              description: "TCP keepalives interval"
+            tcpKeepalivesIdle: 
+              type: "string"
+              default: ""
+              description: "TCP keepalives idle"
+            tcpKeepalivesCount: 
+              type: "string"
+              default: ""
+              description: "TCP keepalives count"
+            statementTimeout: 
+              type: "string"
+              default: ""
+              description: "Statement timeout"
+            pghbaRemoveFilters: 
+              type: "string"
+              default: ""
+              description: "Comma-separated list of patterns to remove from the pg_hba.conf file"
+            extraInitContainers: 
+              type: "array"
+              default: "[]"
+              description: "Extra init containers"
+            repmgrConfiguration: 
+              type: "string"
+              default: ""
+              description: "Repmgr configuration"
+            configuration: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL configuration"
+            pgHbaConfiguration: 
+              type: "string"
+              default: ""
+              description: "PostgreSQL client authentication configuration"
+            configurationCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with configuration files"
+            extendedConf: 
+              type: "string"
+              default: ""
+              description: "Extended PostgreSQL configuration (appended to main or default configuration). Implies `volumePermissions.enabled`."
+            extendedConfCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with PostgreSQL extended configuration"
+            initdbScripts: 
+              type: "object"
+              default: "{}"
+              description: "Dictionary of initdb scripts"
+            initdbScriptsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with scripts to be run at first boot"
+            initdbScriptsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with scripts to be run at first boot"
+            tls: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS traffic support for end-client connections"
+                preferServerCiphers: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to use the server's TLS cipher preferences rather than the client's"
+                certificatesSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of an existing secret that contains the certificates"
+                certFilename: 
+                  type: "string"
+                  default: ""
+                  description: "Certificate filename"
+                certKeyFilename: 
+                  type: "string"
+                  default: ""
+                  description: "Certificate key filename"
+                certCAFilename: 
+                  type: "string"
+                  default: ""
+                  description: "CA Certificate filename"
+        pgpoolImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Pgpool image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/pgpool"
+              description: "Pgpool image repository"
+            tag: 
+              type: "string"
+              default: "4.2.5-debian-10-r22"
+              description: "Pgpool image tag"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Pgpool image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        pgpool: 
+          type: "object"
+          properties: 
+            customUsers: 
+              type: "object"
+              default: "{}"
+              description: "Additional users that will be performing connections to the database using"
+            usernames: 
+              type: "string"
+              default: ""
+              description: "Comma or semicolon separated list of postgres usernames"
+            passwords: 
+              type: "string"
+              default: ""
+              description: "Comma or semicolon separated list of the associated passwords for the users above"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            customUsersSecret: 
+              type: "string"
+              default: ""
+              description: "Name of a secret containing the usernames and passwords of accounts that will be added to pgpool_passwd"
+            srCheckDatabase: 
+              type: "string"
+              default: "postgres"
+              description: "Name of the database to perform streaming replication checks"
+            labels: 
+              type: "object"
+              default: "{}"
+              description: "Labels to add to the Deployment. Evaluated as template"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Labels to add to the pods. Evaluated as template"
+            serviceLabels: 
+              type: "object"
+              default: "{}"
+              description: "Labels to add to the service. Evaluated as template"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            customStartupProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default startup probe"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "LifecycleHook to set additional configuration at startup, e.g. LDAP settings via REST API. Evaluated as a template"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra environment variables"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with extra environment variables"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes to add to the deployment"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra volume mounts to add to the container. Normally used with `extraVolumes`"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Extra init containers to add to the deployment"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Extra sidecar containers to add to the deployment"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "The number of replicas to deploy"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Pod priority class"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Pgpool pod affinity preset. Ignored if `pgpool.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Pgpool pod anti-affinity preset. Ignored if `pgpool.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Pgpool node affinity preset type. Ignored if `pgpool.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Pgpool node label key to match Ignored if `pgpool.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Pgpool node label values to match. Ignored if `pgpool.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for Pgpool pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for Pgpool pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for Pgpool pods assignment"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for Pgpool"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the Pgpool filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the Pgpool container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 5
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 10
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Specifies whether a Pod disruption budget should be created for Pgpool pods"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number / percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number / percentage of pods that may be made unavailable"
+            updateStrategy: 
+              type: "object"
+              default: "{}"
+              description: "Strategy used to replace old Pods by new ones"
+            minReadySeconds: 
+              type: "string"
+              default: ""
+              description: "How many seconds a pod needs to be ready before killing the next, during update"
+            adminUsername: 
+              type: "string"
+              default: "admin"
+              description: "Pgpool Admin username"
+            adminPassword: 
+              type: "string"
+              default: ""
+              description: "Pgpool Admin password"
+            logConnections: 
+              type: "boolean"
+              default: false
+              description: "Log all client connections (PGPOOL_ENABLE_LOG_CONNECTIONS)"
+            logHostname: 
+              type: "boolean"
+              default: true
+              description: "Log the client hostname instead of IP address (PGPOOL_ENABLE_LOG_HOSTNAME)"
+            logPerNodeStatement: 
+              type: "boolean"
+              default: false
+              description: "Log every SQL statement for each DB node separately (PGPOOL_ENABLE_LOG_PER_NODE_STATEMENT)"
+            logLinePrefix: 
+              type: "string"
+              default: ""
+              description: "Format of the log entry lines (PGPOOL_LOG_LINE_PREFIX)"
+            clientMinMessages: 
+              type: "string"
+              default: "error"
+              description: "Log level for clients"
+            numInitChildren: 
+              type: "string"
+              default: ""
+              description: "The number of preforked Pgpool-II server processes. It is also the concurrent"
+            maxPool: 
+              type: "string"
+              default: ""
+              description: "The maximum number of cached connections in each child process (PGPOOL_MAX_POOL)"
+            childMaxConnections: 
+              type: "string"
+              default: ""
+              description: "The maximum number of client connections in each child process (PGPOOL_CHILD_MAX_CONNECTIONS)"
+            childLifeTime: 
+              type: "string"
+              default: ""
+              description: "The time in seconds to terminate a Pgpool-II child process if it remains idle (PGPOOL_CHILD_LIFE_TIME)"
+            clientIdleLimit: 
+              type: "string"
+              default: ""
+              description: "The time in seconds to disconnect a client if it remains idle since the last query (PGPOOL_CLIENT_IDLE_LIMIT)"
+            connectionLifeTime: 
+              type: "string"
+              default: ""
+              description: "The time in seconds to terminate the cached connections to the PostgreSQL backend (PGPOOL_CONNECTION_LIFE_TIME)"
+            useLoadBalancing: 
+              type: "boolean"
+              default: true
+              description: "Use Pgpool Load-Balancing"
+            loadBalancingOnWrite: 
+              type: "string"
+              default: "transaction"
+              description: "LoadBalancer on write actions behavior"
+            configuration: 
+              type: "object"
+              default: "{}"
+              description: "Pgpool configuration"
+            configurationCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with Pgpool configuration"
+            initdbScripts: 
+              type: "object"
+              default: "{}"
+              description: "Dictionary of initdb scripts"
+            initdbScriptsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with scripts to be run every time Pgpool container is initialized"
+            initdbScriptsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with scripts to be run every time Pgpool container is initialized"
+            tls: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS traffic support for end-client connections"
+                autoGenerated: 
+                  type: "boolean"
+                  default: false
+                  description: "Create self-signed TLS certificates. Currently only supports PEM certificates"
+                preferServerCiphers: 
+                  type: "boolean"
+                  default: true
+                  description: "Whether to use the server's TLS cipher preferences rather than the client's"
+                certificatesSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of an existing secret that contains the certificates"
+                certFilename: 
+                  type: "string"
+                  default: ""
+                  description: "Certificate filename"
+                certKeyFilename: 
+                  type: "string"
+                  default: ""
+                  description: "Certificate key filename"
+                certCAFilename: 
+                  type: "string"
+                  default: ""
+                  description: "CA Certificate filename"
+        ldap: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable LDAP support"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing secret to use for LDAP passwords"
+            uri: 
+              type: "string"
+              default: ""
+              description: "LDAP URL beginning in the form `ldap[s]://<hostname>:<port>`"
+            base: 
+              type: "string"
+              default: ""
+              description: "LDAP base DN"
+            binddn: 
+              type: "string"
+              default: ""
+              description: "LDAP bind DN"
+            bindpw: 
+              type: "string"
+              default: ""
+              description: "LDAP bind password"
+            bslookup: 
+              type: "string"
+              default: ""
+              description: "LDAP base lookup"
+            scope: 
+              type: "string"
+              default: ""
+              description: "LDAP search scope"
+            tlsReqcert: 
+              type: "string"
+              default: ""
+              description: "LDAP TLS check on server certificates"
+            nssInitgroupsIgnoreusers: 
+              type: "string"
+              default: "root,nslcd"
+              description: "LDAP ignored users"
+        metricsImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "PostgreSQL Prometheus exporter image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/postgres-exporter"
+              description: "PostgreSQL Prometheus exporter image repository"
+            tag: 
+              type: "string"
+              default: "0.10.0-debian-10-r82"
+              description: "PostgreSQL Prometheus exporter image tag"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "PostgreSQL Prometheus exporter image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable PostgreSQL Prometheus exporter"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for PostgreSQL Prometheus exporter"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the PostgreSQL Prometheus exporter container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            startupProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable startupProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for startupProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for startupProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for startupProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 10
+                  description: "Failure threshold for startupProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for startupProbe"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for PostgreSQL Prometheus exporter service"
+            customMetrics: 
+              type: "string"
+              default: ""
+              description: "Additional custom metrics"
+            extraEnvVars: 
+              type: "object"
+              default: "{}"
+              description: "An array to add extra environment variables to configure postgres-exporter"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Optional namespace which Prometheus is running in"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "How frequently to scrape metrics (use by default, falling back to Prometheus' default)"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Service monitor scrape timeout"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Defaults to what's used if you follow CoreOS Prometheus Install Instructions (https://github.com/bitnami/charts/tree/master/bitnami/kube-prometheus#tldr)"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "ServiceMonitor relabelings. Value is evaluated as a template"
+                metricRelabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "ServiceMonitor metricRelabelings. Value is evaluated as a template"
+        volumePermissionsImage: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Init container volume-permissions image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/bitnami-shell"
+              description: "Init container volume-permissions image repository"
+            tag: 
+              type: "string"
+              default: "10-debian-10-r214"
+              description: "Init container volume-permissions image tag"
+            pullPolicy: 
+              type: "string"
+              default: "Always"
+              description: "Init container volume-permissions image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container to adapt volume permissions"
+            securityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "Init container volume-permissions User ID"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable data persistence"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "A manually managed Persistent Volume and Claim"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume Storage Class"
+            mountPath: 
+              type: "string"
+              default: "/bitnami/postgresql"
+              description: "The path the volume will be mounted at, useful when using different PostgreSQL images."
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "List of access modes of data volume"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "Persistent Volume Claim size"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Persistent Volume Claim annotations"
+            selector: 
+              type: "object"
+              default: "{}"
+              description: "Selector to match an existing Persistent Volume (this value is evaluated as a template)"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes service type (`ClusterIP`, `NodePort` or `LoadBalancer`)"
+            port: 
+              type: "number"
+              default: 5432
+              description: "PostgreSQL port"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Kubernetes service nodePort"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Load balancer IP if service type is `LoadBalancer`"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Addresses that are allowed when service is LoadBalancer"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Set the Cluster IP to use"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "Enable client source IP preservation"
+            sessionAffinity: 
+              type: "string"
+              default: "None"
+              description: "Control where client requests go, to the same pod or round-robin"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Provide any additional annotations for PostgreSQL service"
+            serviceLabels: 
+              type: "object"
+              default: "{}"
+              description: "Labels for PostgreSQL service"
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable NetworkPolicy"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "Don't require client label for connections"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: postgresql-ha
+          version: "7.10.1"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

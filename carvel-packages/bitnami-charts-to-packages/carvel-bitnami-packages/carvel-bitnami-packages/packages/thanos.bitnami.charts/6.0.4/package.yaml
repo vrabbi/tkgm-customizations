@@ -1,0 +1,3067 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: thanos.bitnami.charts.6.0.4
+spec:
+  refName: thanos.bitnami.charts
+  version: 6.0.4
+  releaseNotes: |
+        Thanos is a highly available metrics system that can be added on top of existing Prometheus deployments, providing a global query view across all Prometheus installations.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Add labels to all the deployed resources"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes Cluster Domain"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Thanos image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/thanos"
+              description: "Thanos image repository"
+            tag: 
+              type: "string"
+              default: "0.23.0-scratch-r1"
+              description: "Thanos image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Thanos image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+        objstoreConfig: 
+          type: "string"
+          default: ""
+          description: "The [objstore configuration](https://thanos.io/storage.md/)"
+        indexCacheConfig: 
+          type: "string"
+          default: ""
+          description: "The [index cache configuration](https://thanos.io/components/store.md/)"
+        bucketCacheConfig: 
+          type: "string"
+          default: ""
+          description: "The [bucket cache configuration](https://thanos.io/components/store.md/)"
+        existingObjstoreSecret: 
+          type: "string"
+          default: ""
+          description: "Secret with Objstore Configuration"
+        existingObjstoreSecretItems: 
+          type: "array"
+          default: "[]"
+          description: "Optional item list for specifying a custom Secret key. If so, path should be objstore.yml"
+        existingServiceAccount: 
+          type: "string"
+          default: ""
+          description: "Provide a common service account to be shared with all components"
+        query: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Set to true to enable Thanos Query component"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Thanos Query log level"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Thanos Query log format"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Query Service Account"
+                existingServiceAccount: 
+                  type: "string"
+                  default: ""
+                  description: "Provide an existing service account for query"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            replicaLabel: 
+              type: "array"
+              default: "[\"replica\"]"
+              description: "Replica indicator(s) along which data is deduplicated"
+            dnsDiscovery: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable store APIs discovery via DNS"
+                sidecarsService: 
+                  type: "string"
+                  default: ""
+                  description: "Sidecars service name to discover them using DNS discovery"
+                sidecarsNamespace: 
+                  type: "string"
+                  default: ""
+                  description: "Sidecars namespace to discover them using DNS discovery"
+            stores: 
+              type: "array"
+              default: "[]"
+              description: "Statically configure store APIs to connect with Thanos Query"
+            sdConfig: 
+              type: "string"
+              default: ""
+              description: "Query Service Discovery Configuration"
+            existingSDConfigmap: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with Ruler configuration"
+            extraContainers: 
+              type: "array"
+              default: "[]"
+              description: "Extra containers running as sidecars to Thanos query"
+            extraEnv: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables for Thanos query container"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes to add to Thanos Query"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra volume mounts to add to the query container"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "Extra Flags to passed to Thanos Query"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Thanos Query replicas to deploy"
+            strategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Deployment Strategy Type, can be set to RollingUpdate or Recreate by default"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Thanos Query pod affinity preset"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Thanos Query pod anti-affinity preset. Ignored if `query.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Query node affinity preset type. Ignored if `query.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Query node label key to match Ignored if `query.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Thanos Query node label values to match. Ignored if `query.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Query affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Query node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Thanos Query tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Query pod labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Thanos Query pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Controller priorityClassName"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for the Thanos Query pod"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the filesystem used by Query container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the service user running the Query pod"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context for Query container"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container Query to run as a non root user"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possiblity on or off for Query"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "mount / (root) as a readonly filesystem of Query container"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ClusterRole and ClusterRolebing for the Service account"
+            pspEnabled: 
+              type: "boolean"
+              default: false
+              description: "Create PodSecurity Policy"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Thanos Query container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Thanos Query container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            grpcTLS: 
+              type: "object"
+              properties: 
+                server: 
+                  type: "object"
+                  properties: 
+                    secure: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable TLS for GRPC server"
+                    autoGenerated: 
+                      type: "boolean"
+                      default: false
+                      description: "Create self-signed TLS certificates. Currently only supports PEM certificates."
+                    cert: 
+                      type: "string"
+                      default: ""
+                      description: "TLS Certificate for gRPC server, leave blank to disable TLS - ignored if existingSecret is provided"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "TLS Key for the gRPC server, leave blank to disable TLS - ignored if existingSecret is provided"
+                    ca: 
+                      type: "string"
+                      default: ""
+                      description: "TLS CA to verify clients against"
+                    existingSecret: 
+                      type: "object"
+                      default: "{}"
+                      description: "Existing secret containing your own TLS certificates."
+                client: 
+                  type: "object"
+                  properties: 
+                    secure: 
+                      type: "boolean"
+                      default: false
+                      description: "Use TLS when talking to the gRPC server"
+                    autoGenerated: 
+                      type: "boolean"
+                      default: false
+                      description: "Create self-signed TLS certificates. Currently only supports PEM certificates."
+                    cert: 
+                      type: "string"
+                      default: ""
+                      description: "TLS Certificates to use to identify this client to the server - ignored if existingSecret is provided"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "TLS Key for the client's certificate - ignored if existingSecret is provided"
+                    ca: 
+                      type: "string"
+                      default: ""
+                      description: "TLS CA Certificates to use to verify gRPC servers - ignored if existingSecret is provided"
+                    servername: 
+                      type: "string"
+                      default: ""
+                      description: "Server name to verify the hostname on the returned gRPC certificates. See https://tools.ietf.org/html/rfc4366#section-3.1"
+                    existingSecret: 
+                      type: "object"
+                      default: "{}"
+                      description: "Existing secret containing your own TLS certificates."
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Query service clusterIP IP"
+                http: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 9090
+                      description: "Service HTTP port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service HTTP node port"
+                targetPort: 
+                  type: "string"
+                  default: "http"
+                  description: "Service targetPort override"
+                grpc: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 10901
+                      description: "Service GRPC port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service GRPC node port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load balancer IP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Thanos Query service externalTrafficPolicy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Query service"
+                labelSelectorsOverride: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector for Thanos query service"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for Thanos Query"
+                minReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Minimum number of Thanos Query replicas"
+                maxReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number of Thanos Query replicas"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Target CPU utilization percentage"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Target Memory utilization percentage"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of pods that may be made unavailable"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress controller resource"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Set this to true in order to add the corresponding annotations for cert-manager"
+                hostname: 
+                  type: "string"
+                  default: "thanos.local"
+                  description: "Default host for the ingress resource"
+                ingressClassName: 
+                  type: "string"
+                  default: ""
+                  description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Ingress annotations"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ingress TLS section"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Force Ingress API version (automatically detected if not set)"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Ingress path"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+                grpc: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable ingress controller resource (GRPC)"
+                    certManager: 
+                      type: "boolean"
+                      default: false
+                      description: "Add annotations for cert-manager (GRPC)"
+                    hostname: 
+                      type: "string"
+                      default: "thanos-grpc.local"
+                      description: "Default host for the ingress resource (GRPC)"
+                    annotations: 
+                      type: "object"
+                      default: "{}"
+                      description: "Ingress annotations (GRPC)"
+                    extraHosts: 
+                      type: "array"
+                      default: "[]"
+                      description: "The list of additional hostnames to be covered with this ingress record."
+                    extraTls: 
+                      type: "array"
+                      default: "[]"
+                      description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                    secrets: 
+                      type: "array"
+                      default: "[]"
+                      description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+                    apiVersion: 
+                      type: "string"
+                      default: ""
+                      description: "Override API Version (automatically detected if not set)"
+                    path: 
+                      type: "string"
+                      default: "/"
+                      description: "Ingress Path"
+                    pathType: 
+                      type: "string"
+                      default: "ImplementationSpecific"
+                      description: "Ingress Path type"
+        queryFrontend: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable Thanos Query Frontend component"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Thanos Query Frontend log level"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Thanos Query Frontend log format"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Query Frontend Service Account"
+                existingServiceAccount: 
+                  type: "string"
+                  default: ""
+                  description: "Provide an existing service account for Query Frontend"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            extraContainers: 
+              type: "array"
+              default: "[]"
+              description: "Extra containers running as sidecars to Thanos Query Frontend container"
+            extraEnv: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables for Thanos Query Frontend container"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes to add to Thanos Query Frontend"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra volume mounts to add to the query-frontend container"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "Extra Flags to passed to Thanos Query Frontend"
+            config: 
+              type: "string"
+              default: ""
+              description: "Thanos Query Frontend cache configuration"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with Thanos Query Frontend cache configuration"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Thanos Query Frontend replicas to deploy"
+            strategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Deployment Strategy Type, can be set to RollingUpdate or Recreate by default"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Thanos Query Frontend pod affinity preset"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Thanos Query Frontend pod anti-affinity preset. Ignored if `queryFrontend.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Query Frontend node affinity preset type. Ignored if `queryFrontend.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Query Frontend node label key to match Ignored if `queryFrontend.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Thanos Query Frontend node label values to match. Ignored if `queryFrontend.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Query Frontend affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Query Frontend node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Thanos Query Frontend tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Query Frontend pod labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Thanos Query Frontend pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Controller priorityClassName"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for the Thanos Queryfrontend pod"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the filesystem used by Queryfrontend container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the service user running the Queryfrontend pod"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context for Queryfrontend container"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container Queryfrontend to run as a non root user"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possiblity on or off for Queryfrontend"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "mount / (root) as a readonly filesystem of Queryfrontend container"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ClusterRole and ClusterRolebing for the Service account"
+            pspEnabled: 
+              type: "boolean"
+              default: false
+              description: "Create PodSecurity Policy"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Thanos Query Frontend container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Thanos Query Frontend container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Query Frontend service clusterIP IP"
+                http: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 9090
+                      description: "Service HTTP port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service HTTP node port"
+                targetPort: 
+                  type: "string"
+                  default: "http"
+                  description: "Service targetPort override"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load balancer IP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Thanos Query Frontend service externalTrafficPolicy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Query Frontend service"
+                labelSelectorsOverride: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector for Thanos query service"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for Thanos Query Frontend"
+                minReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Minimum number of Thanos Query Frontend replicas"
+                maxReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number of Thanos Query Frontend replicas"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Target CPU utilization percentage"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Target Memory utilization percentage"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of pods that may be made unavailable"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress controller resource"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Set this to true in order to add the corresponding annotations for cert-manager"
+                hostname: 
+                  type: "string"
+                  default: "thanos.local"
+                  description: "Default host for the ingress resource"
+                ingressClassName: 
+                  type: "string"
+                  default: ""
+                  description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Ingress annotations"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ingress TLS section"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Force Ingress API version (automatically detected if not set)"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Ingress path"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+        bucketweb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable Thanos Bucket Web component"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Thanos Bucket Web log level"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Thanos Bucket Web log format"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Bucket Web Service Account"
+                existingServiceAccount: 
+                  type: "string"
+                  default: ""
+                  description: "Name for an existing Thanos Bucket Web Service Account"
+            refresh: 
+              type: "string"
+              default: "30m"
+              description: "Refresh interval to download metadata from remote storage"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            timeout: 
+              type: "string"
+              default: "5m"
+              description: "Timeout to download metadata from remote storage"
+            extraContainers: 
+              type: "array"
+              default: "[]"
+              description: "Extra containers running as sidecars to Thanos Bucket Web container"
+            extraEnv: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables for Thanos Bucket Web container"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes to add to Bucket Web"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra volume mounts to add to the bucketweb container"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "Extra Flags to passed to Thanos Bucket Web"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Thanos Bucket Web replicas to deploy"
+            strategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Deployment Strategy Type, can be set to RollingUpdate or Recreate by default"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Thanos Bucket Web pod affinity preset"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Thanos Bucket Web pod anti-affinity preset. Ignored if `bucketweb.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Bucket Web node affinity preset type. Ignored if `bucketweb.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Bucket Web node label key to match Ignored if `bucketweb.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Thanos Bucket Web node label values to match. Ignored if `bucketweb.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Bucket Web affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Bucket Web node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Thanos Bucket Web tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Bucket Web pod labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Thanos Bucket Web pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Controller priorityClassName"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for the Thanos Bucketweb pod"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the filesystem used by Bucketweb container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the service user running the Bucketweb pod"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context for Bucketweb container"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container Bucketweb to run as a non root user"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possiblity on or off for Bucketweb"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "mount / (root) as a readonly filesystem of Bucketweb container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Thanos Bucket Web container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Thanos Bucket Web container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Bucket Web service clusterIP IP"
+                http: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 8080
+                      description: "Service HTTP port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service HTTP node port"
+                targetPort: 
+                  type: "string"
+                  default: "http"
+                  description: "Service targetPort override"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load balancer IP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Thanos Bucket Web service externalTrafficPolicy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Bucket Web service"
+                labelSelectorsOverride: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector for Thanos query service"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of pods that may be made unavailable"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress controller resource"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Add annotations for cert-manager"
+                hostname: 
+                  type: "string"
+                  default: "thanos-bucketweb.local"
+                  description: "Default host for the ingress resource"
+                ingressClassName: 
+                  type: "string"
+                  default: ""
+                  description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Ingress annotations"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ingress TLS section"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Force Ingress API version (automatically detected if not set)"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Ingress path"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+        compactor: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable Thanos Compactor component"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Thanos Compactor log level"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Thanos Compactor log format"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Compactor Service Account"
+                existingServiceAccount: 
+                  type: "string"
+                  default: ""
+                  description: "Name for an existing Thanos Compactor Service Account"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            retentionResolutionRaw: 
+              type: "string"
+              default: "30d"
+              description: "Resolution and Retention flag"
+            retentionResolution5m: 
+              type: "string"
+              default: "30d"
+              description: "Resolution and Retention flag"
+            retentionResolution1h: 
+              type: "string"
+              default: "10y"
+              description: "Resolution and Retention flag"
+            consistencyDelay: 
+              type: "string"
+              default: "30m"
+              description: "Minimum age of fresh (non-compacted) blocks before they are being processed"
+            extraEnv: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables for Thanos Compactor container"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes to add to Thanos Compactor"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra volume mounts to add to the compactor container"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "Extra Flags to passed to Thanos Compactor"
+            strategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Deployment Strategy Type, can be set to RollingUpdate or Recreate by default"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Thanos Compactor pod affinity preset"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Thanos Compactor pod anti-affinity preset. Ignored if `compactor.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Compactor node affinity preset type. Ignored if `compactor.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Compactor node label key to match Ignored if `compactor.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Thanos Compactor node label values to match. Ignored if `compactor.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Compactor affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Compactor node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Thanos Compactor tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Compactor pod labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Thanos Compactor pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Controller priorityClassName"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for the Thanos Compactor pod"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the filesystem used by Compactor container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the service user running the Compactor pod"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context for Compactor container"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container Compactor to run as a non root user"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possiblity on or off for Compactor"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "mount / (root) as a readonly filesystem of Compactor container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Thanos Compactor container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Thanos Compactor container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Compactor service clusterIP IP"
+                http: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 9090
+                      description: "Service HTTP port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service HTTP node port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load balancer IP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Addresses that are allowed when service is LoadBalancer"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Thanos Compactor service externalTrafficPolicy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Compactor service"
+                labelSelectorsOverride: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector for Thanos query service"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress controller resource"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Set this to true in order to add the corresponding annotations for cert-manager"
+                hostname: 
+                  type: "string"
+                  default: "thanos-compactor.local"
+                  description: "Default host for the ingress resource"
+                ingressClassName: 
+                  type: "string"
+                  default: ""
+                  description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Ingress annotations"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ingress TLS section"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Force Ingress API version (automatically detected if not set)"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Ingress path"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable data persistence"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Use a existing PVC which must be created manually before bound"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the `storageClass` used to provision the volume"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "Access modes of data volume"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Size of data volume"
+        storegateway: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable Thanos Store Gateway component"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Thanos Store Gateway log level"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Thanos Store Gateway log format"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Store Gateway Service Account"
+                existingServiceAccount: 
+                  type: "string"
+                  default: ""
+                  description: "Name for an existing Thanos Store Gateway Service Account"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            extraEnv: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables for Thanos Store Gateway container"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes to add to Thanos Store Gateway"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra volume mounts to add to the storegateway container"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "Extra Flags to passed to Thanos Store Gateway"
+            config: 
+              type: "string"
+              default: ""
+              description: "Thanos Store Gateway cache configuration"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with Thanos Store Gateway cache configuration"
+            grpc: 
+              type: "object"
+              properties: 
+                tls: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable TLS encryption in the GRPC server"
+                    autoGenerated: 
+                      type: "boolean"
+                      default: false
+                      description: "Create self-signed TLS certificates. Currently only supports PEM certificates."
+                    cert: 
+                      type: "string"
+                      default: ""
+                      description: "TLS Certificate for gRPC server, leave blank to disable TLS - ignored if existingSecret is provided"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "TLS Key for gRPC server, leave blank to disable TLS - ignored if existingSecret is provided"
+                    ca: 
+                      type: "string"
+                      default: ""
+                      description: "TLS CA to verify clients against - ignored if existingSecret is provided"
+                    existingSecret: 
+                      type: "object"
+                      default: "{}"
+                      description: "Existing secret containing your own TLS certificates."
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Thanos Store Gateway replicas to deploy"
+            updateStrategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Statefulset Update Strategy Type, can be set to RollingUpdate or OnDelete by default"
+            podManagementPolicy: 
+              type: "string"
+              default: "OrderedReady"
+              description: "Statefulset Pod management policy: OrderedReady (default) or Parallel"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Thanos Store Gateway pod affinity preset"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Thanos Store Gateway pod anti-affinity preset. Ignored if `storegateway.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Store Gateway node affinity preset type. Ignored if `storegateway.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Store Gateway node label key to match Ignored if `storegateway.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Thanos Store Gateway node label values to match. Ignored if `storegateway.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Store Gateway affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Store Gateway node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Thanos Store Gateway tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Store Gateway pod labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Thanos Store Gateway pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Controller priorityClassName"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for the Thanos Storegateway pod"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the filesystem used by Storegateway container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the service user running the Storegateway pod"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context for Storegateway container"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container Storegateway to run as a non root user"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possiblity on or off for Storegateway"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "mount / (root) as a readonly filesystem of Storegateway container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Thanos Store Gateway container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Thanos Store Gateway container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Store Gateway service clusterIP IP"
+                http: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 9090
+                      description: "Service HTTP port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service HTTP node port"
+                grpc: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 10901
+                      description: "Service GRPC port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service GRPC node port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load balancer IP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Addresses that are allowed when service is LoadBalancer"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Thanos Store Gateway service externalTrafficPolicy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Store Gateway service"
+                labelSelectorsOverride: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector for Thanos query service"
+                additionalHeadless: 
+                  type: "boolean"
+                  default: false
+                  description: "Additional Headless service"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable data persistence"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Use a existing PVC which must be created manually before bound"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the `storageClass` used to provision the volume"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "Access modes of data volume"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Size of data volume"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for Thanos Store Gateway"
+                minReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Minimum number of Thanos Store Gateway replicas"
+                maxReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number of Thanos Store Gateway replicas"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Target CPU utilization percentage"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Target Memory utilization percentage"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of pods that may be made unavailable"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress controller resource"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Set this to true in order to add the corresponding annotations for cert-manager"
+                hostname: 
+                  type: "string"
+                  default: "thanos-storegateway.local"
+                  description: "Default host for the ingress resource"
+                ingressClassName: 
+                  type: "string"
+                  default: ""
+                  description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Ingress annotations"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ingress TLS section"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Force Ingress API version (automatically detected if not set)"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Ingress path"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+            sharded: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable sharding for Thanos Store Gateway"
+                hashPartitioning: 
+                  type: "object"
+                  properties: 
+                    shards: 
+                      type: "string"
+                      default: ""
+                      description: "Setting hashPartitioning will create multiple store statefulsets based on the number of shards specified using the hashmod of the blocks"
+                timePartitioning: 
+                  type: "array"
+                  default: "[]"
+                  description: "Setting time timePartitioning will create multiple store deployments based on the number of partitions"
+                service: 
+                  type: "object"
+                  properties: 
+                    clusterIPs: 
+                      type: "array"
+                      default: "[]"
+                      description: "Array of cluster IPs for each Store Gateway service. Length must be the same as the number of shards"
+                    loadBalancerIPs: 
+                      type: "array"
+                      default: "[]"
+                      description: "Array of load balancer IPs for each Store Gateway service. Length must be the same as the number of shards"
+                    http: 
+                      type: "object"
+                      properties: 
+                        nodePorts: 
+                          type: "array"
+                          default: "[]"
+                          description: "Array of http node ports used for Store Gateway service. Length must be the same as the number of shards"
+                    grpc: 
+                      type: "object"
+                      properties: 
+                        nodePorts: 
+                          type: "array"
+                          default: "[]"
+                          description: "Array of grpc node ports used for Store Gateway service. Length must be the same as the number of shards"
+        ruler: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable Thanos Ruler component"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Thanos Ruler log level"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Thanos Ruler log format"
+            replicaLabel: 
+              type: "string"
+              default: "replica"
+              description: "Label to treat as a replica indicator along which data is deduplicated"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Ruler Service Account"
+                existingServiceAccount: 
+                  type: "string"
+                  default: ""
+                  description: "Name for an existing Thanos Ruler Service Account"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            dnsDiscovery: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Dynamically configure Query APIs using DNS discovery"
+            alertmanagers: 
+              type: "array"
+              default: "[]"
+              description: "Alermanager URLs array"
+            alertmanagersConfig: 
+              type: "string"
+              default: ""
+              description: "Alertmanagers Configuration"
+            evalInterval: 
+              type: "string"
+              default: "1m"
+              description: "The default evaluation interval to use"
+            clusterName: 
+              type: "string"
+              default: ""
+              description: "Used to set the 'ruler_cluster' label"
+            extraContainers: 
+              type: "array"
+              default: "[]"
+              description: "Extra containers running as sidecars to Thanos Ruler container"
+            extraEnv: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables for Thanos Ruler container"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes to add to Thanos Ruler"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra volume mounts to add to the ruler container"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "Extra Flags to passed to Thanos Ruler"
+            config: 
+              type: "string"
+              default: ""
+              description: "Ruler configuration"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with Ruler configuration"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Thanos Ruler replicas to deploy"
+            updateStrategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Statefulset Update Strategy Type"
+            podManagementPolicy: 
+              type: "string"
+              default: "OrderedReady"
+              description: "Statefulset Pod Management Policy Type"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Thanos Ruler pod affinity preset"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Thanos Ruler pod anti-affinity preset. Ignored if `ruler.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Ruler node affinity preset type. Ignored if `ruler.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Ruler node label key to match Ignored if `ruler.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Thanos Ruler node label values to match. Ignored if `ruler.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Ruler affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Ruler node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Thanos Ruler tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Ruler pod labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Thanos Ruler pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Controller priorityClassName"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for the Thanos Ruler pod"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the filesystem used by Ruler container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the service user running the Ruler pod"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context for Ruler container"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container Ruler to run as a non root user"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possiblity on or off for Ruler"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "mount / (root) as a readonly filesystem of Ruler container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Thanos Ruler container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Thanos Ruler container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Ruler service clusterIP IP"
+                http: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 9090
+                      description: "Service HTTP port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service HTTP node port"
+                targetPort: 
+                  type: "string"
+                  default: "http"
+                  description: "Service targetPort override"
+                grpc: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 10901
+                      description: "Service GRPC port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service GRPC node port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load balancer IP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Thanos Ruler service externalTrafficPolicy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Ruler service"
+                labelSelectorsOverride: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector for Thanos query service"
+                additionalHeadless: 
+                  type: "boolean"
+                  default: false
+                  description: "Additional Headless service"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable data persistence"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Use a existing PVC which must be created manually before bound"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the `storageClass` used to provision the volume"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "Access modes of data volume"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Size of data volume"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of pods that may be made unavailable"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress controller resource"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Add annotations for cert-manager"
+                hostname: 
+                  type: "string"
+                  default: "thanos-ruler.local"
+                  description: "Default host for the ingress resource"
+                ingressClassName: 
+                  type: "string"
+                  default: ""
+                  description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Ingress annotations"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Force Ingress API version (automatically detected if not set)"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Ingress path"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+        receive: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable Thanos Receive component"
+            mode: 
+              type: "string"
+              default: "standalone"
+              description: "Mode to run receiver in. Valid options are \"standalone\" or \"dual-mode\""
+            distributor: 
+              type: "object"
+              properties: 
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "The resources limits for the Thanos Receive container"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "The requested resources for the Thanos Receive container"
+                extraContainers: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra containers running as sidecars to Thanos Receive Distributor container"
+                extraEnv: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra environment variables for Thanos Receive Distributor container"
+                extraVolumes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra volumes to add to Thanos Receive Distributor"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra volume mounts to add to the receive distributor container"
+                extraFlags: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra Flags to passed to Thanos Receive Distributor"
+                replicaCount: 
+                  type: "number"
+                  default: 1
+                  description: "Number of Thanos Receive Distributor replicas to deploy"
+                strategyType: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "StrategyType, can be set to RollingUpdate or Recreate by default."
+                affinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Thanos Receive Distributor affinity for pod assignment"
+                nodeSelector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Thanos Receive Distributor node labels for pod assignment"
+                tolerations: 
+                  type: "array"
+                  default: "[]"
+                  description: "Thanos Receive Distributor tolerations for pod assignment"
+            logLevel: 
+              type: "string"
+              default: "info"
+              description: "Thanos Receive log level"
+            logFormat: 
+              type: "string"
+              default: "logfmt"
+              description: "Thanos Receive log format"
+            tsdbRetention: 
+              type: "string"
+              default: "15d"
+              description: "Thanos Receive TSDB retention period"
+            replicationFactor: 
+              type: "number"
+              default: 1
+              description: "Thanos Receive replication-factor"
+            replicaLabel: 
+              type: "string"
+              default: "replica"
+              description: "Label to treat as a replica indicator along which data is deduplicated"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Receive Service Account"
+                existingServiceAccount: 
+                  type: "string"
+                  default: ""
+                  description: "Name for an existing Thanos Receive Service Account"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            config: 
+              type: "array"
+              default: "[]"
+              description: "Receive Hashring configuration"
+            extraContainers: 
+              type: "array"
+              default: "[]"
+              description: "Extra containers running as sidecars to Thanos Receive container"
+            extraEnv: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables for Thanos Receive container"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes to add to Thanos Receive"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra volume mounts to add to the receive container"
+            extraFlags: 
+              type: "array"
+              default: "[]"
+              description: "Extra Flags to passed to Thanos Receive"
+            updateStrategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Statefulset Update Strategy Type, can be set to RollingUpdate or OnDelete by default"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Thanos Receive replicas to deploy"
+            strategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "StrategyType, can be set to RollingUpdate or Recreate by default."
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Thanos Receive pod affinity preset"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Thanos Receive pod anti-affinity preset. Ignored if `ruler.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Receive node affinity preset type. Ignored if `ruler.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Receive node label key to match Ignored if `ruler.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Thanos Receive node label values to match. Ignored if `ruler.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Receive affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Receive node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Thanos Receive tolerations for pod assignment"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Thanos Receive pod labels"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Thanos Ruler pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Controller priorityClassName"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ClusterRole and ClusterRolebing for the Service account"
+            pspEnabled: 
+              type: "boolean"
+              default: false
+              description: "Create PodSecurity Policy"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Thanos Receive container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Thanos Receive container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for the Thanos Receive pod"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the filesystem used by Receive container"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the service user running the Receive pod"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable container security context for Receive container"
+                runAsNonRoot: 
+                  type: "boolean"
+                  default: true
+                  description: "Force the container Receive to run as a non root user"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch privilegeEscalation possiblity on or off for Receive"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "mount / (root) as a readonly filesystem of Receive container"
+            grpc: 
+              type: "object"
+              properties: 
+                gracePeriod: 
+                  type: "string"
+                  default: "2m"
+                  description: "Time to wait after an interrupt received for GRPC Server."
+                server: 
+                  type: "object"
+                  properties: 
+                    secure: 
+                      type: "boolean"
+                      default: false
+                      description: "enable TLS for GRPC server"
+                    cert: 
+                      type: "string"
+                      default: ""
+                      description: "TLS Certificate for gRPC server, leave blank to disable TLS"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "TLS Key for the gRPC server, leave blank to disable TLS"
+                    ca: 
+                      type: "string"
+                      default: ""
+                      description: "TLS CA to verify clients against. If no client CA is specified, there is no client verification on server side. (tls.NoClientCert)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Thanos Ruler service clusterIP IP"
+                http: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 10902
+                      description: "Service HTTP port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service HTTP node port"
+                targetPort: 
+                  type: "string"
+                  default: "http"
+                  description: "Service targetPort override"
+                grpc: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 10901
+                      description: "Service GRPC port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service GRPC node port"
+                remoteWrite: 
+                  type: "object"
+                  properties: 
+                    port: 
+                      type: "number"
+                      default: 19291
+                      description: "Service remote write port"
+                    nodePort: 
+                      type: "string"
+                      default: ""
+                      description: "Service remote write node port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load balancer IP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Addresses that are allowed when service is LoadBalancer"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Thanos Ruler service externalTrafficPolicy"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Thanos Receive service"
+                labelSelectorsOverride: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector for Thanos receive service"
+                additionalHeadless: 
+                  type: "boolean"
+                  default: false
+                  description: "Additional Headless service"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for Thanos Receive"
+                minReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Minimum number of Thanos Receive replicas"
+                maxReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number of Thanos Receive replicas"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Target CPU utilization percentage"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Target Memory utilization percentage"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable data persistence"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Use a existing PVC which must be created manually before bound"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the `storageClass` used to provision the volume"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "Access modes of data volume"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "Size of data volume"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of pods that may be made unavailable"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Set to true to enable ingress record generation"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Set this to true in order to add the corresponding annotations for cert-manager"
+                hostname: 
+                  type: "string"
+                  default: "thanos-receive.local"
+                  description: "When the ingress is enabled, a host pointing to this will be created"
+                ingressClassName: 
+                  type: "string"
+                  default: ""
+                  description: "IngressClass that will be be used to implement the Ingress (Kubernetes 1.18+)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Ingress annotations done as key:value pairs"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "When specifying cert-manager.io/cluster-issuer: nameOfClusterIssuer annotation, enable tls for ingress"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Override API Version (automatically detected if not set)"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Ingress Path"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress Path type"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable the export of Prometheus metrics"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                labels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels for ServiceMonitor object"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+            prometheusRule: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "If `true`, creates a Prometheus Operator PrometheusRule (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which the PrometheusRule CRD is created"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels for the prometheusRule"
+                rules: 
+                  type: "array"
+                  default: "[]"
+                  description: "Prometheus Rules for Thanos components"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r207"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+        minio: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable MinIO&reg; chart installation"
+            accessKey: 
+              type: "object"
+              properties: 
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "MinIO&reg; Access Key"
+            secretKey: 
+              type: "object"
+              properties: 
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "MinIO&reg; Secret Key"
+            defaultBuckets: 
+              type: "string"
+              default: "thanos"
+              description: "Comma, semi-colon or space separated list of MinIO&reg; buckets to create"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: thanos
+          version: "6.0.4"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

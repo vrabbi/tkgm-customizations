@@ -1,0 +1,13 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: discourse.bitnami.charts
+spec:
+  displayName: "discourse"
+  longDescription: "Bitnami discourse Helm Chart"
+  shortDescription: "discourse Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - community
+  - forum

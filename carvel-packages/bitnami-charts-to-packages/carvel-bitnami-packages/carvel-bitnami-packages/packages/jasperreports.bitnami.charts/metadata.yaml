@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: jasperreports.bitnami.charts
+spec:
+  displayName: "jasperreports"
+  longDescription: "Bitnami jasperreports Helm Chart"
+  shortDescription: "jasperreports Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - business intelligence
+  - java
+  - jasper
+  - reporting
+  - analytic
+  - visualization

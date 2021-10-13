@@ -1,0 +1,1181 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: mongodb-sharded.bitnami.charts.3.9.6
+spec:
+  refName: mongodb-sharded.bitnami.charts
+  version: 3.9.6
+  releaseNotes: |
+        NoSQL document-oriented database that stores JSON-like documents with dynamic schemas, simplifying the integration of data in content-driven applications. Sharded topology.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global storage class for dynamic provisioning"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override mongodb.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override mongodb.fullname template"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes Cluster Domain"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "MongoDB&reg; Sharded image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/mongodb-sharded"
+              description: "MongoDB&reg; Sharded Image name"
+            tag: 
+              type: "string"
+              default: "4.4.8-debian-10-r46"
+              description: "MongoDB&reg; Sharded image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "MongoDB&reg; Sharded image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        mongodbRootPassword: 
+          type: "string"
+          default: ""
+          description: "MongoDB&reg; root password"
+        replicaSetKey: 
+          type: "string"
+          default: ""
+          description: "Replica Set key (shared for shards and config servers)"
+        existingSecret: 
+          type: "string"
+          default: ""
+          description: "Existing secret with MongoDB&reg; credentials"
+        usePasswordFile: 
+          type: "boolean"
+          default: false
+          description: "Mount credentials as files instead of using environment variables"
+        shards: 
+          type: "number"
+          default: 2
+          description: "Number of shards to be created"
+        common: 
+          type: "object"
+          properties: 
+            mongodbEnableNumactl: 
+              type: "boolean"
+              default: false
+              description: "Enable launch MongoDB instance prefixed with \"numactl --interleave=all\""
+            useHostnames: 
+              type: "boolean"
+              default: true
+              description: "Enable DNS hostnames in the replica set config"
+            mongodbEnableIPv6: 
+              type: "boolean"
+              default: false
+              description: "Switch to enable/disable IPv6 on MongoDB&reg;"
+            mongodbDirectoryPerDB: 
+              type: "boolean"
+              default: false
+              description: "Switch to enable/disable DirectoryPerDB on MongoDB&reg;"
+            mongodbSystemLogVerbosity: 
+              type: "number"
+              default: 0
+              description: "MongoDB&reg; system log verbosity level"
+            mongodbDisableSystemLog: 
+              type: "boolean"
+              default: false
+              description: "Whether to disable MongoDB&reg; system log or not"
+            mongodbMaxWaitTimeout: 
+              type: "number"
+              default: 120
+              description: "Maximum time (in seconds) for MongoDB&reg; nodes to wait for another MongoDB&reg; node to be ready"
+            initScriptsCM: 
+              type: "string"
+              default: ""
+              description: "Configmap with init scripts to execute"
+            initScriptsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with init scripts to execute (for sensitive data)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of a ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of a Secret containing extra env vars"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the pod"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add init containers to the pod"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod labels"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra volumes"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra mounts (normally used with extraVolumes)"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Whether to create a Service Account for all pods automatically"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a Service Account to be used by all Pods"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes volume permissions in the data directory (for cases where the default k8s `runAsUser` and `fsUser` values do not work)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image name"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r192"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Init container volume-permissions image pull secrets"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Init container resource requests/limit"
+        securityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable security context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Group ID for the container"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "User ID for the container"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Run containers as non-root users"
+        service: 
+          type: "object"
+          properties: 
+            name: 
+              type: "string"
+              default: ""
+              description: "Specify an explicit service name"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional service annotations (evaluate as a template)"
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Service type"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "External traffic policy"
+            port: 
+              type: "number"
+              default: 27017
+              description: "MongoDB&reg; service port"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Static clusterIP or None for headless services"
+            nodePort: 
+              type: "string"
+              default: ""
+              description: "Specify the nodePort value for the LoadBalancer and NodePort service types."
+            externalIPs: 
+              type: "array"
+              default: "[]"
+              description: "External IP list to use with ClusterIP service type"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "Static IP Address to use for LoadBalancer service type"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "List of IP ranges allowed access to load balancer (if supported)"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Extra ports to expose (normally used with the `sidecar` value)"
+            sessionAffinity: 
+              type: "string"
+              default: "None"
+              description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 60
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 60
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 6
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        configsvr: 
+          type: "object"
+          properties: 
+            replicas: 
+              type: "number"
+              default: 1
+              description: "Number of nodes in the replica set (the first node will be primary)"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Configure pod resources"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            mongodbExtraFlags: 
+              type: "array"
+              default: "[]"
+              description: "MongoDB&reg; additional command line flags"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Pod priority class name"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Config Server Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Config Server Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Config Server Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Config Server Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Config Server Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Config Server Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Config Server Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Config Server Tolerations for pod assignment"
+            podManagementPolicy: 
+              type: "string"
+              default: "OrderedReady"
+              description: "Statefulset's pod management policy, allows parallel startup of pods"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "updateStrategy for MongoDB&reg; Primary, Secondary and Arbiter statefulsets"
+            config: 
+              type: "string"
+              default: ""
+              description: "MongoDB&reg; configuration file"
+            configCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap name with Config Server configuration file (cannot be used with configsvr.config)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of a ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of a Secret containing extra env vars"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the pod"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add init containers to the pod"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod labels"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra volumes. Requires setting `extraVolumeMounts`"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra mounts (normally used with extraVolumes). Normally used with `extraVolumes`"
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Use an alternate scheduler, e.g. \"stork\"."
+            pdb: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable pod disruption budget"
+                minAvailable: 
+                  type: "number"
+                  default: 0
+                  description: "Minimum number of available config pods allowed (`0` to disable)"
+                maxUnavailable: 
+                  type: "number"
+                  default: 1
+                  description: "Maximum number of unavailable config pods allowed (`0` to disable)"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Use a PVC to persist data"
+                mountPath: 
+                  type: "string"
+                  default: "/bitnami/mongodb"
+                  description: "Path to mount the volume at"
+                subPath: 
+                  type: "string"
+                  default: ""
+                  description: "Subdirectory of the volume to mount at"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Storage class of backing PVC"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "Use volume as ReadOnly or ReadWrite"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "PersistentVolumeClaim size"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Persistent Volume annotations"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Specifies whether a ServiceAccount should be created for Config Server"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a Service Account to be used by Config Server"
+            external: 
+              type: "object"
+              properties: 
+                host: 
+                  type: "string"
+                  default: ""
+                  description: "Primary node of an external Config Server replicaset"
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Root password of the external Config Server replicaset"
+                replicasetName: 
+                  type: "string"
+                  default: ""
+                  description: "Replicaset name of an external Config Server"
+                replicasetKey: 
+                  type: "string"
+                  default: ""
+                  description: "Replicaset key of an external Config Server"
+        mongos: 
+          type: "object"
+          properties: 
+            replicas: 
+              type: "number"
+              default: 1
+              description: "Number of replicas"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Configure pod resources"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            mongodbExtraFlags: 
+              type: "array"
+              default: "[]"
+              description: "MongoDB&reg; additional command line flags"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Pod priority class name"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Mongos Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Mongos Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Mongos Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Mongos Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Mongos Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Mongos Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Mongos Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Mongos Tolerations for pod assignment"
+            podManagementPolicy: 
+              type: "string"
+              default: "OrderedReady"
+              description: "Statefulsets pod management policy, allows parallel startup of pods"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "updateStrategy for MongoDB&reg; Primary, Secondary and Arbiter statefulsets"
+            config: 
+              type: "string"
+              default: ""
+              description: "MongoDB&reg; configuration file"
+            configCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap name with MongoDB&reg; configuration file (cannot be used with mongos.config)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "An array to add extra env vars"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of a ConfigMap containing extra env vars"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of a Secret containing extra env vars"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the pod"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add init containers to the pod"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod labels"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra volumes. Requires setting `extraVolumeMounts`"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array to add extra volume mounts. Normally used with `extraVolumes`."
+            schedulerName: 
+              type: "string"
+              default: ""
+              description: "Use an alternate scheduler, e.g. \"stork\"."
+            useStatefulSet: 
+              type: "boolean"
+              default: false
+              description: "Use StatefulSet instead of Deployment"
+            servicePerReplica: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create one service per mongos replica (must be used with statefulset)"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional service annotations (evaluate as a template)"
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Service type"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "External traffic policy"
+                port: 
+                  type: "number"
+                  default: 27017
+                  description: "MongoDB&reg; service port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Static clusterIP or None for headless services"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the nodePort value for the LoadBalancer and NodePort service types"
+                externalIPs: 
+                  type: "array"
+                  default: "[]"
+                  description: "External IP list to use with ClusterIP service type"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Static IP Address to use for LoadBalancer service type"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "List of IP ranges allowed access to load balancer (if supported)"
+                extraPorts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Extra ports to expose (normally used with the `sidecar` value)"
+                sessionAffinity: 
+                  type: "string"
+                  default: "None"
+                  description: "Session Affinity for Kubernetes service, can be \"None\" or \"ClientIP\""
+            pdb: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable pod disruption budget"
+                minAvailable: 
+                  type: "number"
+                  default: 0
+                  description: "Minimum number of available mongo pods allowed (`0` to disable)"
+                maxUnavailable: 
+                  type: "number"
+                  default: 1
+                  description: "Maximum number of unavailable mongo pods allowed (`0` to disable)"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Whether to create a Service Account for mongos automatically"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a Service Account to be used by mongos"
+        shardsvr: 
+          type: "object"
+          properties: 
+            dataNode: 
+              type: "object"
+              properties: 
+                replicas: 
+                  type: "number"
+                  default: 1
+                  description: "Number of nodes in each shard replica set (the first node will be primary)"
+                resources: 
+                  type: "object"
+                  default: "{}"
+                  description: "Configure pod resources"
+                mongodbExtraFlags: 
+                  type: "array"
+                  default: "[]"
+                  description: "MongoDB&reg; additional command line flags"
+                priorityClassName: 
+                  type: "string"
+                  default: ""
+                  description: "Pod priority class name"
+                podAffinityPreset: 
+                  type: "string"
+                  default: ""
+                  description: "Data nodes Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                podAntiAffinityPreset: 
+                  type: "string"
+                  default: "soft"
+                  description: "Data nodes Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                nodeAffinityPreset: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: ""
+                      description: "Data nodes Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Data nodes Node label key to match Ignored if `affinity` is set."
+                    values: 
+                      type: "array"
+                      default: "[]"
+                      description: "Data nodes Node label values to match. Ignored if `affinity` is set."
+                affinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Data nodes Affinity for pod assignment"
+                nodeSelector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Data nodes Node labels for pod assignment"
+                tolerations: 
+                  type: "array"
+                  default: "[]"
+                  description: "Data nodes Tolerations for pod assignment"
+                podManagementPolicy: 
+                  type: "string"
+                  default: "OrderedReady"
+                  description: "podManagementPolicy for the statefulset, allows parallel startup of pods"
+                updateStrategy: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "RollingUpdate"
+                      description: "updateStrategy for MongoDB&reg; Primary, Secondary and Arbiter statefulsets"
+                hostAliases: 
+                  type: "array"
+                  default: "[]"
+                  description: "Deployment pod host aliases"
+                config: 
+                  type: "string"
+                  default: ""
+                  description: "Entries for the MongoDB&reg; config file"
+                configCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap name with MongoDB&reg; configuration (cannot be used with shardsvr.dataNode.config)"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "An array to add extra env vars"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a ConfigMap containing extra env vars"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a Secret containing extra env vars"
+                sidecars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Attach additional containers (evaluated as a template)"
+                initContainers: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add init containers to the pod"
+                podAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional pod annotations"
+                podLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional pod labels"
+                extraVolumes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array to add extra volumes. Requires setting `extraVolumeMounts`"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array to add extra mounts. Normally used with `extraVolumes`"
+                schedulerName: 
+                  type: "string"
+                  default: ""
+                  description: "Use an alternate scheduler, e.g. \"stork\"."
+                pdb: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: false
+                      description: "Enable pod disruption budget"
+                    minAvailable: 
+                      type: "number"
+                      default: 0
+                      description: "Minimum number of available data pods allowed (`0` to disable)"
+                    maxUnavailable: 
+                      type: "number"
+                      default: 1
+                      description: "Maximum number of unavailable data pods allowed (`0` to disable)"
+                serviceAccount: 
+                  type: "object"
+                  properties: 
+                    create: 
+                      type: "boolean"
+                      default: false
+                      description: "Specifies whether a ServiceAccount should be created for shardsvr"
+                    name: 
+                      type: "string"
+                      default: ""
+                      description: "Name of a Service Account to be used by shardsvr data pods"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Use a PVC to persist data"
+                mountPath: 
+                  type: "string"
+                  default: "/bitnami/mongodb"
+                  description: "The path the volume will be mounted at, useful when using different MongoDB&reg; images."
+                subPath: 
+                  type: "string"
+                  default: ""
+                  description: "Subdirectory of the volume to mount at"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Storage class of backing PVC"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "Use volume as ReadOnly or ReadWrite"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "PersistentVolumeClaim size"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional volume annotations"
+            arbiter: 
+              type: "object"
+              properties: 
+                replicas: 
+                  type: "number"
+                  default: 0
+                  description: "Number of arbiters in each shard replica set (the first node will be primary)"
+                hostAliases: 
+                  type: "array"
+                  default: "[]"
+                  description: "Deployment pod host aliases"
+                resources: 
+                  type: "object"
+                  default: "{}"
+                  description: "Configure pod resources"
+                mongodbExtraFlags: 
+                  type: "array"
+                  default: "[]"
+                  description: "MongoDB&reg; additional command line flags"
+                priorityClassName: 
+                  type: "string"
+                  default: ""
+                  description: "Pod priority class name"
+                podAffinityPreset: 
+                  type: "string"
+                  default: ""
+                  description: "Arbiter's Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                podAntiAffinityPreset: 
+                  type: "string"
+                  default: "soft"
+                  description: "Arbiter's Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                nodeAffinityPreset: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: ""
+                      description: "Arbiter's Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                    key: 
+                      type: "string"
+                      default: ""
+                      description: "Arbiter's Node label key to match Ignored if `affinity` is set."
+                    values: 
+                      type: "array"
+                      default: "[]"
+                      description: "Arbiter's Node label values to match. Ignored if `affinity` is set."
+                affinity: 
+                  type: "object"
+                  default: "{}"
+                  description: "Arbiter's Affinity for pod assignment"
+                nodeSelector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Arbiter's Node labels for pod assignment"
+                tolerations: 
+                  type: "array"
+                  default: "[]"
+                  description: "Arbiter's Tolerations for pod assignment"
+                podManagementPolicy: 
+                  type: "string"
+                  default: "OrderedReady"
+                  description: "Statefulset's pod management policy, allows parallel startup of pods"
+                updateStrategy: 
+                  type: "object"
+                  properties: 
+                    type: 
+                      type: "string"
+                      default: "RollingUpdate"
+                      description: "updateStrategy for MongoDB&reg; Primary, Secondary and Arbiter statefulsets"
+                config: 
+                  type: "string"
+                  default: ""
+                  description: "MongoDB&reg; configuration file"
+                configCM: 
+                  type: "string"
+                  default: ""
+                  description: "ConfigMap name with MongoDB&reg; configuration file (cannot be used with shardsvr.arbiter.config)"
+                extraEnvVars: 
+                  type: "array"
+                  default: "[]"
+                  description: "An array to add extra env vars"
+                extraEnvVarsCM: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a ConfigMap containing extra env vars"
+                extraEnvVarsSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of a Secret containing extra env vars"
+                sidecars: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add sidecars to the pod"
+                initContainers: 
+                  type: "array"
+                  default: "[]"
+                  description: "Add init containers to the pod"
+                podAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional pod annotations"
+                podLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional pod labels"
+                extraVolumes: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array to add extra volumes"
+                extraVolumeMounts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Array to add extra mounts (normally used with extraVolumes)"
+                schedulerName: 
+                  type: "string"
+                  default: ""
+                  description: "Use an alternate scheduler, e.g. \"stork\"."
+                serviceAccount: 
+                  type: "object"
+                  properties: 
+                    create: 
+                      type: "boolean"
+                      default: false
+                      description: "Specifies whether a ServiceAccount should be created for shardsvr arbiter nodes"
+                    name: 
+                      type: "string"
+                      default: ""
+                      description: "Name of a Service Account to be used by shardsvr arbiter pods"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "MongoDB&reg; exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/mongodb-exporter"
+                  description: "MongoDB&reg; exporter image name"
+                tag: 
+                  type: "string"
+                  default: "0.11.2-debian-10-r279"
+                  description: "MongoDB&reg; exporter image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "MongoDB&reg; exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "MongoDB&reg; exporter image pull secrets"
+            extraArgs: 
+              type: "string"
+              default: ""
+              description: "String with extra arguments to the metrics exporter"
+            resources: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter resource requests and limits"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 15
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            containerPort: 
+              type: "number"
+              default: 9216
+              description: "Port of the Prometheus metrics container"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Metrics exporter pod Annotation"
+            podMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create PodMonitor Resource for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: "monitoring"
+                  description: "Namespace where podmonitor resource should be created"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "Specify the interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the timeout after which the scrape is ended"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels that can be used so PodMonitors will be discovered by Prometheus"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: mongodb-sharded
+          version: "3.9.6"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

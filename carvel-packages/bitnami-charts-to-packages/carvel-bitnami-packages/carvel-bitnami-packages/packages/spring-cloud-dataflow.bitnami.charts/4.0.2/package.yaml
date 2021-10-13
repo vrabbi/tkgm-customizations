@@ -1,0 +1,1233 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: spring-cloud-dataflow.bitnami.charts.4.0.2
+spec:
+  refName: spring-cloud-dataflow.bitnami.charts
+  version: 4.0.2
+  releaseNotes: |
+        Spring Cloud Data Flow is a microservices-based toolkit for building streaming and batch data processing pipelines in Cloud Foundry and Kubernetes.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override scdf.fullname template (will maintain the release name)."
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override scdf.fullname template."
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Default Kubernetes cluster domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        server: 
+          type: "object"
+          properties: 
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Spring Cloud Dataflow image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/spring-cloud-dataflow"
+                  description: "Spring Cloud Dataflow image repository"
+                tag: 
+                  type: "string"
+                  default: "2.8.1-debian-10-r55"
+                  description: "Spring Cloud Dataflow image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Spring Cloud Dataflow image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable image debug mode"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            composedTaskRunner: 
+              type: "object"
+              properties: 
+                image: 
+                  type: "object"
+                  properties: 
+                    registry: 
+                      type: "string"
+                      default: "docker.io"
+                      description: "Spring Cloud Dataflow Composed Task Runner image registry"
+                    repository: 
+                      type: "string"
+                      default: "bitnami/spring-cloud-dataflow-composed-task-runner"
+                      description: "Spring Cloud Dataflow Composed Task Runner image repository"
+                    tag: 
+                      type: "string"
+                      default: "2.8.1-debian-10-r57"
+                      description: "Spring Cloud Dataflow Composed Task Runner image tag (immutable tags are recommended)"
+            configuration: 
+              type: "object"
+              properties: 
+                streamingEnabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enables or disables streaming data processing"
+                batchEnabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enables or disables batch data (tasks and schedules) processing"
+                accountName: 
+                  type: "string"
+                  default: "default"
+                  description: "The name of the account to configure for the Kubernetes platform"
+                trustK8sCerts: 
+                  type: "boolean"
+                  default: false
+                  description: "Trust K8s certificates when querying the Kubernetes API"
+                containerRegistries: 
+                  type: "object"
+                  default: "{}"
+                  description: "Container registries configuration"
+                grafanaInfo: 
+                  type: "string"
+                  default: ""
+                  description: "Endpoint to the grafana instance (Deprecated: use the metricsDashboard instead)"
+                metricsDashboard: 
+                  type: "string"
+                  default: ""
+                  description: "Endpoint to the metricsDashboard instance"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with Spring Cloud Dataflow Server Configuration"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to be set on Dataflow server container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap with extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret with extra environment variables"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Dataflow server replicas to deploy"
+            strategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "StrategyType, can be set to RollingUpdate or Recreate by default"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Dataflow server pod affinity preset. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Dataflow server pod anti-affinity preset. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+            containerPort: 
+              type: "number"
+              default: 8080
+              description: "Dataflow server port"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Dataflow server node affinity preset type. Ignored if `server.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Dataflow server node label key to match Ignored if `server.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Dataflow server node label values to match. Ignored if `server.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Dataflow server affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Dataflow server node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Dataflow server tolerations for pod assignment"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Dataflow server pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Dataflow Server pods' priority"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the volumes of the pod"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Dataflow Server container's Security Context runAsUser"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Dataflow server container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Dataflow server container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                port: 
+                  type: "number"
+                  default: 8080
+                  description: "Service HTTP port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the nodePort value for the LoadBalancer and NodePort service types"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Dataflow server service cluster IP"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load balancer IP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Addresses that are allowed when service is LoadBalancer"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Provide any additional annotations which may be required. Evaluated as a template."
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable ingress controller resource"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "The Path to WordPress. You may need to set this to '/*' in order to use this with ALB ingress controllers."
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress path type"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Set this to true in order to add the corresponding annotations for cert-manager"
+                hostname: 
+                  type: "string"
+                  default: "dataflow.local"
+                  description: "Default host for the ingress resource"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Ingress annotations"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add init containers to the Dataflow Server pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the Dataflow Server pods"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of pods that may be made unavailable"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for Dataflow server"
+                minReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Minimum number of Dataflow server replicas"
+                maxReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number of Dataflow server replicas"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Target CPU utilization percentage"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Target Memory utilization percentage"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra Volumes to be set on the Dataflow Server Pod"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra VolumeMounts to be set on the Dataflow Container"
+            jdwp: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Set to true to enable Java debugger"
+                port: 
+                  type: "number"
+                  default: 5005
+                  description: "Specify port for remote debugging"
+            proxy: 
+              type: "object"
+              default: "{}"
+              description: "Add proxy configuration for SCDF server"
+        skipper: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Spring Cloud Skipper component"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Deployment pod host aliases"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Spring Cloud Skipper image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/spring-cloud-skipper"
+                  description: "Spring Cloud Skipper image repository"
+                tag: 
+                  type: "string"
+                  default: "2.7.1-debian-10-r57"
+                  description: "Spring Cloud Skipper image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Spring Cloud Skipper image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+                debug: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable image debug mode"
+            configuration: 
+              type: "object"
+              properties: 
+                accountName: 
+                  type: "string"
+                  default: "default"
+                  description: "The name of the account to configure for the Kubernetes platform"
+                trustK8sCerts: 
+                  type: "boolean"
+                  default: false
+                  description: "Trust K8s certificates when querying the Kubernetes API"
+            existingConfigmap: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with Skipper server configuration"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to be set on Skipper server container"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra environment variables"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra environment variables"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Skipper server replicas to deploy"
+            strategyType: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Deployment Strategy Type"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Skipper pod affinity preset. Ignored if `skipper.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Skipper pod anti-affinity preset. Ignored if `skipper.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Skipper node affinity preset type. Ignored if `skipper.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Skipper node label key to match Ignored if `skipper.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Skipper node label values to match. Ignored if `skipper.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Skipper affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Skipper node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Skipper tolerations for pod assignment"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Skipper server pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Controller priorityClassName"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the volumes of the pod"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Dataflow Skipper container's Security Context runAsUser"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Skipper server container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Skipper server container"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 20
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type"
+                port: 
+                  type: "number"
+                  default: 80
+                  description: "Service HTTP port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "Service HTTP node port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Skipper server service cluster IP"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load balancer IP if service type is `LoadBalancer`"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when service is LoadBalancer"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Skipper server service"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add init containers to the Dataflow Skipper pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to the Skipper pods"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of pods that may be made unavailable"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for Skipper server"
+                minReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Minimum number of Skipper server replicas"
+                maxReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number of Skipper server replicas"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Target CPU utilization percentage"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Target Memory utilization percentage"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra Volumes to be set on the Skipper Pod"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Extra VolumeMounts to be set on the Skipper Container"
+            jdwp: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable Java Debug Wire Protocol (JDWP)"
+                port: 
+                  type: "number"
+                  default: 5005
+                  description: "JDWP TCP port for remote debugging"
+        externalSkipper: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Host of a external Skipper Server"
+            port: 
+              type: "number"
+              default: 7577
+              description: "External Skipper Server port number"
+        deployer: 
+          type: "object"
+          properties: 
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Streaming applications resource limits"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Streaming applications resource requests"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 90
+                  description: "Initial delay seconds for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for readinessProbe"
+            nodeSelector: 
+              type: "string"
+              default: ""
+              description: "The node selectors to apply to the streaming applications deployments in \"key:value\" format"
+            tolerations: 
+              type: "object"
+              default: "{}"
+              description: "Streaming applications tolerations"
+            volumeMounts: 
+              type: "object"
+              default: "{}"
+              description: "Streaming applications extra volume mounts"
+            volumes: 
+              type: "object"
+              default: "{}"
+              description: "Streaming applications extra volumes"
+            environmentVariables: 
+              type: "string"
+              default: ""
+              description: "Streaming applications environment variables"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "Set Dataflow Streams container's Security Context runAsUser"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable the creation of a ServiceAccount for Dataflow server and Skipper server pods"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of the created serviceAccount"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Whether to create and use RBAC resources or not"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Prometheus metrics"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Prometheus Rsocket Proxy image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/prometheus-rsocket-proxy"
+                  description: "Prometheus Rsocket Proxy image repository"
+                tag: 
+                  type: "string"
+                  default: "1.3.0-debian-10-r243"
+                  description: "Prometheus Rsocket Proxy image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Prometheus Rsocket Proxy image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the Prometheus Rsocket Proxy container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the Prometheus Rsocket Proxy container"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Prometheus Rsocket Proxy replicas to deploy"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Prometheus Rsocket Proxy pod affinity preset. Ignored if `metrics.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Prometheus Rsocket Proxy pod anti-affinity preset. Ignored if `metrics.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Prometheus Rsocket Proxy node affinity preset type. Ignored if `metrics.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Prometheus Rsocket Proxy node label key to match Ignored if `metrics.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Prometheus Rsocket Proxy node label values to match. Ignored if `metrics.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Prometheus Rsocket Proxy affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Prometheus Rsocket Proxy node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Prometheus Rsocket Proxy tolerations for pod assignment"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for Prometheus Rsocket Proxy pods"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Prometheus Rsocket Proxy pods' priority."
+            service: 
+              type: "object"
+              properties: 
+                httpPort: 
+                  type: "number"
+                  default: 8080
+                  description: "Prometheus Rsocket Proxy HTTP port"
+                rsocketPort: 
+                  type: "number"
+                  default: 7001
+                  description: "Prometheus Rsocket Proxy Rsocket port"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the Prometheus Rsocket Proxy service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                extraLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Labels to add to ServiceMonitor, in case prometheus operator is configured with serviceMonitorSelector"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which ServiceMonitor is created if different from release"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+            pdb: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of pods that may be made unavailable"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable autoscaling for Prometheus Rsocket Proxy"
+                minReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Minimum number of Prometheus Rsocket Proxy replicas"
+                maxReplicas: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number of Prometheus Rsocket Proxy replicas"
+                targetCPU: 
+                  type: "string"
+                  default: ""
+                  description: "Target CPU utilization percentage"
+                targetMemory: 
+                  type: "string"
+                  default: ""
+                  description: "Target Memory utilization percentage"
+        waitForBackends: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Wait for the database and other services (such as Kafka or RabbitMQ) used when enabling streaming"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container wait-for-backend image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/kubectl"
+                  description: "Init container wait-for-backend image name"
+                tag: 
+                  type: "string"
+                  default: "1.19.14-debian-10-r13"
+                  description: "Init container wait-for-backend image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Init container wait-for-backend image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container wait-for-backend resource limits"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container wait-for-backend resource requests"
+        mariadb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable MariaDB chart installation"
+            architecture: 
+              type: "string"
+              default: "standalone"
+              description: "MariaDB architecture. Allowed values: `standalone` or `replication`"
+            auth: 
+              type: "object"
+              properties: 
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Password for the MariaDB `root` user"
+                username: 
+                  type: "string"
+                  default: "dataflow"
+                  description: "Username of new user to create"
+                password: 
+                  type: "string"
+                  default: "change-me"
+                  description: "Password for the new user"
+                database: 
+                  type: "string"
+                  default: "dataflow"
+                  description: "Database name to create"
+                forcePassword: 
+                  type: "boolean"
+                  default: false
+                  description: "Force users to specify required passwords in the database"
+                usePasswordFiles: 
+                  type: "boolean"
+                  default: false
+                  description: "Mount credentials as a file instead of using an environment variable"
+            initdbScripts: 
+              type: "object"
+              default: "{}"
+              description: "Specify dictionary of scripts to be run at first boot"
+        externalDatabase: 
+          type: "object"
+          properties: 
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Host of the external database"
+            port: 
+              type: "number"
+              default: 3306
+              description: "External database port number"
+            driver: 
+              type: "string"
+              default: ""
+              description: "The fully qualified name of the JDBC Driver class"
+            scheme: 
+              type: "string"
+              default: ""
+              description: "The scheme is a vendor-specific or shared protocol string that follows the \"jdbc:\" of the URL"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the above username"
+            existingPasswordSecret: 
+              type: "string"
+              default: ""
+              description: "Existing secret with database password"
+            existingPasswordKey: 
+              type: "string"
+              default: ""
+              description: "Key of the existing secret with database password, defaults to `datasource-password`"
+            dataflow: 
+              type: "object"
+              properties: 
+                url: 
+                  type: "string"
+                  default: ""
+                  description: "JDBC URL for dataflow server. Overrides external scheme, host, port, database, and jdbc parameters."
+                database: 
+                  type: "string"
+                  default: "dataflow"
+                  description: "Name of the existing database to be used by Dataflow server"
+                username: 
+                  type: "string"
+                  default: "dataflow"
+                  description: "Existing username in the external db to be used by Dataflow server"
+            skipper: 
+              type: "object"
+              properties: 
+                url: 
+                  type: "string"
+                  default: ""
+                  description: "JDBC URL for skipper. Overrides external scheme, host, port, database, and jdbc parameters."
+                database: 
+                  type: "string"
+                  default: "skipper"
+                  description: "Name of the existing database to be used by Skipper server"
+                username: 
+                  type: "string"
+                  default: "skipper"
+                  description: "Existing username in the external db to be used by Skipper server"
+            hibernateDialect: 
+              type: "string"
+              default: ""
+              description: "Hibernate Dialect used by Dataflow/Skipper servers"
+        rabbitmq: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable RabbitMQ chart installation"
+            auth: 
+              type: "object"
+              properties: 
+                username: 
+                  type: "string"
+                  default: "user"
+                  description: "RabbitMQ username"
+        externalRabbitmq: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable external RabbitMQ"
+            host: 
+              type: "string"
+              default: "localhost"
+              description: "Host of the external RabbitMQ"
+            port: 
+              type: "number"
+              default: 5672
+              description: "External RabbitMQ port number"
+            username: 
+              type: "string"
+              default: "guest"
+              description: "External RabbitMQ username"
+            password: 
+              type: "string"
+              default: "guest"
+              description: "External RabbitMQ password. It will be saved in a kubernetes secret"
+            vhost: 
+              type: "string"
+              default: ""
+              description: "External RabbitMQ virtual host. It will be saved in a kubernetes secret"
+            existingPasswordSecret: 
+              type: "string"
+              default: ""
+              description: "Existing secret with RabbitMQ password. It will be saved in a kubernetes secret"
+        kafka: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable Kafka chart installation"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of Kafka brokers"
+            offsetsTopicReplicationFactor: 
+              type: "number"
+              default: 1
+              description: "Kafka Secret Key"
+            zookeeper: 
+              type: "object"
+              properties: 
+                replicaCount: 
+                  type: "number"
+                  default: 1
+                  description: "Number of Zookeeper replicas"
+        externalKafka: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable external Kafka"
+            brokers: 
+              type: "string"
+              default: "localhost:9092"
+              description: "External Kafka brokers"
+            zkNodes: 
+              type: "string"
+              default: "localhost:2181"
+              description: "External Zookeeper nodes"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: spring-cloud-dataflow
+          version: "4.0.2"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

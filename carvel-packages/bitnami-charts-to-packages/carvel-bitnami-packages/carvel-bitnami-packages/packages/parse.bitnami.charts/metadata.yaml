@@ -1,0 +1,17 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: parse.bitnami.charts
+spec:
+  displayName: "parse"
+  longDescription: "Bitnami parse Helm Chart"
+  shortDescription: "parse Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - parse
+  - backend
+  - serverless
+  - platform
+  - mbaas
+  - mobile

@@ -1,0 +1,778 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: etcd.bitnami.charts.6.8.4
+spec:
+  refName: etcd.bitnami.charts
+  version: 6.8.4
+  releaseNotes: |
+        etcd is a distributed key value store that provides a reliable way to store data across a cluster of machines
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Default Kubernetes cluster domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "etcd image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/etcd"
+              description: "etcd image name"
+            tag: 
+              type: "string"
+              default: "3.5.0-debian-10-r94"
+              description: "etcd image tag"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "etcd image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "etcd image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        auth: 
+          type: "object"
+          properties: 
+            rbac: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Switch to enable RBAC authentication"
+                allowNoneAuthentication: 
+                  type: "boolean"
+                  default: true
+                  description: "Allow to use etcd without configuring RBAC authentication"
+                rootPassword: 
+                  type: "string"
+                  default: ""
+                  description: "Root user password. The root user is always `root`"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing credentials for the root user"
+                existingSecretPasswordKey: 
+                  type: "string"
+                  default: ""
+                  description: "Name of key containing password to be retrieved from the existing secret"
+            client: 
+              type: "object"
+              properties: 
+                secureTransport: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch to encrypt client-to-server communications using TLS certificates"
+                useAutoTLS: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch to automatically create the TLS certificates"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the TLS certificates for client-to-server communications"
+                enableAuthentication: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch to enable host authentication using TLS certificates. Requires existing secret"
+                certFilename: 
+                  type: "string"
+                  default: "cert.pem"
+                  description: "Name of the file containing the client certificate"
+                certKeyFilename: 
+                  type: "string"
+                  default: "key.pem"
+                  description: "Name of the file containing the client certificate private key"
+                caFilename: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the file containing the client CA certificate"
+            peer: 
+              type: "object"
+              properties: 
+                secureTransport: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch to encrypt server-to-server communications using TLS certificates"
+                useAutoTLS: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch to automatically create the TLS certificates"
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the TLS certificates for server-to-server communications"
+                enableAuthentication: 
+                  type: "boolean"
+                  default: false
+                  description: "Switch to enable host authentication using TLS certificates. Requires existing secret"
+                certFilename: 
+                  type: "string"
+                  default: "cert.pem"
+                  description: "Name of the file containing the peer certificate"
+                certKeyFilename: 
+                  type: "string"
+                  default: "key.pem"
+                  description: "Name of the file containing the peer certificate private key"
+                caFilename: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the file containing the peer CA certificate"
+        autoCompactionMode: 
+          type: "string"
+          default: ""
+          description: "Auto compaction mode, by default periodic. Valid values: ‘periodic’, ‘revision’."
+        autoCompactionRetention: 
+          type: "string"
+          default: ""
+          description: "Auto compaction retention for mvcc key value store in hour, by default 0, means disabled"
+        initialClusterState: 
+          type: "string"
+          default: ""
+          description: "Initial cluster state. Allowed values: 'new' or 'existing'"
+        maxProcs: 
+          type: "string"
+          default: ""
+          description: "Limits the number of operating system threads that can execute user-level"
+        removeMemberOnContainerTermination: 
+          type: "boolean"
+          default: true
+          description: "Use a PreStop hook to remove the etcd members from the etcd cluster on container termination"
+        configuration: 
+          type: "string"
+          default: ""
+          description: "etcd configuration. Specify content for etcd.conf.yml"
+        existingConfigmap: 
+          type: "string"
+          default: ""
+          description: "Existing ConfigMap with etcd configuration"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Extra environment variables to be set on etcd container"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Default container args (useful when using custom images)"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of etcd replicas to deploy"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy type, can be set to RollingUpdate or OnDelete."
+        podManagementPolicy: 
+          type: "string"
+          default: "Parallel"
+          description: "Pod management policy for the etcd statefulset"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "etcd pod host aliases"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "Override default etcd container hooks"
+        containerPorts: 
+          type: "object"
+          properties: 
+            client: 
+              type: "number"
+              default: 2379
+              description: "Client port to expose at container level"
+            peer: 
+              type: "number"
+              default: 2380
+              description: "Peer port to expose at container level"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled etcd pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set etcd pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled etcd containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set etcd container's Security Context runAsUser"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set etcd container's Security Context runAsNonRoot"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the etcd container"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the etcd container"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 60
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 30
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 60
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        startupProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable startupProbe"
+            initialDelaySeconds: 
+              type: "number"
+              default: 0
+              description: "Initial delay seconds for startupProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for startupProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for startupProbe"
+            failureThreshold: 
+              type: "number"
+              default: 60
+              description: "Failure threshold for startupProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for startupProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default liveness probe"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default readiness probe"
+        customStartupProbe: 
+          type: "object"
+          default: "{}"
+          description: "Override default startup probe"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for etcd pods"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for etcd container(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the etcd pods"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the etcd pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for etcd pods"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for etcd pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        terminationGracePeriodSeconds: 
+          type: "string"
+          default: ""
+          description: "Seconds the pod needs to gracefully terminate"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "Name of the priority class to be used by etcd pods"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "create second service if equal true"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Kubernetes service Cluster IP"
+            port: 
+              type: "number"
+              default: 2379
+              description: "etcd client port"
+            clientPortNameOverride: 
+              type: "string"
+              default: ""
+              description: "etcd client port name override"
+            peerPort: 
+              type: "number"
+              default: 2380
+              description: "etcd peer port"
+            peerPortNameOverride: 
+              type: "string"
+              default: ""
+              description: "etcd peer port name override"
+            nodePorts: 
+              type: "object"
+              default: "{}"
+              description: "Specify the nodePort(s) value(s) for the LoadBalancer and NodePort service types."
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "loadBalancerIP for the etcd service (optional, cloud specific)"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "Load Balancer source ranges"
+            externalIPs: 
+              type: "array"
+              default: "[]"
+              description: "External IPs"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the etcd service"
+        persistence: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "If true, use a Persistent Volume Claim. If false, use emptyDir."
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Persistent Volume Storage Class"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the PVC"
+            accessModes: 
+              type: "array"
+              default: "[\"ReadWriteOnce\"]"
+              description: "Persistent Volume Access Modes"
+            size: 
+              type: "string"
+              default: "8Gi"
+              description: "PVC Storage Request for etcd data volume"
+            selector: 
+              type: "object"
+              default: "{}"
+              description: "Selector to match an existing Persistent Volume"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image name"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r202"
+                  description: "Init container volume-permissions image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource  limits"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource  requests"
+        networkPolicy: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable creation of NetworkPolicy resources"
+            allowExternal: 
+              type: "boolean"
+              default: true
+              description: "Don't require client label for connections"
+            extraIngress: 
+              type: "array"
+              default: "[]"
+              description: "Add extra ingress rules to the NetworkPolicy"
+            extraEgress: 
+              type: "array"
+              default: "[]"
+              description: "Add extra ingress rules to the NetworkPolicy"
+            ingressNSMatchLabels: 
+              type: "object"
+              default: "{}"
+              description: "Labels to match to allow traffic from other namespaces"
+            ingressNSPodMatchLabels: 
+              type: "object"
+              default: "{}"
+              description: "Pod labels to match to allow traffic from other namespaces"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Expose etcd metrics"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the Prometheus metrics on etcd pods"
+            podMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create PodMonitor Resource for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: "monitoring"
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "Specify the interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: "30s"
+                  description: "Specify the timeout after which the scrape is ended"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional labels that can be used so PodMonitors will be discovered by Prometheus"
+                scheme: 
+                  type: "string"
+                  default: "http"
+                  description: "Scheme to use for scraping"
+                tlsConfig: 
+                  type: "object"
+                  default: "{}"
+                  description: "TLS configuration used for scrape endpoints used by Prometheus"
+                relabelings: 
+                  type: "array"
+                  default: "[]"
+                  description: "Prometheus relabeling rules"
+        startFromSnapshot: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Initialize new cluster recovering an existing snapshot"
+            existingClaim: 
+              type: "string"
+              default: ""
+              description: "Existing PVC containing the etcd snapshot"
+            snapshotFilename: 
+              type: "string"
+              default: ""
+              description: "Snapshot filename"
+        disasterRecovery: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable auto disaster recovery by periodically snapshotting the keyspace"
+            cronjob: 
+              type: "object"
+              properties: 
+                schedule: 
+                  type: "string"
+                  default: "*/30 * * * *"
+                  description: "Schedule in Cron format to save snapshots"
+                historyLimit: 
+                  type: "number"
+                  default: 1
+                  description: "Number of successful finished jobs to retain"
+                snapshotHistoryLimit: 
+                  type: "number"
+                  default: 1
+                  description: "Number of etcd snapshots to retain, tagged by date"
+                podAnnotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Pod annotations for cronjob pods"
+                resources: 
+                  type: "object"
+                  properties: 
+                    limits: 
+                      type: "object"
+                      default: "{}"
+                      description: "Cronjob container resource limits"
+                    requests: 
+                      type: "object"
+                      default: "{}"
+                      description: "Cronjob container resource requests"
+            pvc: 
+              type: "object"
+              properties: 
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "A manually managed Persistent Volume and Claim"
+                size: 
+                  type: "string"
+                  default: "2Gi"
+                  description: "PVC Storage Request"
+                storageClassName: 
+                  type: "string"
+                  default: "nfs"
+                  description: "Storage Class for snapshots volume"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable service account creation"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of the service account to create or use"
+            automountServiceAccountToken: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable auto mounting of service account token"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations to be included on the service account"
+            labels: 
+              type: "object"
+              default: "{}"
+              description: "Additional labels to be included on the service account"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable/disable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number/percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number/percentage of pods that may be made unavailable"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: etcd
+          version: "6.8.4"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

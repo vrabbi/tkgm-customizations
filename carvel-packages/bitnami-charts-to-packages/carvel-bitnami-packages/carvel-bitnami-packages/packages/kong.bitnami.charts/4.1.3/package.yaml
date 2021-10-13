@@ -1,0 +1,802 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: kong.bitnami.charts.4.1.3
+spec:
+  refName: kong.bitnami.charts
+  version: 4.1.3
+  releaseNotes: |
+        Kong is a scalable, open source API layer (aka API gateway or API middleware) that runs in front of any RESTful API. Extra functionalities beyond the core platform are extended through plugins. Kong is built on top of reliable technologies like NGINX and provides an easy-to-use RESTful API to operate and configure the system.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override kong.fullname template with a string (will prepend the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override kong.fullname template with a string"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Common annotations to add to all Kong resources (sub-charts are not considered). Evaluated as a template"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Common labels to add to all Kong resources (sub-charts are not considered). Evaluated as a template"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)."
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "kong image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/kong"
+              description: "kong image repository"
+            tag: 
+              type: "string"
+              default: "2.6.0-debian-10-r0"
+              description: "kong image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "kong image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        database: 
+          type: "string"
+          default: "postgresql"
+          description: "Select which database backend Kong will use. Can be 'postgresql' or 'cassandra'"
+        replicaCount: 
+          type: "number"
+          default: 2
+          description: "Number of replicas of the kong Pod"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "Add deployment host aliases"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Set up update strategy for kong installation. Set to Recreate if you use persistent volume that cannot be mounted by more than one pods to makesure the pods is destroyed first."
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Alternative scheduler"
+        useDaemonset: 
+          type: "boolean"
+          default: false
+          description: "Use a daemonset instead of a deployment. `replicaCount` will not take effect."
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra volumes to be added to the Kong deployment deployment (evaluated as template). Requires setting `extraVolumeMounts`"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the pod (evaluated as a template)"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Attach additional containers to the pod (evaluated as a template)"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set Kong container's Security Context runAsUser"
+            runAsNonRoot: 
+              type: "boolean"
+              default: true
+              description: "Set Kong container's Security Context runAsNonRoot"
+        podSecurityContext: 
+          type: "object"
+          default: "{}"
+          description: "Pod security context"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for pod assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for pod assignment"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match Ignored if `affinity` is set."
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set."
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for pod assignment"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Pod annotations"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Pod labels"
+        autoscaling: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Deploy a HorizontalPodAutoscaler object for the Kong deployment"
+            apiVersion: 
+              type: "string"
+              default: "autoscaling/v2beta1"
+              description: "API Version of the HPA object (for compatibility with Openshift)"
+            minReplicas: 
+              type: "number"
+              default: 2
+              description: "Minimum number of replicas to scale back"
+            maxReplicas: 
+              type: "number"
+              default: 5
+              description: "Maximum number of replicas to scale out"
+            metrics: 
+              type: "array"
+              default: "[]"
+              description: "Metrics to use when deciding to scale the deployment (evaluated as a template)"
+        pdb: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Deploy a pdb object for the Kong pod"
+            maxUnavailable: 
+              type: "string"
+              default: "50%"
+              description: "Maximum unavailable Kong replicas (expressed in percentage)"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "ClusterIP"
+              description: "Kubernetes Service type"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "Cluster internal IP of the service"
+            externalTrafficPolicy: 
+              type: "string"
+              default: ""
+              description: "external traffic policy managing client source IP preservation"
+            proxyHttpPort: 
+              type: "number"
+              default: 80
+              description: "kong proxy HTTP service port port"
+            proxyHttpsPort: 
+              type: "number"
+              default: 443
+              description: "kong proxy HTTPS service port port"
+            exposeAdmin: 
+              type: "boolean"
+              default: false
+              description: "Add the Kong Admin ports to the service"
+            adminHttpPort: 
+              type: "number"
+              default: 8001
+              description: "kong admin HTTPS service port (only if service.exposeAdmin=true)"
+            adminHttpsPort: 
+              type: "number"
+              default: 8444
+              description: "kong admin HTTPS service port (only if service.exposeAdmin=true)"
+            disableHttpPort: 
+              type: "boolean"
+              default: false
+              description: "Disable Kong proxy HTTP and Kong admin HTTP ports"
+            proxyHttpNodePort: 
+              type: "string"
+              default: ""
+              description: "Port to bind to for NodePort service type (proxy HTTP)"
+            proxyHttpsNodePort: 
+              type: "string"
+              default: ""
+              description: "Port to bind to for NodePort service type (proxy HTTPS)"
+            adminHttpNodePort: 
+              type: "string"
+              default: ""
+              description: "Port to bind to for NodePort service type (admin HTTP)"
+            adminHttpsNodePort: 
+              type: "string"
+              default: ""
+              description: "Port to bind to for NodePort service type (admin HTTPS)"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "loadBalancerIP if kong service type is `LoadBalancer`"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for kong service"
+            extraPorts: 
+              type: "array"
+              default: "[]"
+              description: "Extra ports to expose (normally used with the `sidecar` value)"
+        ingress: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable ingress controller resource"
+            pathType: 
+              type: "string"
+              default: "ImplementationSpecific"
+              description: "Ingress path type"
+            apiVersion: 
+              type: "string"
+              default: ""
+              description: "Force Ingress API version (automatically detected if not set)"
+            hostname: 
+              type: "string"
+              default: "kong.local"
+              description: "Default host for the ingress resource"
+            path: 
+              type: "string"
+              default: "/"
+              description: "Ingress path"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional annotations for the Ingress resource. To enable certificate autogeneration, place here your cert-manager annotations."
+            tls: 
+              type: "boolean"
+              default: false
+              description: "Create TLS Secret"
+            extraHosts: 
+              type: "array"
+              default: "[]"
+              description: "The list of additional hostnames to be covered with this ingress record."
+            extraPaths: 
+              type: "array"
+              default: "[]"
+              description: "Additional arbitrary path/backend objects"
+            extraTls: 
+              type: "array"
+              default: "[]"
+              description: "The tls configuration for additional hostnames to be covered with this ingress record."
+            secrets: 
+              type: "array"
+              default: "[]"
+              description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+        kong: 
+          type: "object"
+          properties: 
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            initScriptsCM: 
+              type: "string"
+              default: ""
+              description: "Configmap with init scripts to execute"
+            initScriptsSecret: 
+              type: "string"
+              default: ""
+              description: "Configmap with init scripts to execute"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars to configure Kong"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars to configure Kong"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars to configure Kong (in case of sensitive data)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the Kong Container (evaluated as template). Normally used with `extraVolumes`."
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe (kong container)"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe (kong container)"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            lifecycleHooks: 
+              type: "object"
+              default: "{}"
+              description: "Lifecycle hooks (kong container)"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        migration: 
+          type: "object"
+          properties: 
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Add annotations to the job"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars to configure the Kong migration job"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars to configure the Kong migration job"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars to configure the Kong migration job (in case of sensitive data)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the Kong Container (evaluated as template). Normally used with `extraVolumes`."
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        ingressController: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable/disable the Kong Ingress Controller"
+            customResourceDeletePolicy: 
+              type: "object"
+              default: "{}"
+              description: "Add custom CRD resource delete policy (for Helm 2 support)"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Kong Ingress Controller image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/kong-ingress-controller"
+                  description: "Kong Ingress Controller image name"
+                tag: 
+                  type: "string"
+                  default: "1.3.1-debian-10-r103"
+                  description: "Kong Ingress Controller image tag"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "kong ingress controller image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            proxyReadyTimeout: 
+              type: "number"
+              default: 300
+              description: "Maximum time (in seconds) to wait for the Kong container to be ready"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Create the necessary Service Accounts, Roles and Rolebindings for the Ingress Controller to work"
+                existingServiceAccount: 
+                  type: "string"
+                  default: ""
+                  description: "Use an existing service account for all the RBAC operations"
+            ingressClass: 
+              type: "string"
+              default: "kong"
+              description: "Name of the class to register Kong Ingress Controller (useful when having other Ingress Controllers in the cluster)"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args (useful when using custom images)"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Array containing extra env vars to configure Kong"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "ConfigMap containing extra env vars to configure Kong Ingress Controller"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Secret containing extra env vars to configure Kong Ingress Controller (in case of sensitive data)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Array of extra volume mounts to be added to the Kong Ingress Controller container (evaluated as template). Normally used with `extraVolumes`."
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe (kong ingress controller container)"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe (kong ingress controller container)"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+        postgresql: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Deploy the PostgreSQL sub-chart"
+            usePasswordFile: 
+              type: "boolean"
+              default: false
+              description: "Mount the PostgreSQL secret as a file"
+            external: 
+              type: "object"
+              properties: 
+                host: 
+                  type: "string"
+                  default: ""
+                  description: "Host of an external PostgreSQL installation"
+                user: 
+                  type: "string"
+                  default: ""
+                  description: "Username of the external PostgreSQL installation"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Password of the external PostgreSQL installation"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Use an existing secret file with the PostgreSQL password (can be used with the bundled chart or with an existing installation)"
+            postgresqlDatabase: 
+              type: "string"
+              default: "kong"
+              description: "Database name to be used by Kong"
+            postgresqlUsername: 
+              type: "string"
+              default: "kong"
+              description: "Username to be created by the PostgreSQL bundled chart"
+        cassandra: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Deploy the Cassandra sub-chart"
+            dbUser: 
+              type: "object"
+              properties: 
+                user: 
+                  type: "string"
+                  default: "kong"
+                  description: "Username to be created by the cassandra bundled chart"
+            usePasswordFile: 
+              type: "boolean"
+              default: false
+              description: "Mount the Cassandra secret as a file"
+            external: 
+              type: "object"
+              properties: 
+                hosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "Hosts of an external cassandra installation"
+                port: 
+                  type: "number"
+                  default: 9042
+                  description: "Port of an external cassandra installation"
+                user: 
+                  type: "string"
+                  default: ""
+                  description: "Username of the external cassandra installation"
+                password: 
+                  type: "string"
+                  default: ""
+                  description: "Password of the external cassandra installation"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Use an existing secret file with the Cassandra password (can be used with the bundled chart or with an existing installation)"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable the export of Prometheus metrics"
+            service: 
+              type: "object"
+              properties: 
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for Prometheus metrics service"
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Type of the Prometheus metrics service"
+                port: 
+                  type: "number"
+                  default: 9119
+                  description: "Port of the Prometheus metrics service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "If `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                serviceAccount: 
+                  type: "string"
+                  default: ""
+                  description: "Service account used by Prometheus"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+                rbac: 
+                  type: "object"
+                  properties: 
+                    enabled: 
+                      type: "boolean"
+                      default: true
+                      description: "Whether to enable RBAC"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: kong
+          version: "4.1.3"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

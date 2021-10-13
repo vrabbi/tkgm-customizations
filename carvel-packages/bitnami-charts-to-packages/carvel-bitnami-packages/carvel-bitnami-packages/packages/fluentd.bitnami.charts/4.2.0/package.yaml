@@ -1,0 +1,896 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: fluentd.bitnami.charts.4.2.0
+spec:
+  refName: fluentd.bitnami.charts
+  version: 4.2.0
+  releaseNotes: |
+        Fluentd is an open source data collector for unified logging layer
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Force target Kubernetes version (using Helm capabilities if not set)"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname template (will maintain the release name)"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname template"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Cluster Domain"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "Fluentd image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/fluentd"
+              description: "Fluentd image repository"
+            tag: 
+              type: "string"
+              default: "1.14.0-debian-10-r9"
+              description: "Fluentd image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "Fluentd image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Fluentd image pull secrets"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Enable image debug mode"
+        forwarder: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable forwarder daemonset"
+            daemonUser: 
+              type: "string"
+              default: "root"
+              description: "Forwarder daemon user and group (set to root by default because it reads from host paths)"
+            daemonGroup: 
+              type: "string"
+              default: "root"
+              description: "Fluentd forwarder daemon system group"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for forwarder pods"
+                runAsUser: 
+                  type: "number"
+                  default: 0
+                  description: "User ID for forwarder's containers"
+                runAsGroup: 
+                  type: "number"
+                  default: 0
+                  description: "Group ID for forwarder's containers"
+                fsGroup: 
+                  type: "number"
+                  default: 0
+                  description: "Group ID for forwarder's containers filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for the forwarder container"
+                privileged: 
+                  type: "boolean"
+                  default: false
+                  description: "Run as privileged"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Allow Privilege Escalation"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "Require the use of a read only root file system"
+                capabilities: 
+                  type: "object"
+                  properties: 
+                    drop: 
+                      type: "array"
+                      default: "[]"
+                      description: "Drop capabilities for the securityContext"
+            terminationGracePeriodSeconds: 
+              type: "number"
+              default: 30
+              description: "Duration in seconds the pod needs to terminate gracefully"
+            configFile: 
+              type: "string"
+              default: "fluentd.conf"
+              description: "Name of the config file that will be used by Fluentd at launch under the `/opt/bitnami/fluentd/conf` directory"
+            configMap: 
+              type: "string"
+              default: ""
+              description: "Name of the config map that contains the Fluentd configuration files"
+            configMapFiles: 
+              type: "object"
+              default: "{}"
+              description: "Files to be added to be config map. Ignored if `forwarder.configMap` is set"
+            extraArgs: 
+              type: "string"
+              default: ""
+              description: "Extra arguments for the Fluentd command line"
+            extraEnv: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to pass to the container"
+            containerPorts: 
+              type: "array"
+              default: "[]"
+              description: "Ports the forwarder containers will listen on"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type (`ClusterIP`, `NodePort`, or `LoadBalancer`) for the forwarders"
+                ports: 
+                  type: "object"
+                  default: "{}"
+                  description: "Array containing the forwarder service ports"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if service type is `LoadBalancer` (optional, cloud specific)"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Addresses that are allowed when service is LoadBalancer"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Static clusterIP or None for headless services"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Provide any additional annotations which may be required"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                httpGet: 
+                  type: "object"
+                  properties: 
+                    path: 
+                      type: "string"
+                      default: "/fluentd.healthcheck?json=%7B%22ping%22%3A+%22pong%22%7D"
+                      description: "Request path for livenessProbe"
+                    port: 
+                      type: "string"
+                      default: "http"
+                      description: "Port for livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 60
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                httpGet: 
+                  type: "object"
+                  properties: 
+                    path: 
+                      type: "string"
+                      default: "/fluentd.healthcheck?json=%7B%22ping%22%3A+%22pong%22%7D"
+                      description: "Request path for readinessProbe"
+                    port: 
+                      type: "string"
+                      default: "http"
+                      description: "Port for readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Set up update strategy."
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Set Priority Class Name to allow priority control over other pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Forwarder Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Forwarder Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Forwarder Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Forwarder Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Forwarder Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Forwarder Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Forwarder Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Forwarder Tolerations for pod assignment"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Pod annotations"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels to add to Pod"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specify whether a ServiceAccount should be created."
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to create"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional Service Account annotations (evaluated as a template)"
+            rbac: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: true
+                  description: "Specify whether RBAC resources should be created and used, allowing the get, watch and list of pods/namespaces"
+                pspEnabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify whether the bundled Pod Security Policy should be created and bound with RBAC"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable persistence volume for the forwarder"
+                hostPath: 
+                  type: "object"
+                  properties: 
+                    path: 
+                      type: "string"
+                      default: "/opt/bitnami/fluentd/logs/buffers"
+                      description: "Directory from the host node's filesystem to mount as hostPath volume for persistence."
+            lifecycle: 
+              type: "object"
+              default: "{}"
+              description: "Additional lifecycles to add to the pods"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Additional init containers to add to the pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to forwarder pods"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Mount extra volume(s)"
+        aggregator: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable Fluentd aggregator statefulset"
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of aggregator pods to deploy in the Stateful Set"
+            securityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for aggregator pods"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for aggregator's containers"
+                runAsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for aggregator's containers"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for aggregator's containers filesystem"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for the aggregator container"
+                privileged: 
+                  type: "boolean"
+                  default: false
+                  description: "Run as privileged"
+                allowPrivilegeEscalation: 
+                  type: "boolean"
+                  default: false
+                  description: "Allow Privilege Escalation"
+                readOnlyRootFilesystem: 
+                  type: "boolean"
+                  default: false
+                  description: "Require the use of a read only root file system"
+                capabilities: 
+                  type: "object"
+                  properties: 
+                    drop: 
+                      type: "array"
+                      default: "[]"
+                      description: "Drop capabilities for the securityContext"
+            terminationGracePeriodSeconds: 
+              type: "number"
+              default: 30
+              description: "Duration in seconds the pod needs to terminate gracefully"
+            configFile: 
+              type: "string"
+              default: "fluentd.conf"
+              description: "Name of the config file that will be used by Fluentd at launch under the `/opt/bitnami/fluentd/conf` directory"
+            configMap: 
+              type: "string"
+              default: ""
+              description: "Name of the config map that contains the Fluentd configuration files"
+            configMapFiles: 
+              type: "object"
+              default: "{}"
+              description: "Files to be added to be config map. Ignored if `aggregator.configMap` is set"
+            port: 
+              type: "number"
+              default: 24224
+              description: "Port the Aggregator container will listen for logs. Leave it blank to ignore."
+            extraArgs: 
+              type: "string"
+              default: ""
+              description: "Extra arguments for the Fluentd command line"
+            extraEnv: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to pass to the container"
+            containerPorts: 
+              type: "array"
+              default: "[]"
+              description: "Ports the aggregator containers will listen on"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Kubernetes service type (`ClusterIP`, `NodePort`, or `LoadBalancer`) for the aggregators"
+                ports: 
+                  type: "object"
+                  default: "{}"
+                  description: "Array containing the aggregator service ports"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "loadBalancerIP if service type is `LoadBalancer` (optional, cloud specific)"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Addresses that are allowed when service is LoadBalancer"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "Static clusterIP or None for headless services"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Provide any additional annotations which may be required"
+            ingress: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Set to true to enable ingress record generation"
+                certManager: 
+                  type: "boolean"
+                  default: false
+                  description: "Set this to true in order to add the corresponding annotations for cert-manager"
+                pathType: 
+                  type: "string"
+                  default: "ImplementationSpecific"
+                  description: "Ingress Path type. How the path matching is interpreted"
+                apiVersion: 
+                  type: "string"
+                  default: ""
+                  description: "Override API Version (automatically detected if not set)"
+                hostname: 
+                  type: "string"
+                  default: "fluentd.local"
+                  description: "Default host for the ingress resource"
+                path: 
+                  type: "string"
+                  default: "/"
+                  description: "Default path for the ingress resource"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Ingress annotations"
+                tls: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable TLS configuration for the hostname defined at ingress.hostname parameter"
+                extraHosts: 
+                  type: "array"
+                  default: "[]"
+                  description: "The list of additional hostnames to be covered with this ingress record."
+                extraPaths: 
+                  type: "array"
+                  default: "[]"
+                  description: "Any additional arbitrary paths that may need to be added to the ingress under the main host."
+                extraTls: 
+                  type: "array"
+                  default: "[]"
+                  description: "The tls configuration for additional hostnames to be covered with this ingress record."
+                secrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "If you're providing your own certificates, please use this to add the certificates as secrets"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                httpGet: 
+                  type: "object"
+                  properties: 
+                    path: 
+                      type: "string"
+                      default: "/fluentd.healthcheck?json=%7B%22ping%22%3A+%22pong%22%7D"
+                      description: "Request path for livenessProbe"
+                    port: 
+                      type: "string"
+                      default: "http"
+                      description: "Port for livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 60
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                httpGet: 
+                  type: "object"
+                  properties: 
+                    path: 
+                      type: "string"
+                      default: "/fluentd.healthcheck?json=%7B%22ping%22%3A+%22pong%22%7D"
+                      description: "Request path for readinessProbe"
+                    port: 
+                      type: "string"
+                      default: "http"
+                      description: "Port for readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 5
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 6
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            updateStrategy: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "RollingUpdate"
+                  description: "Set up update strategy."
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for the container"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for the container"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "Aggregator Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "Aggregator Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "Aggregator Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "Aggregator Node label key to match Ignored if `affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "Aggregator Node label values to match. Ignored if `affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Aggregator Affinity for pod assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Aggregator Node labels for pod assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Aggregator Tolerations for pod assignment"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Pod annotations"
+            podLabels: 
+              type: "object"
+              default: "{}"
+              description: "Extra labels to add to Pod"
+            serviceAccount: 
+              type: "object"
+              properties: 
+                create: 
+                  type: "boolean"
+                  default: false
+                  description: "Specify whether a ServiceAccount should be created"
+                name: 
+                  type: "string"
+                  default: ""
+                  description: "The name of the ServiceAccount to create"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Additional Service Account annotations (evaluated as a template)"
+            autoscaling: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create an Horizontal Pod Autoscaler"
+                minReplicas: 
+                  type: "number"
+                  default: 2
+                  description: "Minimum number of replicas for the HPA"
+                maxReplicas: 
+                  type: "number"
+                  default: 5
+                  description: "Maximum number of replicas for the HPA"
+                metrics: 
+                  type: "array"
+                  default: "[]"
+                  description: "Metrics for the HPA to manage the scaling"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable persistence volume for the aggregator"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "Persistent Volume storage class"
+                accessMode: 
+                  type: "string"
+                  default: "ReadWriteOnce"
+                  description: "Persistent Volume access mode"
+                size: 
+                  type: "string"
+                  default: "10Gi"
+                  description: "Persistent Volume size"
+            lifecycle: 
+              type: "object"
+              default: "{}"
+              description: "Additional lifecycles to add to the pods"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add init containers to aggregator pods"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add sidecars to aggregator pods"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Extra volumes"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Mount extra volume(s)"
+        serviceAccount: 
+          type: "object"
+          default: "{}"
+          description: "Pods Service Account. This top-level global entry is DEPRECATED. Please use \"forwarder.serviceAccount\" instead."
+        rbac: 
+          type: "object"
+          default: "{}"
+          description: "Role Based Access. This top-level global entry is DEPRECATED. Please use \"forwarder.rbac\" instead."
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable the export of Prometheus metrics"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "Prometheus metrics service type"
+                port: 
+                  type: "number"
+                  default: 24231
+                  description: "Prometheus metrics service port"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "Load Balancer IP if the Prometheus metrics server type is `LoadBalancer`"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Annotations for the Prometheus Exporter service service"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "if `true`, creates a Prometheus Operator ServiceMonitor (also requires `metrics.enabled` to be `true`)"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace in which Prometheus is running"
+                interval: 
+                  type: "string"
+                  default: ""
+                  description: "Interval at which metrics should be scraped."
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Timeout after which the scrape is ended"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Prometheus instance selector labels"
+                labels: 
+                  type: "object"
+                  default: "{}"
+                  description: "ServiceMonitor extra labels"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "ServiceMonitor annotations"
+        tls: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable TLS/SSL encrytion for internal communications"
+            autoGenerated: 
+              type: "boolean"
+              default: false
+              description: "Generate automatically self-signed TLS certificates."
+            forwarder: 
+              type: "object"
+              properties: 
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the TLS certificates for the Fluentd forwarder"
+            aggregator: 
+              type: "object"
+              properties: 
+                existingSecret: 
+                  type: "string"
+                  default: ""
+                  description: "Name of the existing secret containing the TLS certificates for the Fluentd aggregator"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: fluentd
+          version: "4.2.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

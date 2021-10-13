@@ -1,0 +1,399 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: haproxy.bitnami.charts.0.2.10
+spec:
+  refName: haproxy.bitnami.charts
+  version: 0.2.10
+  releaseNotes: |
+        HAProxy is a TCP proxy and a HTTP reverse proxy. It supports SSL termination and offloading, TCP and HTTP normalization, traffic regulation, caching and protection against DDoS attacks.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global StorageClass for Persistent Volume(s)"
+        kubeVersion: 
+          type: "string"
+          default: ""
+          description: "Override Kubernetes version"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override common.names.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override common.names.fullname"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Labels to add to all deployed objects"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations to add to all deployed objects"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Kubernetes cluster domain name"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        service: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "LoadBalancer"
+              description: "haproxy service type"
+            ports: 
+              type: "array"
+              default: "[]"
+              description: "List of haproxy service ports"
+            clusterIP: 
+              type: "string"
+              default: ""
+              description: "haproxy service Cluster IP"
+            loadBalancerIP: 
+              type: "string"
+              default: ""
+              description: "haproxy service Load Balancer IP"
+            loadBalancerSourceRanges: 
+              type: "array"
+              default: "[]"
+              description: "haproxy service Load Balancer sources"
+            externalTrafficPolicy: 
+              type: "string"
+              default: "Cluster"
+              description: "haproxy service external traffic policy"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional custom annotations for haproxy service"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "HAProxy image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/haproxy"
+              description: "HAProxy image repository"
+            tag: 
+              type: "string"
+              default: "2.4.5-debian-10-r0"
+              description: "HAProxy image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "HAProxy image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "HAProxy image pull secrets"
+        replicaCount: 
+          type: "number"
+          default: 1
+          description: "Number of haproxy replicas to deploy"
+        livenessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable livenessProbe on haproxy nodes"
+            initialDelaySeconds: 
+              type: "number"
+              default: 15
+              description: "Initial delay seconds for livenessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for livenessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for livenessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for livenessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for livenessProbe"
+        readinessProbe: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enable readinessProbe on haproxy nodes"
+            initialDelaySeconds: 
+              type: "number"
+              default: 15
+              description: "Initial delay seconds for readinessProbe"
+            periodSeconds: 
+              type: "number"
+              default: 10
+              description: "Period seconds for readinessProbe"
+            timeoutSeconds: 
+              type: "number"
+              default: 5
+              description: "Timeout seconds for readinessProbe"
+            failureThreshold: 
+              type: "number"
+              default: 5
+              description: "Failure threshold for readinessProbe"
+            successThreshold: 
+              type: "number"
+              default: 1
+              description: "Success threshold for readinessProbe"
+        customLivenessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom livenessProbe that overrides the default one"
+        customReadinessProbe: 
+          type: "object"
+          default: "{}"
+          description: "Custom readinessProbe that overrides the default one"
+        resources: 
+          type: "object"
+          properties: 
+            limits: 
+              type: "object"
+              default: "{}"
+              description: "The resources limits for the haproxy containers"
+            requests: 
+              type: "object"
+              default: "{}"
+              description: "The requested resources for the haproxy containers"
+        podSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled haproxy pods' Security Context"
+            fsGroup: 
+              type: "number"
+              default: 1001
+              description: "Set haproxy pod's Security Context fsGroup"
+        containerSecurityContext: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: true
+              description: "Enabled haproxy containers' Security Context"
+            runAsUser: 
+              type: "number"
+              default: 1001
+              description: "Set haproxy containers' Security Context runAsUser"
+        pdb: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Enable a Pod Disruption Budget creation"
+            minAvailable: 
+              type: "number"
+              default: 1
+              description: "Minimum number/percentage of pods that should remain scheduled"
+            maxUnavailable: 
+              type: "string"
+              default: ""
+              description: "Maximum number/percentage of pods that may be made unavailable"
+        autoscaling: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable Horizontal POD autoscaling for HAProxy"
+            minReplicas: 
+              type: "number"
+              default: 1
+              description: "Minimum number of HAProxy replicas"
+            maxReplicas: 
+              type: "number"
+              default: 11
+              description: "Maximum number of HAProxy replicas"
+            targetCPU: 
+              type: "number"
+              default: 50
+              description: "Target CPU utilization percentage"
+            targetMemory: 
+              type: "number"
+              default: 50
+              description: "Target Memory utilization percentage"
+        command: 
+          type: "array"
+          default: "[]"
+          description: "Override default container command (useful when using custom images)"
+        args: 
+          type: "array"
+          default: "[]"
+          description: "Override default container args (useful when using custom images)"
+        hostAliases: 
+          type: "array"
+          default: "[]"
+          description: "haproxy pods host aliases"
+        podLabels: 
+          type: "object"
+          default: "{}"
+          description: "Extra labels for haproxy pods"
+        podAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Annotations for haproxy pods"
+        podAffinityPreset: 
+          type: "string"
+          default: ""
+          description: "Pod affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        podAntiAffinityPreset: 
+          type: "string"
+          default: "soft"
+          description: "Pod anti-affinity preset. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+        nodeAffinityPreset: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: ""
+              description: "Node affinity preset type. Ignored if `affinity` is set. Allowed values: `soft` or `hard`"
+            key: 
+              type: "string"
+              default: ""
+              description: "Node label key to match. Ignored if `affinity` is set"
+            values: 
+              type: "array"
+              default: "[]"
+              description: "Node label values to match. Ignored if `affinity` is set"
+        configuration: 
+          type: "string"
+          default: "\"\""
+          description: "haproxy configuration"
+        containerPorts: 
+          type: "array"
+          default: "[]"
+          description: "List of container ports to enable in the haproxy container"
+        existingConfigmap: 
+          type: "string"
+          default: ""
+          description: "configmap with HAProxy configuration"
+        affinity: 
+          type: "object"
+          default: "{}"
+          description: "Affinity for haproxy pods assignment"
+        nodeSelector: 
+          type: "object"
+          default: "{}"
+          description: "Node labels for haproxy pods assignment"
+        tolerations: 
+          type: "array"
+          default: "[]"
+          description: "Tolerations for haproxy pods assignment"
+        updateStrategy: 
+          type: "object"
+          properties: 
+            type: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "haproxy statefulset strategy type"
+        priorityClassName: 
+          type: "string"
+          default: ""
+          description: "haproxy pods' priorityClassName"
+        lifecycleHooks: 
+          type: "object"
+          default: "{}"
+          description: "for the haproxy container(s) to automate configuration before or after startup"
+        extraEnvVars: 
+          type: "array"
+          default: "[]"
+          description: "Array with extra environment variables to add to haproxy nodes"
+        extraEnvVarsCM: 
+          type: "string"
+          default: ""
+          description: "Name of existing ConfigMap containing extra env vars for haproxy nodes"
+        extraEnvVarsSecret: 
+          type: "string"
+          default: ""
+          description: "Name of existing Secret containing extra env vars for haproxy nodes"
+        extraVolumes: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumes for the haproxy pod(s)"
+        extraVolumeMounts: 
+          type: "array"
+          default: "[]"
+          description: "Optionally specify extra list of additional volumeMounts for the haproxy container(s)"
+        sidecars: 
+          type: "array"
+          default: "[]"
+          description: "Add additional sidecar containers to the haproxy pod(s)"
+        initContainers: 
+          type: "array"
+          default: "[]"
+          description: "Add additional init containers to the haproxy pod(s)"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Specifies whether a ServiceAccount should be created"
+            name: 
+              type: "string"
+              default: ""
+              description: "The name of the ServiceAccount to use."
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: haproxy
+          version: "0.2.10"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

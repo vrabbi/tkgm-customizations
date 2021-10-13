@@ -1,0 +1,13 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: aspnet-core.bitnami.charts
+spec:
+  displayName: "aspnet-core"
+  longDescription: "Bitnami aspnet-core Helm Chart"
+  shortDescription: "aspnet-core Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - asp.net
+  - dotnet

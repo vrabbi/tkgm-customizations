@@ -1,0 +1,966 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: mariadb.bitnami.charts.9.6.0
+spec:
+  refName: mariadb.bitnami.charts
+  version: 9.6.0
+  releaseNotes: |
+        Fast, reliable, scalable, and easy to use open-source relational database system. MariaDB Server is intended for mission-critical, heavy-load production systems as well as for embedding into mass-deployed software. Highly available MariaDB cluster.
+  valuesSchema:
+    openAPIv3:
+      title: "Chart Values"
+      type: "object"
+      properties: 
+        global: 
+          type: "object"
+          properties: 
+            imageRegistry: 
+              type: "string"
+              default: ""
+              description: "Global Docker Image registry"
+            imagePullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Global Docker registry secret names as an array"
+            storageClass: 
+              type: "string"
+              default: ""
+              description: "Global storage class for dynamic provisioning"
+        nameOverride: 
+          type: "string"
+          default: ""
+          description: "String to partially override mariadb.fullname"
+        fullnameOverride: 
+          type: "string"
+          default: ""
+          description: "String to fully override mariadb.fullname"
+        clusterDomain: 
+          type: "string"
+          default: "cluster.local"
+          description: "Default Kubernetes cluster domain"
+        commonAnnotations: 
+          type: "object"
+          default: "{}"
+          description: "Common annotations to add to all MariaDB resources (sub-charts are not considered)"
+        commonLabels: 
+          type: "object"
+          default: "{}"
+          description: "Common labels to add to all MariaDB resources (sub-charts are not considered)"
+        schedulerName: 
+          type: "string"
+          default: ""
+          description: "Name of the scheduler (other than default) to dispatch pods"
+        extraDeploy: 
+          type: "array"
+          default: "[]"
+          description: "Array of extra objects to deploy with the release (evaluated as a template)"
+        diagnosticMode: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable diagnostic mode (all probes will be disabled and the command will be overridden)"
+            command: 
+              type: "array"
+              default: "[\"sleep\"]"
+              description: "Command to override all containers in the deployment"
+            args: 
+              type: "array"
+              default: "[\"infinity\"]"
+              description: "Args to override all containers in the deployment"
+        image: 
+          type: "object"
+          properties: 
+            registry: 
+              type: "string"
+              default: "docker.io"
+              description: "MariaDB image registry"
+            repository: 
+              type: "string"
+              default: "bitnami/mariadb"
+              description: "MariaDB image repository"
+            tag: 
+              type: "string"
+              default: "10.5.12-debian-10-r32"
+              description: "MariaDB image tag (immutable tags are recommended)"
+            pullPolicy: 
+              type: "string"
+              default: "IfNotPresent"
+              description: "MariaDB image pull policy"
+            pullSecrets: 
+              type: "array"
+              default: "[]"
+              description: "Specify docker-registry secret names as an array"
+            debug: 
+              type: "boolean"
+              default: false
+              description: "Specify if debug logs should be enabled"
+        architecture: 
+          type: "string"
+          default: "standalone"
+          description: "MariaDB architecture (`standalone` or `replication`)"
+        auth: 
+          type: "object"
+          properties: 
+            rootPassword: 
+              type: "string"
+              default: ""
+              description: "Password for the `root` user. Ignored if existing secret is provided."
+            database: 
+              type: "string"
+              default: "my_database"
+              description: "Name for a custom database to create"
+            username: 
+              type: "string"
+              default: ""
+              description: "Name for a custom user to create"
+            password: 
+              type: "string"
+              default: ""
+              description: "Password for the new user. Ignored if existing secret is provided"
+            replicationUser: 
+              type: "string"
+              default: "replicator"
+              description: "MariaDB replication user"
+            replicationPassword: 
+              type: "string"
+              default: ""
+              description: "MariaDB replication user password. Ignored if existing secret is provided"
+            existingSecret: 
+              type: "string"
+              default: ""
+              description: "Use existing secret for password details (`auth.rootPassword`, `auth.password`, `auth.replicationPassword` will be ignored and picked up from this secret). The secret has to contain the keys `mariadb-root-password`, `mariadb-replication-password` and `mariadb-password`"
+            forcePassword: 
+              type: "boolean"
+              default: false
+              description: "Force users to specify required passwords"
+            usePasswordFiles: 
+              type: "boolean"
+              default: false
+              description: "Mount credentials as a files instead of using an environment variable"
+            customPasswordFiles: 
+              type: "object"
+              default: "{}"
+              description: "Use custom password files when `auth.usePasswordFiles` is set to `true`. Define path for keys `root` and `user`, also define `replicator` if `architecture` is set to `replication`"
+        initdbScripts: 
+          type: "object"
+          default: "{}"
+          description: "Dictionary of initdb scripts"
+        initdbScriptsConfigMap: 
+          type: "string"
+          default: ""
+          description: "ConfigMap with the initdb scripts (Note: Overrides `initdbScripts`)"
+        primary: 
+          type: "object"
+          properties: 
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command on MariaDB Primary container(s) (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args on MariaDB Primary container(s) (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            configuration: 
+              type: "string"
+              default: "\"\""
+              description: "MariaDB Primary configuration to be injected as ConfigMap"
+            existingConfiguration: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with MariaDB Primary configuration."
+            updateStrategy: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy type for the MariaDB primary statefulset"
+            rollingUpdatePartition: 
+              type: "string"
+              default: ""
+              description: "Partition update strategy for Mariadb Primary statefulset"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations for MariaDB primary pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "MariaDB primary pod affinity preset. Ignored if `primary.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "MariaDB primary pod anti-affinity preset. Ignored if `primary.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB primary node affinity preset type. Ignored if `primary.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB primary node label key to match Ignored if `primary.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "MariaDB primary node label values to match. Ignored if `primary.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for MariaDB primary pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for MariaDB primary pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for MariaDB primary pods assignment"
+            topologySpreadConstraints: 
+              type: "object"
+              default: "{}"
+              description: "Topology Spread Constraints for MariaDB primary pods assignment"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Priority class for MariaDB primary pods assignment"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for MariaDB primary pods"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the mounted volumes' filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "MariaDB primary container securityContext"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the MariaDB primary container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for MariaDB primary containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for MariaDB primary containers"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe for MariaDB primary containers"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe for MariaDB primary containers"
+            startupWaitOptions: 
+              type: "object"
+              default: "{}"
+              description: "Override default builtin startup wait check options for MariaDB primary containers"
+            extraFlags: 
+              type: "string"
+              default: ""
+              description: "MariaDB primary additional command line flags"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to be set on MariaDB primary containers"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for MariaDB primary containers"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for MariaDB primary containers"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence on MariaDB primary replicas using a `PersistentVolumeClaim`. If false, use emptyDir"
+                existingClaim: 
+                  type: "string"
+                  default: ""
+                  description: "Name of an existing `PersistentVolumeClaim` for MariaDB primary replicas"
+                subPath: 
+                  type: "string"
+                  default: ""
+                  description: "Subdirectory of the volume to mount at"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB primary persistent volume storage Class"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "MariaDB primary persistent volume claim annotations"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "MariaDB primary persistent volume access Modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "MariaDB primary persistent volume size"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector to match an existing Persistent Volume"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes to the MariaDB Primary pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the MariaDB Primary container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers for the MariaDB Primary pod(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers for the MariaDB Primary pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "MariaDB Primary Kubernetes service type"
+                port: 
+                  type: "number"
+                  default: 3306
+                  description: "MariaDB Primary Kubernetes service port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB Primary Kubernetes service node port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB Primary Kubernetes service clusterIP IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB Primary loadBalancerIP if service type is `LoadBalancer`"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when MariaDB Primary service is LoadBalancer"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Provide any additional annotations which may be required"
+            pdb: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation for MariaDB primary pods"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of MariaDB primary pods that must still be available after the eviction"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of MariaDB primary pods that can be unavailable after the eviction"
+            revisionHistoryLimit: 
+              type: "number"
+              default: 10
+              description: "Maximum number of revisions that will be maintained in the StatefulSet"
+        secondary: 
+          type: "object"
+          properties: 
+            replicaCount: 
+              type: "number"
+              default: 1
+              description: "Number of MariaDB secondary replicas"
+            command: 
+              type: "array"
+              default: "[]"
+              description: "Override default container command on MariaDB Secondary container(s) (useful when using custom images)"
+            args: 
+              type: "array"
+              default: "[]"
+              description: "Override default container args on MariaDB Secondary container(s) (useful when using custom images)"
+            hostAliases: 
+              type: "array"
+              default: "[]"
+              description: "Add deployment host aliases"
+            configuration: 
+              type: "string"
+              default: "\"\""
+              description: "MariaDB Secondary configuration to be injected as ConfigMap"
+            existingConfiguration: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap with MariaDB Secondary configuration."
+            updateStrategy: 
+              type: "string"
+              default: "RollingUpdate"
+              description: "Update strategy type for the MariaDB secondary statefulset"
+            rollingUpdatePartition: 
+              type: "string"
+              default: ""
+              description: "Partition update strategy for Mariadb Secondary statefulset"
+            podAnnotations: 
+              type: "object"
+              default: "{}"
+              description: "Additional pod annotations for MariaDB secondary pods"
+            podAffinityPreset: 
+              type: "string"
+              default: ""
+              description: "MariaDB secondary pod affinity preset. Ignored if `secondary.affinity` is set. Allowed values: `soft` or `hard`"
+            podAntiAffinityPreset: 
+              type: "string"
+              default: "soft"
+              description: "MariaDB secondary pod anti-affinity preset. Ignored if `secondary.affinity` is set. Allowed values: `soft` or `hard`"
+            nodeAffinityPreset: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB secondary node affinity preset type. Ignored if `secondary.affinity` is set. Allowed values: `soft` or `hard`"
+                key: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB secondary node label key to match Ignored if `secondary.affinity` is set."
+                values: 
+                  type: "array"
+                  default: "[]"
+                  description: "MariaDB secondary node label values to match. Ignored if `secondary.affinity` is set."
+            affinity: 
+              type: "object"
+              default: "{}"
+              description: "Affinity for MariaDB secondary pods assignment"
+            nodeSelector: 
+              type: "object"
+              default: "{}"
+              description: "Node labels for MariaDB secondary pods assignment"
+            tolerations: 
+              type: "array"
+              default: "[]"
+              description: "Tolerations for MariaDB secondary pods assignment"
+            topologySpreadConstraints: 
+              type: "object"
+              default: "{}"
+              description: "Topology Spread Constraints for MariaDB secondary pods assignment"
+            priorityClassName: 
+              type: "string"
+              default: ""
+              description: "Priority class for MariaDB secondary pods assignment"
+            podSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable security context for MariaDB secondary pods"
+                fsGroup: 
+                  type: "number"
+                  default: 1001
+                  description: "Group ID for the mounted volumes' filesystem"
+            containerSecurityContext: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "MariaDB secondary container securityContext"
+                runAsUser: 
+                  type: "number"
+                  default: 1001
+                  description: "User ID for the MariaDB secondary container"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for MariaDB secondary containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for MariaDB secondary containers"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            customLivenessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default liveness probe for MariaDB secondary containers"
+            customReadinessProbe: 
+              type: "object"
+              default: "{}"
+              description: "Override default readiness probe for MariaDB secondary containers"
+            startupWaitOptions: 
+              type: "object"
+              default: "{}"
+              description: "Override default builtin startup wait check options for MariaDB secondary containers"
+            extraFlags: 
+              type: "string"
+              default: ""
+              description: "MariaDB secondary additional command line flags"
+            extraEnvVars: 
+              type: "array"
+              default: "[]"
+              description: "Extra environment variables to be set on MariaDB secondary containers"
+            extraEnvVarsCM: 
+              type: "string"
+              default: ""
+              description: "Name of existing ConfigMap containing extra env vars for MariaDB secondary containers"
+            extraEnvVarsSecret: 
+              type: "string"
+              default: ""
+              description: "Name of existing Secret containing extra env vars for MariaDB secondary containers"
+            persistence: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable persistence on MariaDB secondary replicas using a `PersistentVolumeClaim`"
+                subPath: 
+                  type: "string"
+                  default: ""
+                  description: "Subdirectory of the volume to mount at"
+                storageClass: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB secondary persistent volume storage Class"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "MariaDB secondary persistent volume claim annotations"
+                accessModes: 
+                  type: "array"
+                  default: "[\"ReadWriteOnce\"]"
+                  description: "MariaDB secondary persistent volume access Modes"
+                size: 
+                  type: "string"
+                  default: "8Gi"
+                  description: "MariaDB secondary persistent volume size"
+                selector: 
+                  type: "object"
+                  default: "{}"
+                  description: "Selector to match an existing Persistent Volume"
+            extraVolumes: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumes to the MariaDB secondary pod(s)"
+            extraVolumeMounts: 
+              type: "array"
+              default: "[]"
+              description: "Optionally specify extra list of additional volumeMounts for the MariaDB secondary container(s)"
+            initContainers: 
+              type: "array"
+              default: "[]"
+              description: "Add additional init containers for the MariaDB secondary pod(s)"
+            sidecars: 
+              type: "array"
+              default: "[]"
+              description: "Add additional sidecar containers for the MariaDB secondary pod(s)"
+            service: 
+              type: "object"
+              properties: 
+                type: 
+                  type: "string"
+                  default: "ClusterIP"
+                  description: "MariaDB secondary Kubernetes service type"
+                port: 
+                  type: "number"
+                  default: 3306
+                  description: "MariaDB secondary Kubernetes service port"
+                nodePort: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB secondary Kubernetes service node port"
+                clusterIP: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB secondary Kubernetes service clusterIP IP"
+                loadBalancerIP: 
+                  type: "string"
+                  default: ""
+                  description: "MariaDB secondary loadBalancerIP if service type is `LoadBalancer`"
+                externalTrafficPolicy: 
+                  type: "string"
+                  default: "Cluster"
+                  description: "Enable client source IP preservation"
+                loadBalancerSourceRanges: 
+                  type: "array"
+                  default: "[]"
+                  description: "Address that are allowed when MariaDB secondary service is LoadBalancer"
+                annotations: 
+                  type: "object"
+                  default: "{}"
+                  description: "Provide any additional annotations which may be required"
+            pdb: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Enable/disable a Pod Disruption Budget creation for MariaDB secondary pods"
+                minAvailable: 
+                  type: "number"
+                  default: 1
+                  description: "Minimum number/percentage of MariaDB secondary pods that should remain scheduled"
+                maxUnavailable: 
+                  type: "string"
+                  default: ""
+                  description: "Maximum number/percentage of MariaDB secondary pods that may be made unavailable"
+            revisionHistoryLimit: 
+              type: "number"
+              default: 10
+              description: "Maximum number of revisions that will be maintained in the StatefulSet"
+        serviceAccount: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: true
+              description: "Enable the creation of a ServiceAccount for MariaDB pods"
+            name: 
+              type: "string"
+              default: ""
+              description: "Name of the created ServiceAccount"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for MariaDB Service Account"
+        rbac: 
+          type: "object"
+          properties: 
+            create: 
+              type: "boolean"
+              default: false
+              description: "Whether to create and use RBAC resources or not"
+        volumePermissions: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Enable init container that changes the owner and group of the persistent volume(s) mountpoint to `runAsUser:fsGroup`"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Init container volume-permissions image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/bitnami-shell"
+                  description: "Init container volume-permissions image repository"
+                tag: 
+                  type: "string"
+                  default: "10-debian-10-r185"
+                  description: "Init container volume-permissions image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "Always"
+                  description: "Init container volume-permissions image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource limits"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "Init container volume-permissions resource requests"
+        metrics: 
+          type: "object"
+          properties: 
+            enabled: 
+              type: "boolean"
+              default: false
+              description: "Start a side-car prometheus exporter"
+            image: 
+              type: "object"
+              properties: 
+                registry: 
+                  type: "string"
+                  default: "docker.io"
+                  description: "Exporter image registry"
+                repository: 
+                  type: "string"
+                  default: "bitnami/mysqld-exporter"
+                  description: "Exporter image repository"
+                tag: 
+                  type: "string"
+                  default: "0.13.0-debian-10-r88"
+                  description: "Exporter image tag (immutable tags are recommended)"
+                pullPolicy: 
+                  type: "string"
+                  default: "IfNotPresent"
+                  description: "Exporter image pull policy"
+                pullSecrets: 
+                  type: "array"
+                  default: "[]"
+                  description: "Specify docker-registry secret names as an array"
+            annotations: 
+              type: "object"
+              default: "{}"
+              description: "Annotations for the Exporter pod"
+            extraArgs: 
+              type: "object"
+              default: "{}"
+              description: "Extra args to be passed to mysqld_exporter"
+            resources: 
+              type: "object"
+              properties: 
+                limits: 
+                  type: "object"
+                  default: "{}"
+                  description: "The resources limits for MariaDB prometheus exporter containers"
+                requests: 
+                  type: "object"
+                  default: "{}"
+                  description: "The requested resources for MariaDB prometheus exporter containers"
+            livenessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable livenessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 120
+                  description: "Initial delay seconds for livenessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for livenessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for livenessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for livenessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for livenessProbe"
+            readinessProbe: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: true
+                  description: "Enable readinessProbe"
+                initialDelaySeconds: 
+                  type: "number"
+                  default: 30
+                  description: "Initial delay seconds for readinessProbe"
+                periodSeconds: 
+                  type: "number"
+                  default: 10
+                  description: "Period seconds for readinessProbe"
+                timeoutSeconds: 
+                  type: "number"
+                  default: 1
+                  description: "Timeout seconds for readinessProbe"
+                failureThreshold: 
+                  type: "number"
+                  default: 3
+                  description: "Failure threshold for readinessProbe"
+                successThreshold: 
+                  type: "number"
+                  default: 1
+                  description: "Success threshold for readinessProbe"
+            serviceMonitor: 
+              type: "object"
+              properties: 
+                enabled: 
+                  type: "boolean"
+                  default: false
+                  description: "Create ServiceMonitor Resource for scraping metrics using PrometheusOperator"
+                namespace: 
+                  type: "string"
+                  default: ""
+                  description: "Namespace which Prometheus is running in"
+                interval: 
+                  type: "string"
+                  default: "30s"
+                  description: "Interval at which metrics should be scraped"
+                scrapeTimeout: 
+                  type: "string"
+                  default: ""
+                  description: "Specify the timeout after which the scrape is ended"
+                relabellings: 
+                  type: "string"
+                  default: ""
+                  description: "Specify Metric Relabellings to add to the scrape endpoint"
+                honorLabels: 
+                  type: "boolean"
+                  default: false
+                  description: "honorLabels chooses the metric's labels on collisions with target labels."
+                release: 
+                  type: "string"
+                  default: ""
+                  description: "Used to pass Labels release that sometimes should be custom for Prometheus Operator"
+                additionalLabels: 
+                  type: "object"
+                  default: "{}"
+                  description: "Used to pass Labels that are required by the Installed Prometheus Operator"
+  template:
+    spec:
+      fetch:
+      - helmChart:
+          name: mariadb
+          version: "9.6.0"
+          repository:
+            url: https://charts.bitnami.com/bitnami
+      template:
+      - helmTemplate: {}
+      deploy:
+      - kapp:
+          delete:
+            rawOptions: ["--apply-ignored=true"]

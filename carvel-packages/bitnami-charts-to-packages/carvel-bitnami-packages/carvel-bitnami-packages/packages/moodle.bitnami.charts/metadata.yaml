@@ -1,0 +1,14 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: moodle.bitnami.charts
+spec:
+  displayName: "moodle"
+  longDescription: "Bitnami moodle Helm Chart"
+  shortDescription: "moodle Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - moodle
+  - learning
+  - php

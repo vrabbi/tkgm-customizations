@@ -1,0 +1,18 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: ghost.bitnami.charts
+spec:
+  displayName: "ghost"
+  longDescription: "Bitnami ghost Helm Chart"
+  shortDescription: "ghost Helm Chart"
+  categories:
+  - bitnami
+  - helm
+  - ghost
+  - blog
+  - http
+  - web
+  - application
+  - nodejs
+  - javascript
