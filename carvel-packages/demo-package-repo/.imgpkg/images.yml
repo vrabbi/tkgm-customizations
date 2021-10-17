@@ -2,6 +2,13 @@
 apiVersion: imgpkg.carvel.dev/v1alpha1
 images:
 - annotations:
+    kbld.carvel.dev/id: ghcr.io/vrabbi/kube-vip-package:0.3.9
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: 0.3.9
+          url: ghcr.io/vrabbi/kube-vip-package:0.3.9
+  image: ghcr.io/vrabbi/kube-vip-package@sha256:9bb7f6f6b3e6a04f8981f070e146dd17836dfbcd6daaf97ff4f1abf1a18d11b4
+- annotations:
     kbld.carvel.dev/id: vrabbi/octant-turnkey:0.24.0
     kbld.carvel.dev/origins: |
       - resolved:

@@ -1,0 +1,6 @@
+#@data/values
+---
+kube_vip_ccm_image: "kubevip/kube-vip-cloud-provider:0.1"
+kube_vip_image: "ghcr.io/kube-vip/kube-vip:v0.3.9"
+vip_range: "192.168.2.100-192.168.2.120"
+vip_interface: "eth0"

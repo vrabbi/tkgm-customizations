@@ -1,0 +1,58 @@
+---
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: Package
+metadata:
+  name: kubevip.terasky.com.0.3.9
+spec:
+  refName: kubevip.terasky.com
+  version: 0.3.9
+  releaseNotes: |
+        Initial release of the kubevip SVC LB package for TCE 0.9.1 and TKGm 1.4
+  valuesSchema:
+    openAPIv3:
+      title: kubevip.terasky.com values schema
+      examples:
+      - kube_vip_ccm_image: "kubevip/kube-vip-cloud-provider:0.1"
+        kube_vip_image: "ghcr.io/kube-vip/kube-vip:v0.3.9"
+        vip_range: "192.168.2.100-192.168.2.120"
+        vip_interface: "eth0"
+      properties:
+        kube_vip_ccm_image:
+          type: string
+          default: "kubevip/kube-vip-cloud-provider:0.1"
+          description: container image for the KubeVIP Cloud Controller MAnager
+          examples:
+          - "kubevip/kube-vip-cloud-provider:0.1"
+        kube_vip_image: 
+          default: "ghcr.io/kube-vip/kube-vip:v0.3.9"
+          type: string
+          description: Image used for the KubeVIP Daemon Set
+          examples:
+          - "ghcr.io/kube-vip/kube-vip:v0.3.9"
+        vip_range: 
+          default: "192.168.2.100-192.168.2.120"
+          type: string
+          description: IP Range to allocate VIPs from. must be in the same CIDR as the nodes
+          examples:
+          - "192.168.2.100-192.168.2.120"
+        vip_interface:
+          type: string
+          description: the network interface on which to publish the VIPs (this should almost always be eth0)
+          default: "eth0"
+          examples:
+          - "eth0"
+  template:
+    spec:
+      fetch:
+        - imgpkgBundle:
+            image: ghcr.io/vrabbi/kube-vip-package:0.3.9
+      template:
+        - ytt:
+            paths:
+            - "config/"
+        - kbld:
+            paths:
+            - "-"
+            - ".imgpkg/images.yml"
+      deploy:
+        - kapp: {}

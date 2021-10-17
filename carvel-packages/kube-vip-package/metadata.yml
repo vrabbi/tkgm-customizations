@@ -1,0 +1,13 @@
+apiVersion: data.packaging.carvel.dev/v1alpha1
+kind: PackageMetadata
+metadata:
+  name: kubevip.terasky.com
+spec:
+  displayName: "KubeVIP Package for SVC LB on TCE and TKGm"
+  longDescription: "Deploy KubeVIP in ARP mode on TCE or TKGm on vSphere / Docker to provide SVC LB"
+  shortDescription: "ARP Mode KubeVIP installation"
+  categories:
+  - loadbalancer
+  - networking
+  - essentials
+  - infra

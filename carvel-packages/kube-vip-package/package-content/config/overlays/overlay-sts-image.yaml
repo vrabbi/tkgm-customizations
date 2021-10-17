@@ -1,0 +1,14 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+
+#@ if data.values.kube_vip_ccm_image:
+#@overlay/match by=overlay.subset({"kind":"StatefulSet"})
+---
+kind: StatefulSet
+spec:
+  template:
+    spec:
+      containers:
+      #@overlay/match by=overlay.subset({"name":"kube-vip-cloud-provider"})
+      - image: #@ data.values.kube_vip_ccm_image
+#@ end

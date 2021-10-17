@@ -1,0 +1,18 @@
+---
+apiVersion: imgpkg.carvel.dev/v1alpha1
+images:
+- annotations:
+    kbld.carvel.dev/id: ghcr.io/kube-vip/kube-vip:v0.3.9
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: v0.3.9
+          url: ghcr.io/kube-vip/kube-vip:v0.3.9
+  image: ghcr.io/kube-vip/kube-vip@sha256:1bf8dca90ad0a25194a3280eef3b0950923a63200da118fec34b5c4338c8071f
+- annotations:
+    kbld.carvel.dev/id: kubevip/kube-vip-cloud-provider:0.1
+    kbld.carvel.dev/origins: |
+      - resolved:
+          tag: "0.1"
+          url: kubevip/kube-vip-cloud-provider:0.1
+  image: index.docker.io/kubevip/kube-vip-cloud-provider@sha256:0ee3efaa1d4cf8a657abc861fe59d6e3dfde29ad0646364e0f49acefa3d5aeff
+kind: ImagesLock

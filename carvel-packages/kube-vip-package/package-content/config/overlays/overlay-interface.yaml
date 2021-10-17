@@ -1,0 +1,16 @@
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:data", "data")
+#@ if data.values.vip_interface:
+#@overlay/match by=overlay.subset({"kind":"DaemonSet"})
+---
+kind: DaemonSet
+spec:
+  template:
+    spec:
+      containers:
+      #@overlay/match by=overlay.subset({"name":"kube-vip"})
+      - env:  
+        #@overlay/match by="name"
+        - name: vip_interface
+          value: #@ data.values.vip_interface
+#@ end
