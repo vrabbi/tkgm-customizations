@@ -5,7 +5,7 @@
 ## Installing as a direct Package
 1. apply the needed files
 ``` bash
-kubectl apply -n tanzu-package-repo-global -f ./metadata.yaml
+kubectl apply -n tanzu-package-repo-global -f metadata.yaml
 kubectl apply -n tanzu-package-repo-global -f package.yaml
 ```  
 2. Create a values file with your specific values
