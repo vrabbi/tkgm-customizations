@@ -54,8 +54,8 @@ You can choose either of the following options:
     tanzu package repository add bitnami-airgapped-chart-repo --url <AIR GAPPED REGISTRY>/<AIR GAPPED REPO>:<PACKAGE REPO TAG> --namespace tanzu-package-repo-global
 ```  
 * Add as a global package to your tanzu cluster with custom sync interval:  
-- edit the file at the path /tmp/carvel-bitnami-packages/package-repository-manifest.yaml and change the image reference to your airgapped environment  
-- add the repo to your cluster  
+** edit the file at the path /tmp/carvel-bitnami-packages/package-repository-manifest.yaml and change the image reference to your airgapped environment  
+** add the repo to your cluster  
 ```bash
     kubectl apply -n tanzu-package-repo-global -f /tmp/carvel-bitnami-packages/package-repository-manifest.yaml
 ```
