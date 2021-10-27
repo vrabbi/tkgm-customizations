@@ -109,7 +109,7 @@ spec:
 EOF
         cd $temp_dir/bitnami/$appFolder
         for versionFolder in *; do
-          cat $temp_dir/bitnami/$appFolder/$versionFolder/$appFolder/values.yaml | yq . | jq '. as $input | . | paths | select(.[-1] | tostring | test("^(registry|repository|tag)$"; "ix")) | . as $path | ( $input | getpath($path) ) as $members | { "key": ( $path | join(".") ), "value": $members } ' |     jq -s 'from_entries' | sed 's/://g' - | xargs -I % echo % > $temp_dir/bitnami/$appFolder/$versionFolder/images.tmp
+          cat $temp_dir/bitnami/$appFolder/$versionFolder/$appFolder/values.yaml | yq . | jq '. as $input | . | paths | select(.[-1] | tostring | test("^(repository|tag)$"; "ix")) | . as $path | ( $input | getpath($path) ) as $members | { "key": ( $path | join(".") ), "value": $members } ' |     jq -s 'from_entries' | sed 's/://g' - | xargs -I % echo % > $temp_dir/bitnami/$appFolder/$versionFolder/images.tmp
           tail -n +2 $temp_dir/bitnami/$appFolder/$versionFolder/images.tmp | sed '$ d' - > $temp_dir/bitnami/$appFolder/$versionFolder/images.txt
           sed 's/ .*//' $temp_dir/bitnami/$appFolder/$versionFolder/images.txt | xargs -I % echo "%" | awk 'BEGIN{FS=OFS="."}NF--' | sort -u > $temp_dir/bitnami/$appFolder/$versionFolder/paths.txt
           cat << EOF > $temp_dir/bitnami/$appFolder/$versionFolder/kbld-config.yaml
