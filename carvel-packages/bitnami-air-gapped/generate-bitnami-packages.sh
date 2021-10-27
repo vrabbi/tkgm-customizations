@@ -122,7 +122,7 @@ searchRules:
 EOF
           cat $temp_dir/bitnami/$appFolder/$versionFolder/$appFolder/values.yaml | yq . > $temp_dir/bitnami/$appFolder/$versionFolder/values.json
           cat $temp_dir/bitnami/$appFolder/$versionFolder/paths.txt | xargs -I % jq -c '.%.registry + "/" + .%.repository + ":" + .%.tag' $temp_dir/bitnami/$appFolder/$versionFolder/values.json > $temp_dir/bitnami/$appFolder/$versionFolder/images.list.tmp
-	  grep -E '[^\/]+\.[^\/.]+\/([^\/.]+\/)?[^\/.]+(:.+)' $temp_dir/bitnami/$appFolder/$versionFolder/images.list.tmp > $temp_dir/bitnami/$appFolder/$versionFolder/images.list
+	  grep -E '[a-zA-Z0-9\._-]+\/+[a-zA-Z0-9\._-]+:[a-zA-Z0-9]+.*' $temp_dir/bitnami/$appFolder/$versionFolder/images.list.tmp > $temp_dir/bitnami/$appFolder/$versionFolder/images.list
           sed -i 's/^/  - /g' $temp_dir/bitnami/$appFolder/$versionFolder/images.list
 	  sed -i '/  - "\/:"/d' $temp_dir/bitnami/$appFolder/$versionFolder/images.list
           # Handle Sub Charts
@@ -138,7 +138,7 @@ EOF
               tail -n +2 $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.tmp | sed '$ d' - > $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.txt
               sed 's/ .*//' $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.txt | xargs -I % echo "%" | awk 'BEGIN{FS=OFS="."}NF--' | sort -u > $temp_dir/bitnami/$appFolder/$versionFolder/$d/paths.txt
               cat $temp_dir/bitnami/$appFolder/$versionFolder/$d/paths.txt | xargs -I % jq -c '.%.registry + "/" + .%.repository + ":" + .%.tag' $temp_dir/bitnami/$appFolder/$versionFolder/$d/values.json > $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.list.tmp
-              grep -E '[^\/]+\.[^\/.]+\/([^\/.]+\/)?[^\/.]+(:.+)' $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.list.tmp > $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.list
+              grep -E '[a-zA-Z0-9\._-]+\/+[a-zA-Z0-9\._-]+:[a-zA-Z0-9]+.*' $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.list.tmp > $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.list
               sed -i 's/^/  - /g' $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.list
               sed -i '/  - "\/:"/d' $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.list
 	      cat $temp_dir/bitnami/$appFolder/$versionFolder/$d/images.list >> $temp_dir/bitnami/$appFolder/$versionFolder/images.list
