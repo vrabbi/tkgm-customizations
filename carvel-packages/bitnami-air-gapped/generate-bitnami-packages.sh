@@ -16,6 +16,7 @@ variables["--helm-repo-url"]="helm_repo_url";
 variables["--helm-repo-name"]="helm_repo_name";
 variables["--add-helm-repo"]="add_helm_repo";
 variables["--package-domain-suffix"]="package_domain_suffix";
+variables["--running-in-container"]="running_in_container";
 for i in "$@"
 do
   arguments[$index]=$i;
@@ -39,8 +40,8 @@ Options:
 
 [Optional Flags]
   --help : show this help menu
-  --output-dir : (default: /tmp/carvel-bitnami-packages)
-  --temp-dir : (default: /tmp/helm-to-pkg)
+  --output-dir : (default: /tmp/carvel-bitnami-packages) - DONT SET WHEN RUNNING IN CONTAINER
+  --temp-dir : (default: /tmp/helm-to-pkg) - DONT SET WHEN RUNNING IN CONTAINER
   --repo-sync-period : The sync period on the package repository yaml - (default: 6h)
   --chart-list-file-path : An optional file with the charts to convert to packages in the format <HELM REPO NAME>/<CHART NAME> . When not supplied entire bitnami repo will be converted - (default: null)
   --helm-repo-url : The Helm Repo URL for the bitnami or TAC helm repo. - (default: https://charts.bitnami.com/bitnami)
@@ -64,13 +65,33 @@ EOF
   index=index+1;
 done;
 
+# Validate that flags were passed to the invocation
+if [[ ${#arguments[@]} -eq 1 ]]; then
+  if [[ $1 == "--running-in-container" ]]; then
+    echo "No Flags were passed. Run with --help flag to get usage information"
+  fi
+fi
+if [[ ${#arguments[@]} -eq 0 ]]; then
+  echo "No Flags were passed. Run with --help flag to get usage information"
+fi
+
+# Validate Mandatory Flags were supplied
+if ! [[ $oci_registry_fqdn || $oci_image_repository || $package_repository_name || $number_of_chart_versions ]]; then
+  echo "Mandatory flags were not passed. use --help for usage information"
+  exit 1
+fi
+
+echo "Starting Script"
+
 # set start time variable for printing time at end of script
 start=`date +%s`
 
 if [[ $temp_dir ]]; then
   mkdir -p $temp_dir/bitnami
+  mkdir -p $temp_dir/lock-files
 else
   mkdir -p /tmp/helm-to-pkg/bitnami
+  mkdir -p /tmp/helm-to-pkg/bitnami/lock-files
   temp_dir="/tmp/helm-to-pkg/bitnami"
 fi
 
@@ -102,6 +123,12 @@ if [[ $add_helm_repo == "true" ]]; then
 else
   echo "Updating the cache for the helm repository $helm_repo_name"
   helm repo update
+  repolist=`helm repo list -o json`
+  if [[ $repolist == "[]" ]]; then
+    echo "No Helm Repo Exists. Adding the repo $helm_repo_name found at $helm_repo_url"
+    helm repo add $helm_repo_name $helm_repo_url --force-update
+    helm repo update
+  fi
 fi
 
 if [[ $package_domain_suffix ]]; then
@@ -134,7 +161,7 @@ for appFolder in *; do
     if [[ "$appFolder" != @("bitnami-common") ]]; then
       if [ -d "$appFolder" ]; then
         mkdir -p $output_dir/packages/$appFolder.$package_domain_suffix
-	temp_version=`helm search repo $helm_repo_name/$appFolder | awk '{print $2}' | tail -n +2`
+	temp_version=`ls $temp_dir/$helm_repo_name/$appFolder | shuf -n 1`
         yq .keywords[] $temp_dir/$helm_repo_name/$appFolder/$temp_version/$appFolder/Chart.yaml -r | sed 's|^|  - |g' - > $appFolder-chart-categories.txt
         cat <<EOF > $output_dir/packages/$appFolder.$package_domain_suffix/metadata.yaml
 apiVersion: data.packaging.carvel.dev/v1alpha1
@@ -152,7 +179,7 @@ spec:
 EOF
         cd $temp_dir/$helm_repo_name/$appFolder
         for versionFolder in *; do
-          cat $temp_dir/$helm_repo_name/$appFolder/$versionFolder/$appFolder/values.yaml | yq . | jq '. as $input | . | paths | select(.[-1] | tostring | test("^(repository|tag)$"; "ix")) | . as $path | ( $input | getpath($path) ) as $members | { "key": ( $path | join(".") ), "value": $members } ' |     jq -s 'from_entries' | sed 's/://g' - | xargs -I % echo % > $temp_dir/$helm_repo_name/$appFolder/$versionFolder/images.tmp
+          cat $temp_dir/$helm_repo_name/$appFolder/$versionFolder/$appFolder/values.yaml | yq . | jq '. as $input | . | paths | select(.[-1] | tostring | test("^(repository|tag)$"; "ix")) | . as $path | ( $input | getpath($path) ) as $members | { "key": ( $path | join(".") ), "value": $members } ' 2> /dev/null | jq -s 'from_entries' | sed 's/://g' - | xargs -I % echo % > $temp_dir/$helm_repo_name/$appFolder/$versionFolder/images.tmp
           tail -n +2 $temp_dir/$helm_repo_name/$appFolder/$versionFolder/images.tmp | sed '$ d' - > $temp_dir/$helm_repo_name/$appFolder/$versionFolder/images.txt
           sed 's/ .*//' $temp_dir/$helm_repo_name/$appFolder/$versionFolder/images.txt | xargs -I % echo "%" | awk 'BEGIN{FS=OFS="."}NF--' | sort -u > $temp_dir/$helm_repo_name/$appFolder/$versionFolder/paths.txt
           cat << EOF > $temp_dir/$helm_repo_name/$appFolder/$versionFolder/kbld-config.yaml
@@ -174,7 +201,6 @@ EOF
 	    cd $temp_dir/$helm_repo_name/$appFolder/$versionFolder/$appFolder/charts
             ls -d * | while read d
             do
-              echo $d
 	      mkdir -p $temp_dir/$helm_repo_name/$appFolder/$versionFolder/$d
 	      cat $temp_dir/$helm_repo_name/$appFolder/$versionFolder/$appFolder/charts/$d/values.yaml | yq . > $temp_dir/$helm_repo_name/$appFolder/$versionFolder/$d/values.json
               cat $temp_dir/$helm_repo_name/$appFolder/$versionFolder/$appFolder/charts/$d/values.yaml | yq . | jq '. as $input | . | paths | select(.[-1] | tostring | test("^(registry|repository|tag)$"; "ix")) | . as $path | ( $input | getpath($path) ) as $members | { "key": ( $path | join(".") ), "value": $members } ' |     jq -s 'from_entries' | sed 's/://g' - | xargs -I % echo % > $temp_dir/$helm_repo_name/$appFolder/$versionFolder/$d/images.tmp
@@ -191,15 +217,14 @@ EOF
 	  sed -i '1s/^/images:\n/' $temp_dir/$helm_repo_name/$appFolder/$versionFolder/images.list
 	  mkdir -p $output_dir/packages/$appFolder.$package_domain_suffix/$versionFolder/.imgpkg
 	  mkdir -p $output_dir/packages/$appFolder.$package_domain_suffix/$versionFolder/config
-	  kbld -f $temp_dir/$helm_repo_name/$appFolder/$versionFolder/images.list -f $temp_dir/$helm_repo_name/$appFolder/$versionFolder/kbld-config.yaml --imgpkg-lock-output $output_dir/packages/$appFolder.$package_domain_suffix/$versionFolder/.imgpkg/images.yml --registry-verify-certs=false
+	  kbld -f $temp_dir/$helm_repo_name/$appFolder/$versionFolder/images.list -f $temp_dir/$helm_repo_name/$appFolder/$versionFolder/kbld-config.yaml --imgpkg-lock-output $output_dir/packages/$appFolder.$package_domain_suffix/$versionFolder/.imgpkg/images.yml --registry-verify-certs=false 1> /dev/null
 	  cp -r $temp_dir/$helm_repo_name/$appFolder/$versionFolder/$appFolder/* $output_dir/packages/$appFolder.$package_domain_suffix/$versionFolder/config/
           cd $temp_dir/$helm_repo_name/$appFolder/$versionFolder
-
           APP_VERSION=`yq .appVersion $appFolder/Chart.yaml -r`
           CHART_VERSION=`yq .version $appFolder/Chart.yaml -r`
           CHART_DESCRIPTION=`yq .description $appFolder/Chart.yaml -r`
           
-          readme-generator -v $appFolder/values.yaml --metadata values-schema.json
+          readme-generator -v $appFolder/values.yaml --metadata values-schema.json 1> /dev/null
           if [ -f values-schema.json ]; then
             json2yaml values-schema.json  > temp.yaml
             sed -i 's|^  |      |g' temp.yaml
@@ -215,7 +240,7 @@ EOF
             echo "Skipping Generation of Package Manifest for $appFolder Chart version $versionFolder due to issue generating schema automatically"
             continue
           fi
-	  imgpkg push -b ${oci_registry_fqdn}/${oci_image_repository}/${appFolder}.${package_domain_suffix}:${CHART_VERSION} -f $output_dir/packages/$appFolder.${package_domain_suffix}/$versionFolder/ --registry-verify-certs=false
+	  imgpkg push -b ${oci_registry_fqdn}/${oci_image_repository}/${appFolder}.${package_domain_suffix}:${CHART_VERSION} -f $output_dir/packages/$appFolder.${package_domain_suffix}/$versionFolder/ --registry-verify-certs=false --lock-output $temp_dir/lock-files/$appFolder-lock-file.yaml 1> /dev/null
           cat <<EOF > $output_dir/packages/$appFolder.${package_domain_suffix}/$versionFolder/package.yaml
 ---
 apiVersion: data.packaging.carvel.dev/v1alpha1
@@ -276,10 +301,22 @@ spec:
 EOF
 
 cd $output_dir
-find . -type d -name config -exec rm -rf {} \;
-find packages/ -type d -name .imgpkg -exec rm -rf {} \;
-kbld -f ./packages/ --imgpkg-lock-output ./.imgpkg/images.yml --registry-verify-certs=false
-imgpkg push -b ${oci_registry_fqdn}/${oci_image_repository}/${package_repository_name} -f $output_dir --registry-verify-certs=false
+find . -type d -name config -exec rm -rf {} \; 1>/dev/null 2>/dev/null
+find packages/ -type d -name .imgpkg -exec rm -rf {} \; 1>/dev/null 2>/dev/null
+kbld -f ./packages/ --imgpkg-lock-output ./.imgpkg/images.yml --registry-verify-certs=false 1> /dev/null
+imgpkg push -b ${oci_registry_fqdn}/${oci_image_repository}/${package_repository_name} -f $output_dir --registry-verify-certs=false --lock-output $temp_dir/lock-files/repository-lock-file.yaml 1> /dev/null
+cp -r $temp_dir/lock-files $output_dir/
+package_repo_url=`cat $output_dir/lock-files/repository-lock-file.yaml | yq .bundle.image -j`
+package_repo_sha=${package_repo_url#*@}
+
+if [[ $running_in_container ]]; then
+  mkdir -p /output/lock-files
+  mkdir -p /output/package-repo-files
+  cp -r $temp_dir/lock-files/* /output/lock-files/
+  cp -r $output_dir/packages /output/package-repo-files/
+  cp -r $output_dir/.imgpkg /output/package-repo-files/
+  cp $output_dir/package-repository-manifest.yaml /output/
+fi
 echo "Done Generating the bundles!"
 end=`date +%s`
 runtime=$((end-start))
@@ -295,7 +332,7 @@ echo "### To use this package repo in a non air gapped environment you can choos
 echo "#############################################################################################################"
 echo ""
 echo "1. Add as a global package to your tanzu cluster with default settings:"
-echo "    tanzu package repository add $package_repository_name --url ${oci_registry_fqdn}/${oci_image_repository}/${package_repository_name}:${package_repository_tag} --namespace tanzu-package-repo-global"
+echo "    tanzu package repository add $package_repository_name --url $package_repo_url --namespace tanzu-package-repo-global"
 echo "2. Add as a global package to your tanzu cluster with custom sync interval:"
 echo "    kubectl apply -n tanzu-package-repo-global -f $output_dir/package-repository-manifest.yaml"
 echo ""
@@ -305,10 +342,10 @@ echo "### Air Gapped Instructions ###"
 echo "###############################"
 echo ""
 echo "1. Run the following command to copy all packages and images into a tar ball on your machine:"
-echo "    imgpkg copy -b ${oci_registry_fqdn}/${oci_image_repository}/${package_repository_name}:${package_repository_tag} --to-tar /tmp/my-repo.tar --registry-verify-certs=false"
+echo "    imgpkg copy -b $package_repo_url --to-tar /tmp/my-repo.tar --registry-verify-certs=false"
 echo "2. Import the Tar file to the airgapped environment"
 echo "3. Run the following to import the artifacts to an OCI registry in your air gapped environment:"
-echo "    imgpkg copy --tar /tmp/my-repo.tar --to-repo <AIR GAPPED REGISTRY>/<AIR GAPPED REPO> --registry-verify-certs=false"
+echo "    imgpkg copy --tar /tmp/my-repo.tar --to-repo <AIR GAPPED REGISTRY>/<AIR GAPPED REPO NAME>@$package_repo_sha --registry-verify-certs=false"
 echo "4. Add the repo to your cluster as per the instructions above while taking care to replace the URL with the new location"
 echo ""
 echo ""

@@ -3,6 +3,42 @@ One of the key strengths of the Carvel Packaging is that it is not only for YTT 
 In this Folder i have an example script that will generate a package repository and all the needed files within it to install any bitnami helm chart as a package install object  
 This will also enable you to utilize these charts in an air gapped environment  
 
+# Options for running the tool
+1. Run the script on a linux machine directly
+* this gives the most flexibility but requires a bunch of pre reqs on your system which are mentioned bellow in the Script based execution section
+2. Utilize the Docker image ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.2
+* this allows for a very simple process to generate such a repo and can also be run on MAC
+
+
+## Running the container
+1. you will need docker installed on your machine
+2. make sure that PWD and HOME env variables are set
+``` bash
+echo $PWD
+echo $HOME
+```  
+3. create a sub folder in your current directory called output
+``` bash
+mkdir output
+```  
+4. Create an alias for running the container easily with all needed mounts
+``` bash
+alias generate-bitnami-pakage-repo="docker run -it -v $HOME/.docker/config.json:/root/.docker/config.json -v $PWD/output:/output ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.2"
+```  
+5. OPTIONAL - if you want to supply a list of charts to package instead of the entire repo create a file named chart-list.txt in the current directory and update the alias from step 4
+``` bash
+touch chart-list.txt
+alias generate-bitnami-pakage-repo="docker run -it -v $HOME/.docker/config.json:/root/.docker/config.json -v $PWD/output:/output -v $PWD/chart-list.txt:/app/chart-list.txt ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.2"
+```
+* now fill in the chart names in the format <REPO NAME>/<CHART NAME> one per line
+* when running the tool you must pass the flag "--chart-list-file-path" with the value "/app/chart-list.txt"
+6. run the following to see detailed help menu on how to run the tool
+``` bash
+generate-bitnami-pakage-repo --help
+```  
+7. The outputted manifests will be available in the output directory you created above
+ 
+
 ## Running the script
 in order to run the script you will need to have pre installed:  
 1. jq - https://stedolan.github.io/jq/download/  
@@ -10,10 +46,11 @@ in order to run the script you will need to have pre installed:
 3. readme-generator - https://github.com/bitnami-labs/readme-generator-for-helm  
 4. helm - helm v3+ - https://github.com/helm/helm  
 5. json2yml - https://www.npmjs.com/package/json2yaml  
+6. kbld and imgpkg - https://carvel.dev
 
 Once this is all installed run the following to see the commandline flags:  
 ``` bash
-./generate-packages-and-repo.sh --help
+./generate-bitnami-packages.sh --help
 ```  
 
 Example Usage:  
@@ -23,8 +60,8 @@ Example Usage:
   
 Parameterized instructions for using the generated repo will be printed at the end of the script execution.  
   
-## General Usage Instructions
-### Installing the package repo in a non air gapped environment
+# General Usage Instructions
+## Installing the package repo in a non air gapped environment
 You can choose either of the following options:  
   
 1. Add as a global package to your tanzu cluster with default settings:  
@@ -37,7 +74,7 @@ You can choose either of the following options:
 ```  
   
   
-### Air Gapped Instructions  
+## Air Gapped Instructions  
   
 1. Run the following command to copy all packages and images into a tar ball on your machine:  
 ```bash
