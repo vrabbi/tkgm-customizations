@@ -30,7 +30,7 @@ alias generate-bitnami-pakage-repo="docker run -it -v $HOME/.docker/config.json:
 touch chart-list.txt
 alias generate-bitnami-pakage-repo="docker run -it -v $HOME/.docker/config.json:/root/.docker/config.json -v $PWD/output:/output -v $PWD/chart-list.txt:/app/chart-list.txt ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.2"
 ```
-* now fill in the chart names in the format <REPO NAME>/<CHART NAME> one per line
+* now fill in the chart names in the format \<REPO NAME\>/\<CHART NAME\> one per line
 * when running the tool you must pass the flag "--chart-list-file-path" with the value "/app/chart-list.txt"
 6. run the following to see detailed help menu on how to run the tool
 ``` bash
