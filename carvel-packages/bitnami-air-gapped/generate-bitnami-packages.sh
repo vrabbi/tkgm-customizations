@@ -345,7 +345,7 @@ echo "1. Run the following command to copy all packages and images into a tar ba
 echo "    imgpkg copy -b $package_repo_url --to-tar /tmp/my-repo.tar --registry-verify-certs=false"
 echo "2. Import the Tar file to the airgapped environment"
 echo "3. Run the following to import the artifacts to an OCI registry in your air gapped environment:"
-echo "    imgpkg copy --tar /tmp/my-repo.tar --to-repo <AIR GAPPED REGISTRY>/<AIR GAPPED REPO NAME>@$package_repo_sha --registry-verify-certs=false"
+echo "    imgpkg copy --tar /tmp/my-repo.tar --to-repo <AIR GAPPED REGISTRY>/<AIR GAPPED REPO NAME>/<AIR GAPPED REPO NAME> --registry-verify-certs=false"
 echo "4. Add the repo to your cluster as per the instructions above while taking care to replace the URL with the new location"
 echo ""
 echo ""
