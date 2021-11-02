@@ -11,7 +11,6 @@ variables["--oci-image-repository"]="oci_image_repository";
 variables["--package-repository-name"]="package_repository_name";
 variables["--help"]="help";
 variables["--chart-list-file-path"]="chart_list_file_path";
-variables["--package-repository-tag"]="package_repository_tag";
 variables["--helm-repo-url"]="helm_repo_url";
 variables["--helm-repo-name"]="helm_repo_name";
 variables["--add-helm-repo"]="add_helm_repo";
@@ -35,7 +34,6 @@ Options:
   --oci-registry-fqdn : The OCI registry FQDN to push bundles to - (default: null)
   --oci-image-repository : The OCI Registry Project / Repo / Sub Path to place all bundles in - (default: null)
   --package-repository-name : The Name of the package repository bundle - (default: null)
-  --package-repository-tag : The Tag for the generated package repository - (default: null)
   --number-of-chart-versions : The latest X number of chart versions to generate packages for (default: null)
 
 [Optional Flags]
@@ -285,6 +283,16 @@ else
   echo "generating package repository manifest"
   repo_sync_period="6h"
 fi
+
+cd $output_dir
+find . -type d -name config -exec rm -rf {} \; 1>/dev/null 2>/dev/null
+find packages/ -type d -name .imgpkg -exec rm -rf {} \; 1>/dev/null 2>/dev/null
+kbld -f ./packages/ --imgpkg-lock-output ./.imgpkg/images.yml --registry-verify-certs=false 1> /dev/null
+imgpkg push -b ${oci_registry_fqdn}/${oci_image_repository}/${package_repository_name} -f $output_dir --registry-verify-certs=false --lock-output $temp_dir/lock-files/repository-lock-file.yaml 1> /dev/null
+cp -r $temp_dir/lock-files $output_dir/
+package_repo_url=`cat $output_dir/lock-files/repository-lock-file.yaml | yq .bundle.image -j`
+package_repo_sha=${package_repo_url#*@}
+
 cat <<EOF > $output_dir/package-repository-manifest.yaml
 ---
 apiVersion: packaging.carvel.dev/v1alpha1
@@ -296,18 +304,9 @@ metadata:
 spec:
   fetch:
     imgpkgBundle:
-      image: ${oci_registry_fqdn}/${oci_image_repository}/$package_repository_name:$package_repository_tag
+      image: $package_repo_url
   syncPeriod: $repo_sync_period
 EOF
-
-cd $output_dir
-find . -type d -name config -exec rm -rf {} \; 1>/dev/null 2>/dev/null
-find packages/ -type d -name .imgpkg -exec rm -rf {} \; 1>/dev/null 2>/dev/null
-kbld -f ./packages/ --imgpkg-lock-output ./.imgpkg/images.yml --registry-verify-certs=false 1> /dev/null
-imgpkg push -b ${oci_registry_fqdn}/${oci_image_repository}/${package_repository_name} -f $output_dir --registry-verify-certs=false --lock-output $temp_dir/lock-files/repository-lock-file.yaml 1> /dev/null
-cp -r $temp_dir/lock-files $output_dir/
-package_repo_url=`cat $output_dir/lock-files/repository-lock-file.yaml | yq .bundle.image -j`
-package_repo_sha=${package_repo_url#*@}
 
 if [[ $running_in_container ]]; then
   mkdir -p /output/lock-files
@@ -345,7 +344,7 @@ echo "1. Run the following command to copy all packages and images into a tar ba
 echo "    imgpkg copy -b $package_repo_url --to-tar /tmp/my-repo.tar --registry-verify-certs=false"
 echo "2. Import the Tar file to the airgapped environment"
 echo "3. Run the following to import the artifacts to an OCI registry in your air gapped environment:"
-echo "    imgpkg copy --tar /tmp/my-repo.tar --to-repo <AIR GAPPED REGISTRY>/<AIR GAPPED REPO NAME>@$package_repo_sha --registry-verify-certs=false"
+echo "    imgpkg copy --tar /tmp/my-repo.tar --to-repo <AIR GAPPED REGISTRY>/<AIR GAPPED REPO NAME>/<AIR GAPPED REPO NAME> --registry-verify-certs=false"
 echo "4. Add the repo to your cluster as per the instructions above while taking care to replace the URL with the new location"
 echo ""
 echo ""
