@@ -12,6 +12,10 @@ This will also enable you to utilize these charts in an air gapped environment
 
 ## Running the container
 1. you will need docker installed on your machine
+2. login to the destination oci registry with docker CLI on your machine - the docker config.json with creds is mapped into the container to ease passing in credentials
+``` bash
+docker login <REGISTRY FQDN>
+```  
 2. make sure that PWD and HOME env variables are set
 ``` bash
 echo $PWD
