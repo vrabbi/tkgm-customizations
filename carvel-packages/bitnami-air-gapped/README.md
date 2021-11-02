@@ -27,20 +27,24 @@ mkdir output
 ```  
 4. Create an alias for running the container easily with all needed mounts
 ``` bash
-alias generate-bitnami-package-repo="docker run -it -v $HOME/.docker/config.json:/root/.docker/config.json -v $PWD/output:/output ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.2"
+alias generate-bitnami-packages="docker run -i -v $HOME/.docker/config.json:/root/.docker/config.json -v $PWD/output:/output ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.2"
 ```  
 5. OPTIONAL - if you want to supply a list of charts to package instead of the entire repo create a file named chart-list.txt in the current directory and update the alias from step 4
 ``` bash
 touch chart-list.txt
-alias generate-bitnami-package-repo="docker run -it -v $HOME/.docker/config.json:/root/.docker/config.json -v $PWD/output:/output -v $PWD/chart-list.txt:/app/chart-list.txt ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.2"
+alias generate-bitnami-packages="docker run -i -v $HOME/.docker/config.json:/root/.docker/config.json -v $PWD/output:/output -v $PWD/chart-list.txt:/app/chart-list.txt ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.3"
 ```
 * now fill in the chart names in the format \<REPO NAME\>/\<CHART NAME\> one per line
 * when running the tool you must pass the flag "--chart-list-file-path" with the value "/app/chart-list.txt"
 6. run the following to see detailed help menu on how to run the tool
 ``` bash
-generate-bitnami-package-repo --help
+generate-bitnami-packages --help
 ```  
-7. The outputted manifests will be available in the output directory you created above
+7. BASH Autocompletion - run the following commands to get bash auto completion for flags
+``` bash
+source <(generate-bitnami-packages --bash-completion)
+```  
+8. The outputted manifests will be available in the output directory you created above
  
 
 ## Running the script

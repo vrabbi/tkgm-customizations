@@ -16,6 +16,7 @@ variables["--helm-repo-name"]="helm_repo_name";
 variables["--add-helm-repo"]="add_helm_repo";
 variables["--package-domain-suffix"]="package_domain_suffix";
 variables["--running-in-container"]="running_in_container";
+variables["--bash-completion"]="bash_completion";
 for i in "$@"
 do
   arguments[$index]=$i;
@@ -38,6 +39,7 @@ Options:
 
 [Optional Flags]
   --help : show this help menu
+  --bash-completion : Print Bash Completion Script
   --output-dir : (default: /tmp/carvel-bitnami-packages) - DONT SET WHEN RUNNING IN CONTAINER
   --temp-dir : (default: /tmp/helm-to-pkg) - DONT SET WHEN RUNNING IN CONTAINER
   --repo-sync-period : The sync period on the package repository yaml - (default: 6h)
@@ -47,6 +49,24 @@ Options:
   --add-helm-repo : A boolean flag to enable adding a non existent helm repo. (default: false)
   --package-domain-suffix : Package names require a naming convention of <APP NAME>.x.y . This parameter allows configuring the x.y suffix. - (default: bitnami.charts)
 
+EOF
+    exit 1
+  elif [[ $i == "--bash-completion" ]]; then
+    cat << EOF
+_generate-bitnami-packages()
+{
+    local cur prev opts
+    COMPREPLY=()
+    cur="\${COMP_WORDS[COMP_CWORD]}"
+    prev="\${COMP_WORDS[COMP_CWORD-1]}"
+    opts="--oci-registry-fqdn --oci-image-repository --package-repository-name --number-of-chart-versions --help --output-dir --temp-dir --repo-sync-period --chart-list-file-path --helm-repo-url --helm-repo-name --add-helm-repo --package-domain-suffix"
+
+    if [[ \${cur} == -* ]] ; then
+        COMPREPLY=( \$(compgen -W "\${opts}" -- \${cur}) )
+        return 0
+    fi
+}    
+complete -F _generate-bitnami-packages generate-bitnami-packages
 EOF
     exit 1
   else
