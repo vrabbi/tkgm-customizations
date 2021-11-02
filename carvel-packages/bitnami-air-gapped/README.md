@@ -27,7 +27,7 @@ mkdir output
 ```  
 4. Create an alias for running the container easily with all needed mounts
 ``` bash
-alias generate-bitnami-packages="docker run -i -v $HOME/.docker/config.json:/root/.docker/config.json -v $PWD/output:/output ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.2"
+alias generate-bitnami-packages="docker run -i -v $HOME/.docker/config.json:/root/.docker/config.json -v $PWD/output:/output ghcr.io/vrabbi/bitnami-airgaping-tool:0.1.3"
 ```  
 5. OPTIONAL - if you want to supply a list of charts to package instead of the entire repo create a file named chart-list.txt in the current directory and update the alias from step 4
 ``` bash
