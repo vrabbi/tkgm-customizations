@@ -1,5 +1,4 @@
 # TKGm Customization Repo
-# WORK IN PROGRESS DONT USE THIS BRANCH YET
 This repository containes experimental examples for how to customize TKGm to provision clusters with additional capabilities beyond the standard offering of TKGm.
 The repository is not well documented currently and does not follow in all cases best practices and should be used as a starting point / point of reference and not considered by any means as production ready at this point. 
 There are 2 main folders in the Repo:
