@@ -3,6 +3,7 @@
 #@ load("@ytt:yaml", "yaml")
 
 #@ def cilium_deployment():
+---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
