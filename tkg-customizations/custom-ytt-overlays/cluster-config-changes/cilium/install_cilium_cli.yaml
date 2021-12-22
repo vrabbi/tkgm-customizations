@@ -1,0 +1,37 @@
+#@ load("@ytt:assert", "assert")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@ if data.values.INSTALL_CILIUM_CLI:
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"}),expects="1+"
+---                                                                                              
+spec:                                                                                            
+  template:                                                                                      
+    #@overlay/match-child-defaults missing_ok=True                  
+    spec:                                                                                        
+      preKubeadmCommands:                                                                        
+        #@overlay/append
+        - curl -L --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz{,.sha256sum}
+        #@overlay/append
+        - sha256sum --check cilium-linux-amd64.tar.gz.sha256sum
+        #@overlay/append
+        - sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
+        #@overlay/append
+        - rm cilium-linux-amd64.tar.gz{,.sha256sum}
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+spec:
+  #@overlay/match-child-defaults missing_ok=True
+  kubeadmConfigSpec:
+    preKubeadmCommands:
+      #@overlay/append
+      - curl -L --remote-name-all https://github.com/cilium/cilium-cli/releases/latest/download/cilium-linux-amd64.tar.gz{,.sha256sum}
+      #@overlay/append
+      - sha256sum --check cilium-linux-amd64.tar.gz.sha256sum
+      #@overlay/append
+      - sudo tar xzvfC cilium-linux-amd64.tar.gz /usr/local/bin
+      #@overlay/append
+      - rm cilium-linux-amd64.tar.gz{,.sha256sum}
+#@ end
+

@@ -1,0 +1,78 @@
+#@ load("@ytt:assert", "assert")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@ if data.values.ENABLE_IPVS:
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"}),expects="1+"
+---                                                                                              
+spec:                                                                                            
+  template:                                                                                      
+    #@overlay/match-child-defaults missing_ok=True                  
+    spec:                                                                                        
+      preKubeadmCommands:                                                                        
+        #@overlay/append
+        - modprobe -- ip_vs
+        #@overlay/append
+        - modprobe -- ip_vs_rr
+        #@overlay/append
+        - modprobe -- ip_vs_wrr
+        #@overlay/append
+        - modprobe -- ip_vs_sh
+        #@overlay/append
+        - modprobe -- nf_conntrack
+        #@overlay/append
+        - echo "ip_vs" >> /etc/modules
+        #@overlay/append
+        - echo "ip_vs_rr" >> /etc/modules
+        #@overlay/append
+        - echo "ip_vs_wrr" >> /etc/modules
+        #@overlay/append
+        - echo "ip_vs_sh" >> /etc/modules
+        #@overlay/append
+        - echo "nf_conntrack" >> /etc/modules
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+spec:
+  #@overlay/match-child-defaults missing_ok=True
+  kubeadmConfigSpec:
+    preKubeadmCommands:
+      #@overlay/append
+      - /tmp/generate-kube-proxy.sh			
+      #@overlay/append
+      - modprobe -- ip_vs
+      #@overlay/append
+      - modprobe -- ip_vs_rr
+      #@overlay/append
+      - modprobe -- ip_vs_wrr
+      #@overlay/append
+      - modprobe -- ip_vs_sh
+      #@overlay/append
+      - modprobe -- nf_conntrack
+      #@overlay/append
+      - echo "ip_vs" >> /etc/modules
+      #@overlay/append
+      - echo "ip_vs_rr" >> /etc/modules
+      #@overlay/append
+      - echo "ip_vs_wrr" >> /etc/modules
+      #@overlay/append
+      - echo "ip_vs_sh" >> /etc/modules
+      #@overlay/append
+      - echo "nf_conntrack" >> /etc/modules
+    files:
+      #@overlay/append
+      - path: /tmp/generate-kube-proxy.sh
+        permissions: "0700"
+        owner: root:root
+        content: |
+          #!/bin/bash
+          for i in $(ls /tmp | grep kubeadm); do
+              cat <<EOF>> /tmp/$i
+          ---
+          kind: KubeProxyConfiguration
+          apiVersion: kubeproxy.config.k8s.io/v1alpha1
+          mode: ipvs
+          EOF
+          done
+#@ end
+

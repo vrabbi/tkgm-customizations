@@ -1,0 +1,116 @@
+alertmanager:
+  pvc:
+    storageClassName: vsan-default-storage-policy
+prometheus:
+  service:
+    type: LoadBalancer
+  pvc:
+    storageClassName: vsan-default-storage-policy
+  config:
+    prometheus_yml: |
+      global:
+        evaluation_interval: 1m
+        scrape_interval: 1m
+        scrape_timeout: 10s
+        external_labels:
+          prometheus: ##TKC_CLUSTER_NAME##
+          prometheus_replica: $(POD_NAME)
+      rule_files:
+      - /etc/config/alerting_rules.yml
+      - /etc/config/recording_rules.yml
+      - /etc/config/alerts
+      - /etc/config/rules
+      scrape_configs:
+      - job_name: 'prometheus'
+        scrape_interval: 5s
+        static_configs:
+        - targets: ['localhost:9090']
+      - job_name: 'kube-state-metrics'
+        static_configs:
+        - targets: ['prometheus-kube-state-metrics.tanzu-system-monitoring.svc.cluster.local:8080']
+
+      - job_name: 'node-exporter'
+        static_configs:
+        - targets: ['prometheus-node-exporter.tanzu-system-monitoring.svc.cluster.local:9100']
+
+      - job_name: 'kubernetes-pods'
+        kubernetes_sd_configs:
+        - role: pod
+        relabel_configs:
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_scrape]
+          action: keep
+          regex: true
+        - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_path]
+          action: replace
+          target_label: __metrics_path__
+          regex: (.+)
+        - source_labels: [__address__, __meta_kubernetes_pod_annotation_prometheus_io_port]
+          action: replace
+          regex: ([^:]+)(?::\d+)?;(\d+)
+          replacement: $1:$2
+          target_label: __address__
+        - action: labelmap
+          regex: __meta_kubernetes_pod_label_(.+)
+        - source_labels: [__meta_kubernetes_namespace]
+          action: replace
+          target_label: kubernetes_namespace
+        - source_labels: [__meta_kubernetes_pod_name]
+          action: replace
+          target_label: kubernetes_pod_name
+      - job_name: kubernetes-nodes-cadvisor
+        kubernetes_sd_configs:
+        - role: node
+        relabel_configs:
+        - action: labelmap
+          regex: __meta_kubernetes_node_label_(.+)
+        - replacement: kubernetes.default.svc:443
+          target_label: __address__
+        - regex: (.+)
+          replacement: /api/v1/nodes/$1/proxy/metrics/cadvisor
+          source_labels:
+          - __meta_kubernetes_node_name
+          target_label: __metrics_path__
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      - job_name: kubernetes-apiservers
+        kubernetes_sd_configs:
+        - role: endpoints
+        relabel_configs:
+        - action: keep
+          regex: default;kubernetes;https
+          source_labels:
+          - __meta_kubernetes_namespace
+          - __meta_kubernetes_service_name
+          - __meta_kubernetes_endpoint_port_name
+        scheme: https
+        tls_config:
+          ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          insecure_skip_verify: true
+        bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+      alerting:
+        alertmanagers:
+        - scheme: http
+          static_configs:
+          - targets:
+            - alertmanager.tanzu-system-monitoring.svc:80
+        - kubernetes_sd_configs:
+            - role: pod
+          relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace]
+            regex: default
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_label_app]
+            regex: prometheus
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_label_component]
+            regex: alertmanager
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_annotation_prometheus_io_probe]
+            regex: .*
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_container_port_number]
+            regex:
+            action: drop

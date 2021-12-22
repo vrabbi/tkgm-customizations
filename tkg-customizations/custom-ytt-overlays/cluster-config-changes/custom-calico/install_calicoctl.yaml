@@ -1,0 +1,33 @@
+#@ load("@ytt:assert", "assert")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+
+#@ if data.values.INSTALL_CALICOCTL:
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"}),expects="1+"
+---                                                                                              
+spec:                                                                                            
+  template:                                                                                      
+    #@overlay/match-child-defaults missing_ok=True                  
+    spec:                                                                                        
+      preKubeadmCommands:                                                                        
+        #@overlay/append
+        - curl -o calicoctl -O -L  "https://github.com/projectcalico/calicoctl/releases/download/v3.19.1/calicoctl"
+        #@overlay/append
+        - chmod +x calicoctl
+        #@overlay/append
+        - mv calicoctl /usr/local/bin/calicoctl
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+spec:
+  #@overlay/match-child-defaults missing_ok=True
+  kubeadmConfigSpec:
+    preKubeadmCommands:
+      #@overlay/append
+      - curl -o calicoctl -O -L  "https://github.com/projectcalico/calicoctl/releases/download/v3.19.1/calicoctl"
+      #@overlay/append
+      - chmod +x calicoctl
+      #@overlay/append
+      - mv calicoctl /usr/local/bin/calicoctl
+#@ end
+

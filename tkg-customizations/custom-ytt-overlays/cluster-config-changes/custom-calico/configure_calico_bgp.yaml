@@ -1,0 +1,55 @@
+#@ load("@ytt:assert", "assert")
+#@ load("@ytt:data", "data")
+#@ load("@ytt:overlay", "overlay")
+#@ load("@ytt:yaml","yaml")
+#@ load("@ytt:base64", "base64")
+#@ load("@ytt:struct", "struct")
+
+#@ if data.values.CONFIGURE_CALICO_BGP_SETTINGS:
+#! def bgp_peer_config():
+#! arr_rr = struct.decode(data.values.CALICO_ROUTE_REFLECTORS)
+#!---
+#! for/end bgppeer in arr_rr:
+#!  - apiVersion: projectcalico.org/v3 
+#!    kind: BGPPeer
+#!    metadata:
+#!      name: #@ bgppeer.name
+#!    spec:
+#!      peerIP: #@ bgppeer.ip 
+#!      asNumber: #@ bgppeer.asNumber
+#! end
+#@ def bgp_config():
+---
+apiVersion: projectcalico.org/v3
+kind: BGPConfiguration
+metadata:
+  name: default
+spec:
+  nodeToNodeMeshEnabled: false
+  asNumber: #@ data.values.CALICO_BGP_AS_NUMBER
+#@ end
+#@overlay/match by=overlay.subset({"kind":"KubeadmControlPlane"})
+---
+spec:
+  #@overlay/match-child-defaults missing_ok=True
+  kubeadmConfigSpec:
+    postKubeadmCommands:
+      #@overlay/append
+      - apt update && apt install at -y
+      #@overlay/append
+      - echo "KUBECONFIG=/etc/kubernetes/admin.conf calicoctl apply -f /tmp/bgpconfiguration.yaml" | at now + 5 min
+      #@overlay/append
+      - echo "KUBECONFIG=/etc/kubernetes/admin.conf calicoctl apply -f /tmp/bgppeers.yaml" | at now + 5 min
+    files:
+      #@overlay/append
+      - path: /tmp/bgpconfiguration.yaml
+        permissions: "0700"
+        owner: root:root
+        content: #@ yaml.encode(bgp_config())
+      #@overlay/append
+      - path: /tmp/bgppeers.yaml
+        permissions: "0700"
+        owner: root:root
+        content: #@ base64.decode(data.values.CALICO_ROUTE_REFLECTORS)
+#@ end
+

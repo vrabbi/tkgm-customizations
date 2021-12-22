@@ -1,0 +1,6 @@
+#@data/values
+
+#@overlay/match-child-defaults missing_ok=True
+---
+INSTALL_CILIUM: false
+INSTALL_CILIUM_CLI: false
