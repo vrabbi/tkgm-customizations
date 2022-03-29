@@ -41,6 +41,31 @@ To support Mixed Clusters we need to make a few changes to the YTT files include
 
 #@ end
 ```  
+## Scope windows update prevention to windows MD
+1. Edit the file ~/.config/tanzu/tkg/providers/ytt/03_customizations/03_windows/prevent_windows_updates.yaml
+2. Replace the overlay statement to support our mixed cluster scenario
+```bash
+# LINE TO REPLACE
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"}), expects="1+"
+
+# REPLACE WITH
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate", "metadata":{"name": data.values.CLUSTER_NAME + "-md-0-windows-containerd"}})
+
+```  
+## Scope Antrea Cleanup script to windows MD
+1. Edit the file ~/.config/tanzu/tkg/providers/ytt/03_customizations/03_windows/register_antrea_cleanup.yaml
+2. Replace the overlay statement to support our mixed cluster scenario
+```bash
+# LINE TO REPLACE
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate"}), expects="1+"
+
+# REPLACE WITH
+
+#@overlay/match by=overlay.subset({"kind":"KubeadmConfigTemplate", "metadata":{"name": data.values.CLUSTER_NAME + "-md-0-windows-containerd"}})
+```  
 # File Additions
 As we saw above i have introduced a new Variable "IS_MIXED_CLUSTER" which we need to declare in order for YTT to evaluate the template correctly
 We also need to add an additional set of files to support multi Machine Deployment clusters at deployment time.
