@@ -158,6 +158,7 @@ spec:
         - #@ data.values.VSPHERE_SSH_AUTHORIZED_KEY
         sudo: ALL=(ALL) NOPASSWD:ALL
 #@ end
+EOF
 ```  
 # Creating a mixed cluster
 In the cluster config file make sure to add the following to what you would usually define:
